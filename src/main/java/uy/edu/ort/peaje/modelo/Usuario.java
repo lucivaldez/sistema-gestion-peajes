@@ -1,6 +1,6 @@
 package uy.edu.ort.peaje.modelo;
 
-public class Usuario { //es abstract
+public abstract class Usuario { //es abstract
     private String cedula;
     private String password;
     private String nombreCompleto;
@@ -9,6 +9,10 @@ public class Usuario { //es abstract
         this.cedula = cedula;
         this.password = password;
         this.nombreCompleto = nombreCompleto;
+    }
+
+    public boolean esContrasenaValida(String password) {
+        return this.password.equals(password);
     }
 
     public String getCedula() {

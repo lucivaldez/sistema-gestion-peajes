@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor de actividad</title>
+    <link rel="stylesheet" href="peaje.css">
+    <script src='vistaWeb.js'></script>
+</head>
+<body>
+    <script src='utilesVista.js'></script>
+    <div class="content">
+            <h2>Monitor de actividad</h2>
+            <div id="divListaSesiones">
+            <!-- Aquí se mostrarán las sesiones -->
+             </div>
+    
+           
+    </div>
+    
+    
+    <script>
+        urlIniciarVista="/administrador/vistaConectada";
+        
+        function mostrar_sesiones(sesiones){
+             document.getElementById("divListaSesiones").innerHTML=crearTablaDesdeJson(sesiones);
+        }
+        
+        async function excepcionDeAplicacion(mensaje){
+            await mostrarMensaje(mensaje);
+        } 
+      
+
+    </script>
+</body>
+</html>

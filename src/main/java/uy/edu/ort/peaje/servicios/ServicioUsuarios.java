@@ -1,26 +1,67 @@
 package uy.edu.ort.peaje.servicios;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.databind.annotation.JsonAppend.Prop;
 
 import uy.edu.ort.peaje.excepciones.PeajeException;
+import uy.edu.ort.peaje.modelo.Administrador;
+import uy.edu.ort.peaje.modelo.Propietario;
+import uy.edu.ort.peaje.modelo.Sesion;
 import uy.edu.ort.peaje.modelo.Usuario;
 
 public class ServicioUsuarios {
-    private ArrayList<Usuario> usuarios;
+    private ArrayList<Propietario> propietarios;
+    private ArrayList<Administrador> administradores;
+    private List<Sesion> sesiones;
     
     public ServicioUsuarios() {
-        usuarios = new ArrayList<>();
+        this.propietarios = new ArrayList<>();
+        this.administradores = new ArrayList<>();
+        this.sesiones = new ArrayList<>();
     }
-    public void agregar(String cedula, String password, String nombreCompleto, int saldoActual, int saldoMinimo) {
-        Usuario nuevoUsuario = new Usuario(cedula, password, nombreCompleto);
-        usuarios.add(nuevoUsuario);
+    public void agregar(Propietario propietario) {
+        propietarios.add(propietario);
+       
     }
-    public Usuario login(String cedula, String password) throws PeajeException {
-        for (Usuario u : usuarios) {
-            if (u.getCedula().equals(cedula) && u.getPassword().equals(password)) {
-                return u;
+    public void agregar(Administrador administrador) {
+        administradores.add(administrador);
+       
+    }
+
+    private Usuario login(String cedula, String password, List lista) throws PeajeException{
+        Usuario usuario;
+        for (Object o: lista) {
+            usuario = (Usuario)o;
+            if (usuario.getCedula().equals(cedula) && usuario.esContrasenaValida(password)) {
+                return usuario;
             }
         }
-        throw new PeajeException("Credenciales inválidas");
+        return null;
+    }
+
+    public Administrador loginAdmin(String cedula, String password) throws PeajeException{
+        
+        Administrador usuario = (Administrador) login(cedula, password, administradores);
+        if(usuario!=null){
+            return usuario;
+        }        
+        throw new PeajeException("Usuario y/o contraseña incorrectos");
+    }
+
+    public Sesion loginPropietario(String cedula, String password) throws PeajeException{
+        Sesion sesion = null;
+        Propietario usuario = (Propietario) login(cedula, password, propietarios);
+        if(usuario!=null){
+            sesion = new Sesion(usuario);
+            sesiones.add(sesion);
+            return sesion;
+        }        
+        throw new PeajeException("Usuario y/o contraseña incorrectos");
+    }
+
+    public List<Sesion> getSesiones() {
+        return sesiones;
     }
 }

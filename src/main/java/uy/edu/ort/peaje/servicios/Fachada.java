@@ -1,7 +1,13 @@
 package uy.edu.ort.peaje.servicios;
 
+import java.util.List;
+
+import com.fasterxml.jackson.databind.annotation.JsonAppend.Prop;
+
 import uy.edu.ort.peaje.excepciones.PeajeException;
-import uy.edu.ort.peaje.modelo.Usuario;
+import uy.edu.ort.peaje.modelo.Administrador;
+import uy.edu.ort.peaje.modelo.Propietario;
+import uy.edu.ort.peaje.modelo.Sesion;
 
 public class Fachada {
     private static Fachada instancia;
@@ -19,13 +25,27 @@ public class Fachada {
         sUsuarios = new ServicioUsuarios();
     }
 
-    public void agregar(String cedula, String password, String nombreCompleto, int saldoActual, int saldoMinimo) {
-        sUsuarios.agregar(cedula, password, nombreCompleto, saldoActual, saldoMinimo);
+    public void agregar(Propietario propietario) {
+        sUsuarios.agregar(propietario);
     }
 
-    public Usuario login(String cedula, String password) throws PeajeException {
-        return sUsuarios.login(cedula, password);
+    public void agregarAdmin(Administrador administrador) {
+        sUsuarios.agregar(administrador);
     }
+
+    public Administrador loginAdmin(String cedula, String password) throws PeajeException {
+        return sUsuarios.loginAdmin(cedula, password);
+    }
+
+    public Sesion loginPropietario(String cedula, String password) throws PeajeException {
+        return sUsuarios.loginPropietario(cedula, password);
+    }
+
+    public List<Sesion> getSesiones() {
+        return sUsuarios.getSesiones();
+    }
+
+    
 
     
 

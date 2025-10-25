@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpSession;
 import uy.edu.ort.peaje.excepciones.PeajeException;
+import uy.edu.ort.peaje.modelo.Administrador;
+import uy.edu.ort.peaje.modelo.Propietario;
+import uy.edu.ort.peaje.modelo.Sesion;
 import uy.edu.ort.peaje.modelo.Usuario;
 import uy.edu.ort.peaje.servicios.Fachada;
 
@@ -16,12 +19,40 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RestController
 @RequestMapping("/ingreso")
 public class ControladorIngreso {
-    @PostMapping("/login")
-    public List<Respuesta> login(HttpSession sessionHttp, @RequestParam String userName , @RequestParam String password) throws PeajeException {
-        Usuario unUsuario = Fachada.getInstancia().login(userName, password);
-        sessionHttp.setAttribute("usuarioLogueado", unUsuario);
+    @PostMapping("/loginPropietario")
+    public List<Respuesta> loginPropietario(HttpSession sessionHttp, @RequestParam String cedula , @RequestParam String password) throws PeajeException {
+        Sesion sesion  = Fachada.getInstancia().loginPropietario(cedula, password);
+        sessionHttp.setAttribute("propietario", sesion.getUsuario());
         
-        return Respuesta.lista(new Respuesta ("loginExitoso", "tablero.html"));
+        return Respuesta.lista(new Respuesta ("loginExitoso", "menuProp.html"));
     }
-    
+
+    @PostMapping("/logoutPropietario")
+    public List<Respuesta> logout(HttpSession sesionHttp) {
+        Propietario usuario = (Propietario) sesionHttp.getAttribute("propietario");
+        if (usuario != null) {
+            sesionHttp.removeAttribute("propietario");
+            
+        }
+        return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "index.html"));
+    }
+
+     @PostMapping("/loginAdmin")
+    public List<Respuesta> loginAdmin(HttpSession sesionHttp, @RequestParam String cedula, @RequestParam String password) throws PeajeException {
+
+        Administrador usuarioAdmin  = Fachada.getInstancia().loginAdmin(cedula, password);
+        sesionHttp.setAttribute("usuarioAdmin",usuarioAdmin);
+        return Respuesta.lista(new Respuesta("loginExitoso", "menuAdmin.html"));//hay que cambiarlo de acuerdo a donde tenga que ir
+    }
+    @PostMapping("/logoutAdmin")
+    public List<Respuesta> logoutAdmin(HttpSession sesionHttp) {
+        Administrador usuario = (Administrador) sesionHttp.getAttribute("usuarioAdmin");
+        if (usuario != null) {
+            sesionHttp.removeAttribute("usuarioAdmin");
+            sesionHttp.invalidate();
+        }
+        return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "index.html"));
+    }
+
+
 }
