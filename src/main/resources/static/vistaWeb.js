@@ -13,7 +13,7 @@ var prefijoNombreFuncionProcesoResultado = "mostrar_";
 // Se ejecuta al final de la carga de la página para avisar al controlador que la vista esta cargada
 document.addEventListener("DOMContentLoaded", function () {
   if (urlIniciarVista !== null) {
-    submit(urlIniciarVista, parametrosInicioVista);
+    submit(urlIniciarVista, parametrosInicioVista, "GET");
   }
 
   //Cuando se baja la pagina le avisa al controlador que la vista no está activa
@@ -29,14 +29,27 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Ejecuta un endpoint usando fetch y envía datos en formato URL Encoded
-function submit(endPointUrl, urlEncodedData) {
-  fetch(endPointUrl, {
-    method: "POST",
+function submit(endPointUrl, urlEncodedData, method = "POST") {
+  // Si el método es GET, los parámetros van en la URL y no en el body
+  let fetchUrl = endPointUrl;
+  let fetchOptions = {
+    method: method,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: urlEncodedData,
-  })
+  };
+
+  if (method.toUpperCase() === "GET") {
+    if (urlEncodedData && urlEncodedData.length > 0) {
+      fetchUrl += (fetchUrl.includes("?") ? "&" : "?") + urlEncodedData;
+    }
+    // GET no debe tener body
+    delete fetchOptions.headers; // No es necesario el Content-Type en GET
+  } else {
+    fetchOptions.body = urlEncodedData;
+  }
+
+  fetch(fetchUrl, fetchOptions)
     .then(async (response) => {
       const status = response.status;
       const text = await response.text();

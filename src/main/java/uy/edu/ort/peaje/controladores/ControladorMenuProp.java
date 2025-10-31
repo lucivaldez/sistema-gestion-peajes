@@ -12,7 +12,7 @@ import uy.edu.ort.peaje.modelo.Propietario;
 @RestController
 @RequestMapping("/menuProp")
 public class ControladorMenuProp {
- @GetMapping("/vistaConectada")
+    @GetMapping("/vistaConectada")
     public List<Respuesta> inicializarVista(@SessionAttribute(name = "propietario", required=false) Propietario usuario){
         if (usuario == null) {
              // Manejar el caso en que el usuario no está en la sesión pide redireccionar a la página de login

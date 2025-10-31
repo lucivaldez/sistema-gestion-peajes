@@ -3,8 +3,6 @@ package uy.edu.ort.peaje.servicios;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.annotation.JsonAppend.Prop;
-
 import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
 import uy.edu.ort.peaje.modelo.Propietario;
