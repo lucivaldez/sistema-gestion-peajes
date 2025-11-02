@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Emular tránsito</title>
     <link rel="stylesheet" href="peaje.css" />
+     
+    <script src="vistaWeb.js"></script>
   </head>
   <body class="page-emular-transito">
+    <script src="utilesVista.js"></script>
     <main class="et-container">
       <section class="et-card">
         <!-- Header -->
@@ -27,11 +30,11 @@
           <form class="et-form" id="form-emulacion" autocomplete="off">
             <div class="et-field">
               <label for="puesto">Puesto</label>
-              <select id="puesto" name="puesto">
-                <option value="" disabled selected>Seleccione un puesto</option>
-              </select>
-            </div>
+                <div  id="puesto-container">
+                    
 
+                </div>
+          </div>
             <div class="et-field">
               <label for="matricula">Matrícula</label>
               <input
@@ -67,6 +70,7 @@
                 <div>Monto</div>
               </div>
               <!-- Filas dinámicas acá -->
+               <div class="et-table__body" id="tabla-tarifas-body"></div>
             </div>
             <p class="et-help">
               Se muestran categoría y monto actuales del puesto seleccionado.
@@ -111,8 +115,112 @@
       </section>
     </main>
 
+    <script>
+
+       var urlIniciarVista = "/transito/vistaConectada";
+      var parametrosInicioVista = "";
+
+
+      const formEmulacion   = document.getElementById('form-emulacion');
+      const tablaTarifas    = document.getElementById('tabla-tarifas');
+      const resultadoSection= document.getElementById('resultado');
+      const inputMatricula  = document.getElementById('matricula');
+      const inputFecha      = document.getElementById('fecha');
+      const puestoDiv       = document.getElementById('puesto-container');
+
+      //ver si esta okey
+      document.addEventListener('DOMContentLoaded', function () {
+      submit(urlIniciarVista, parametrosInicioVista, "GET");
+      });
+
+      formEmulacion.addEventListener('submit', emularTransito);
+      function emularTransito(event) {
+        event.preventDefault();
+        submit("/transito/emularTransito", serializarFormulario("form-emulacion"));
+      }
+
+      function mostrar_usuarioNoAutenticado(urlDestino){
+				window.location.href = urlDestino;
+        }
+
+        function mostrar_puesto(puesto){
+            // Carga select de puestos
+            puestoDiv.innerHTML = crearListaDesdeJson({
+                    data: puesto,
+                    campoMostrar: 'nombre',
+                    campoValor: 'nombre', 
+                    multiple : false,
+                    mostrarOpcionInicial : true, 
+                    id : 'selPuesto'
+                    
+                 });       
+        
+        const sel = document.getElementById('selPuesto');
+        // por si tu helper no setea name:
+        if (sel && !sel.name) sel.name = 'puesto';
+
+        sel.addEventListener('change', () => {
+          if (!sel.value || sel.value === '-1') return;
+          resultadoSection.style.display = 'none';
+          submit("/transito/tarifasPuesto", "puesto=" + encodeURIComponent(sel.value), "GET");
+        });
+      }
+  
+        function mostrar_tarifa(tarifas){
+        const body = document.getElementById('tabla-tarifas-body');
+        if (!Array.isArray(tarifas) || tarifas.length === 0){
+          body.innerHTML = `<div class="et-empty">No hay tarifas para este puesto.</div>`;
+          return;
+        }
+
+        body.innerHTML = tarifas.map(t => `
+          <div class="et-table__row">
+            <div>${t.categoria}</div>
+            <div>$ ${Number(t.monto).toFixed(2)}</div>
+          </div>
+        `).join('');
+      }
+      
+
+        function mostrar_categoria(categoria){
+          
+            tablaTarifas.innerHTML = crearTablaDesdeJson({
+                    data: categoria,
+                    camposMostrar: ['nombreCategoria']
+                 });
+        }
+
+        function mostrar_resultado(resultado){
+            // Muestra el resultado de la emulación
+            resultadoSection.style.display = 'block';
+            document.getElementById('res-propietario').textContent = resultado.propietario;
+            document.getElementById('res-estado').textContent = resultado.estado;
+            document.getElementById('res-categoria').textContent = resultado.categoria;
+            document.getElementById('res-bonificacion').textContent = resultado.bonificacion;
+            document.getElementById('res-costo').textContent = resultado.costo.toFixed(2);
+            document.getElementById('res-saldo').textContent = resultado.saldo.toFixed(2);
+        }
+
+        async function mostrar_mensaje(mensaje) {
+            await mostrarMensaje(mensaje);
+        }
+
+        async function mostrar_error(mensaje){
+            await mostrarMensaje(mensaje);
+        }
+
+        function mostrar_limpiarFormulario() {
+            formEmulacion.reset();
+        }
+        
+        async function excepcionDeAplicacion(text){
+            await mostrarMensaje(text);
+        }
+
+    </script>
+
     <!-- Scripts base del proyecto (sin funciones inline) -->
-    <script src="utilesVista.js"></script>
-    <script src="vistaWeb.js"></script>
+   
   </body>
+
 </html>
