@@ -9,13 +9,10 @@ public class Puesto {
     private ArrayList<Tarifa> tarifas;
     private ArrayList<Bonificacion> bonificacion;
 
-    public Puesto(int id, String nombre, String direccion) {
-            
-        this.id = id;
+    public Puesto( String nombre, String direccion) {
         this.nombre = nombre;
         this.direccion = direccion;
     }
-
 
     public int getId() {
         return id;

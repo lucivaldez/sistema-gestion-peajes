@@ -406,3 +406,223 @@ body.page-gestion-contactos .form-container-fullwidth {
 .busqueda-resultados {
   margin-top: 20px;
 }
+
+/* emular transito */
+
+body.page-emular-transito {
+  display: block;
+  min-height: 100vh;
+  background: #f8fafc; /* slate-50 */
+  font-family: Arial, sans-serif;
+  color: #0f172a; /* slate-900 */
+}
+
+.page-emular-transito .et-container {
+  max-width: 1080px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+
+.page-emular-transito .et-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0; /* slate-200 */
+  border-radius: 14px;
+  box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.06),
+    0 4px 6px -4px rgba(15, 23, 42, 0.06);
+  overflow: hidden;
+}
+
+.page-emular-transito .et-card__header {
+  padding: 20px 24px 8px 24px;
+}
+
+.page-emular-transito .et-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-emular-transito .et-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  background: #2563eb; /* blue-600 */
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.page-emular-transito .et-card__header h1 {
+  font-size: 1.12rem;
+  margin: 0;
+  color: #0f172a;
+}
+
+.page-emular-transito .et-subtitle {
+  margin: 6px 0 0 28px;
+  font-size: 0.93rem;
+  color: #64748b; /* slate-500 */
+}
+
+/* Grid de 2 columnas */
+.page-emular-transito .et-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 20px;
+  padding: 16px 24px 8px 24px;
+}
+@media (max-width: 860px) {
+  .page-emular-transito .et-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Formulario */
+.page-emular-transito .et-form {
+  background: #fff;
+}
+
+.page-emular-transito .et-field {
+  margin-bottom: 14px;
+}
+
+.page-emular-transito .et-field label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.page-emular-transito .et-field input,
+.page-emular-transito .et-field select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #cbd5e1; /* slate-300 */
+  border-radius: 10px;
+  background: #fff;
+  color: #0f172a;
+  outline: none;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.page-emular-transito .et-field input::placeholder {
+  color: #94a3b8; /* slate-400 */
+}
+
+.page-emular-transito .et-field input:focus,
+.page-emular-transito .et-field select:focus {
+  border-color: #93c5fd; /* blue-300 */
+  box-shadow: 0 0 0 4px rgba(147, 197, 253, 0.35);
+}
+
+/* Botón */
+.page-emular-transito .et-actions {
+  margin-top: 10px;
+}
+
+.page-emular-transito .et-btn {
+  display: inline-block;
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #1e40af; /* blue-800 */
+  color: #fff;
+  font-weight: 600;
+  transition: filter 0.15s ease, transform 0.02s ease;
+}
+.page-emular-transito .et-btn:hover {
+  filter: brightness(1.05);
+}
+page-emular-transito .et-btn:active {
+  transform: translateY(1px);
+}
+
+/* Tabla de tarifas */
+.page-emular-transito .et-tarifas .et-table {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.page-emular-transito .et-table__head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  padding: 10px 14px;
+  background: #f8fafc;
+  color: #0f172a;
+  font-weight: 700;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.page-emular-transito .et-table__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  padding: 10px 14px;
+  border-top: 1px solid #f1f5f9; /* slate-100 */
+  color: #0f172a;
+}
+.page-emular-transito .et-table__row:nth-child(2) {
+  border-top: 0;
+}
+
+.page-emular-transito .et-help {
+  margin: 8px 2px 0 2px;
+  font-size: 0.86rem;
+  color: #64748b;
+}
+
+/* Resultado */
+.page-emular-transito .et-result {
+  margin: 18px 24px 8px 24px;
+  padding: 14px 16px;
+  border: 1px dashed #e2e8f0;
+  border-radius: 10px;
+  background: #fbfdff;
+  display: none; /* visible al emular */
+}
+.page-emular-transito .et-result.is-visible {
+  display: block;
+}
+
+.page-emular-transito .et-result h2 {
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+  color: #0f172a;
+}
+
+.page-emular-transito .et-result ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: #0f172a;
+}
+.page-emular-transito .et-result li {
+  padding: 4px 0;
+}
+.page-emular-transito .et-result strong {
+  color: #0f172a;
+}
+
+/* Footer dentro de la card */
+.page-emular-transito .et-footer {
+  margin: 10px 24px 18px 24px;
+  padding-top: 10px;
+  border-top: 1px dashed #e2e8f0;
+  color: #64748b;
+  font-size: 0.86rem;
+  text-align: left;
+}
+
+/* Ajustes finos para que se parezca al mock */
+@media (min-width: 861px) {
+  .page-emular-transito .et-card__header {
+    padding-bottom: 6px;
+  }
+  .page-emular-transito .et-grid {
+    padding-top: 8px;
+  }
+}

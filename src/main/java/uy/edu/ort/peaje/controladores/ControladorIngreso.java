@@ -9,7 +9,7 @@ import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Sesion;
-import uy.edu.ort.peaje.servicios.Fachada;
+import uy.edu.ort.peaje.servicios.fachada.Fachada;
 
 import java.util.List;
 

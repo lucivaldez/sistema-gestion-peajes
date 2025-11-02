@@ -7,7 +7,7 @@ import java.util.List;
 import uy.edu.ort.peaje.modelo.Sesion;
 
 public class SesionDto {
-private String fechaIngreso;
+    private String fechaIngreso;
     private String usuario;
     private String nombreCompleto;
     

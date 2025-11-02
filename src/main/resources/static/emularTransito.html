@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Emular tránsito</title>
+    <link rel="stylesheet" href="peaje.css" />
+  </head>
+  <body class="page-emular-transito">
+    <main class="et-container">
+      <section class="et-card">
+        <!-- Header -->
+        <header class="et-card__header">
+          <div class="et-title">
+            <span class="et-dot" aria-hidden="true"></span>
+            <h1>Emular tránsito</h1>
+          </div>
+          <p class="et-subtitle">
+            Seleccione un puesto, verifique sus tarifas, ingrese una matrícula y
+            emule un tránsito.
+          </p>
+        </header>
+
+        <!-- Contenido en dos columnas -->
+        <div class="et-grid">
+          <!-- Columna izquierda: formulario -->
+          <form class="et-form" id="form-emulacion" autocomplete="off">
+            <div class="et-field">
+              <label for="puesto">Puesto</label>
+              <select id="puesto" name="puesto">
+                <option value="" disabled selected>Seleccione un puesto</option>
+              </select>
+            </div>
+
+            <div class="et-field">
+              <label for="matricula">Matrícula</label>
+              <input
+                id="matricula"
+                name="matricula"
+                type="text"
+                placeholder="Ej: ABC1234"
+              />
+            </div>
+
+            <div class="et-field">
+              <label for="fecha">Fecha y hora del tránsito</label>
+              <!-- Si prefieren, pueden usar datetime-local -->
+              <input
+                id="fecha"
+                name="fecha"
+                type="text"
+                placeholder="Ej: 2025-11-19 15:30"
+              />
+              <!-- <input id="fecha" name="fecha" type="datetime-local" /> -->
+            </div>
+
+            <div class="et-actions">
+              <button type="submit" class="et-btn">Emular tránsito</button>
+            </div>
+          </form>
+
+          <!-- Columna derecha: tarifas -->
+          <aside class="et-tarifas">
+            <div class="et-table" id="tabla-tarifas">
+              <div class="et-table__head">
+                <div>Categoría</div>
+                <div>Monto</div>
+              </div>
+              <!-- Filas dinámicas acá -->
+            </div>
+            <p class="et-help">
+              Se muestran categoría y monto actuales del puesto seleccionado.
+            </p>
+          </aside>
+        </div>
+
+        <!-- Resultado (estructura fija con spans para inyectar) -->
+        <section
+          class="et-result"
+          id="resultado"
+          aria-live="polite"
+          style="display: none"
+        >
+          <h2>Resultado</h2>
+          <ul>
+            <li>
+              <strong>Propietario:</strong>
+              <span id="res-propietario">—</span> (<span id="res-estado">—</span
+              >)
+            </li>
+            <li>
+              <strong>Categoría:</strong> <span id="res-categoria">—</span>
+            </li>
+            <li>
+              <strong>Bonificación:</strong>
+              <span id="res-bonificacion">—</span>
+            </li>
+            <li>
+              <strong>Costo del tránsito:</strong> $
+              <span id="res-costo">0.00</span>
+            </li>
+            <li>
+              <strong>Saldo luego del tránsito:</strong> $
+              <span id="res-saldo">0.00</span>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Footer -->
+        <footer class="et-footer">© 2025 — Emular tránsitos</footer>
+      </section>
+    </main>
+
+    <!-- Scripts base del proyecto (sin funciones inline) -->
+    <script src="utilesVista.js"></script>
+    <script src="vistaWeb.js"></script>
+  </body>
+</html>
