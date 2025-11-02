@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import uy.edu.ort.peaje.dtos.CategoriaVehiculoDto;
+import uy.edu.ort.peaje.dtos.EmularTransitoDto;
 import uy.edu.ort.peaje.dtos.PuestoDto;
 import uy.edu.ort.peaje.dtos.TarifaDto;
+import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
 import uy.edu.ort.peaje.modelo.CategoriaVehiculo;
 import uy.edu.ort.peaje.modelo.Puesto;
 import uy.edu.ort.peaje.modelo.Tarifa;
+import uy.edu.ort.peaje.modelo.Transito;
 import uy.edu.ort.peaje.servicios.fachada.Fachada;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +33,7 @@ public class ControladorEmularTransito {
     private List<Puesto> puestos;
     private List<Tarifa> tarifas;
     private List<CategoriaVehiculo> categorias;
+    private Transito transito;
 
 
     @GetMapping("/vistaConectada")
@@ -52,22 +56,40 @@ public class ControladorEmularTransito {
         return Respuesta.lista(listarTarifasPorPuesto(puesto));
     }
 
-    @PostMapping("/emularTransito")
-    public List<Respuesta> emularTransito(
-                @SessionAttribute(name = "usuarioAdmin", required = false) Administrador admin,
-                @RequestParam String puesto,        // value del <select>
-                @RequestParam String matricula,
-                @RequestParam String fecha){
-        if (admin == null) {
-        return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "index.html"));
-                }
-    try {
-                    EmularTransitoDto dto = Fachada.getInstancia().emularTransito(puesto, matricula, fecha);
-                    return Respuesta.lista(new Respuesta("resultado", dto));
-        } catch (Exception e) {
-            return Respuesta.lista(new Respuesta("mensaje", e.getMessage()));
-        }
-    }
+    //SIN TERMINAR PUNTO 4 
+    // @PostMapping("/emularTransito")
+    // public List<Respuesta> emularTransito(
+    //         @SessionAttribute(name = "usuarioAdmin", required = false) Administrador admin,
+    //         @RequestParam String puesto,
+    //         @RequestParam String matricula,
+    //         @RequestParam String fechaHora) {
+    //     if (admin == null) {
+    //         return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "index.html"));
+    //     }
+
+    //     try {
+    //     // 1️⃣ Buscar el puesto por nombre
+    //     Puesto p = Fachada.getInstancia().buscarPuestoPorNombre(puesto);
+    //     if (p == null) {
+    //         return Respuesta.lista(new Respuesta("error", "El puesto no existe."));
+    //     }
+
+    //     // 2️⃣ Emular el tránsito a través de la fachada
+    //     Transito nuevo = Fachada.getInstancia().emularTransito(matricula, p, fechaHora);
+
+    //     // 3️⃣ Devolver DTO con éxito
+    //     EmularTransitoDto transitoDto = new EmularTransitoDto(nuevo);
+    //     return Respuesta.lista(
+    //             new Respuesta("transito", transitoDto),
+    //             mensaje("Tránsito emulado correctamente")
+    //     );
+
+    // } catch (PeajeException e) {
+    //     return Respuesta.lista(new Respuesta("error", e.getMessage()));
+    // } catch (Exception e) {
+    //     return Respuesta.lista(new Respuesta("error", "Error inesperado al emular el tránsito"));
+    // }
+
 
     private Respuesta listarTarifasPorPuesto(String nombrePuesto){
     

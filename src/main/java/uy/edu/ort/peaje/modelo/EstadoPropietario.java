@@ -1,9 +1,17 @@
 package uy.edu.ort.peaje.modelo;
 
-public enum EstadoPropietario {
-    HABILITADO,
-    DESHABILITADO,
-    SUSPENDIDO,
-    PENALIZADO
+import lombok.Getter;
+
+public abstract class EstadoPropietario {
+
+    @Getter
+    private String nombreEstado;
+
+    public EstadoPropietario(String nombreEstado) {
+        this.nombreEstado = nombreEstado;
+    }
+
+    
+
     
 }

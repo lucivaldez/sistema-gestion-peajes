@@ -5,6 +5,7 @@ public class Vehiculo {
     private String modelo;
     private String color;
     private CategoriaVehiculo categoriaVehiculo;
+    private Propietario propietario;
     
     public Vehiculo(String matricula, String modelo, String color, CategoriaVehiculo categoriaVehiculo) {
         this.matricula = matricula;
@@ -15,6 +16,10 @@ public class Vehiculo {
 
     public String getMatricula() {
         return matricula;
+    }
+
+    public Propietario getPropietario() {
+        return propietario;
     }
 
     public void setMatricula(String matricula) {
@@ -44,6 +49,8 @@ public class Vehiculo {
     public void setCategoriaVehiculo(CategoriaVehiculo categoriaVehiculo) {
         this.categoriaVehiculo = categoriaVehiculo;
     }
+
+
 
     
 }

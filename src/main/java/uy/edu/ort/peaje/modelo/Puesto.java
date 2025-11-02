@@ -45,6 +45,15 @@ public class Puesto {
         this.bonificacion = bonificacion;
     }
 
+    public Tarifa getTarifaPorCategoria(CategoriaVehiculo categoria) {
+        for (Tarifa tarifa : tarifas) {
+            if (tarifa.getCategoriaVehiculo().equals(categoria)) {
+                return tarifa;
+            }
+        }
+        return null;
+    }
+
     
 
 }

@@ -20,6 +20,8 @@ public class Transito {
         this.montoCobrado = montoCobrado;
     }
 
+
+
     public Date getFechaHora() {
         return fechaHora;
     }

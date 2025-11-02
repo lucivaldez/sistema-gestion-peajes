@@ -8,6 +8,7 @@ import uy.edu.ort.peaje.modelo.Administrador;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Sesion;
 import uy.edu.ort.peaje.modelo.Usuario;
+import uy.edu.ort.peaje.modelo.Vehiculo;
 
 public class ServicioUsuarios {
     private ArrayList<Propietario> propietarios;
@@ -62,4 +63,15 @@ public class ServicioUsuarios {
     public List<Sesion> getSesiones() {
         return sesiones;
     }
+
+    public Vehiculo buscarVehiculoPorMatricula(String matricula) throws PeajeException {
+    for (Propietario p : propietarios) {
+        Vehiculo encontrado = p.buscarVehiculoPorMatricula(matricula);
+        if (encontrado != null) {
+            return encontrado;
+        }
+    }
+    throw new PeajeException("No existe vehículo con matrícula " + matricula);
+}
+ 
 }

@@ -9,6 +9,8 @@ import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Puesto;
 import uy.edu.ort.peaje.modelo.Sesion;
 import uy.edu.ort.peaje.modelo.Tarifa;
+import uy.edu.ort.peaje.modelo.Transito;
+import uy.edu.ort.peaje.modelo.Vehiculo;
 import uy.edu.ort.peaje.servicios.ServicioUsuarios;
 import uy.edu.ort.peaje.servicios.ServicioTransito;
 
@@ -76,6 +78,18 @@ public class Fachada {
         return sTransito.getTarifas();
     }
 
+    public void agregarTransito(Transito transito){
+        sTransito.agregarTransito(transito);
+    }
+    
+    public Vehiculo buscarVehiculoPorMatricula(String matricula) throws PeajeException {
+        return sUsuarios.buscarVehiculoPorMatricula(matricula);
+    }
+
+ 
+    
+}
+
     
 
     
@@ -83,4 +97,4 @@ public class Fachada {
   
 
     
-}
+

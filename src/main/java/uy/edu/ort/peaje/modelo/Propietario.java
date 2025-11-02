@@ -15,8 +15,26 @@ public class Propietario extends Usuario
         super(cedula, password, nombreCompleto);
          this.saldoActual = saldoActual;
          this.saldoMinimo = saldoMinimo;
-         this.estado = EstadoPropietario.HABILITADO;
+         //this.estado = EstadoPropietario.HABILITADO;
      }
+
+     //PARA EMULAR TRANSITO
+     public Vehiculo buscarVehiculoPorMatricula(String matricula) {
+         for (Vehiculo v : vehiculos) {
+             if (v.getMatricula().equalsIgnoreCase(matricula)) {
+                 return v;
+             }
+         }
+         return null;
+     }
+
+    //  public void validarSaldo(double monto) {
+    //      if (saldoActual < monto) {
+    //          estado = EstadoPropietario.INHABILITADO;
+    //      } else {
+    //          estado = EstadoPropietario.HABILITADO;
+    //      }
+    //  }
 
      public int getSaldoActual() {
          return saldoActual;
