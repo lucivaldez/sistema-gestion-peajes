@@ -7,7 +7,7 @@ public class Puesto {
     private String nombre;
     private String direccion;
     private ArrayList<Tarifa> tarifas;
-    private ArrayList<Bonificacion> bonificacion;
+    private ArrayList<AsignacionBonificacion> asignacionBonificacions;
 
     public Puesto( String nombre, String direccion) {
         this.nombre = nombre;
@@ -38,11 +38,11 @@ public class Puesto {
     public void setTarifas(ArrayList<Tarifa> tarifas) {
         this.tarifas = tarifas;
     }
-    public ArrayList<Bonificacion> getBonificacion() {
-        return bonificacion;
+    public ArrayList<AsignacionBonificacion> getAsignacionBonificacions() {
+        return asignacionBonificacions;
     }
-    public void setBonificacion(ArrayList<Bonificacion> bonificacion) {
-        this.bonificacion = bonificacion;
+    public void setAsignacionBonificacion(ArrayList<AsignacionBonificacion> bonificacion) {
+        this.asignacionBonificacions = bonificacion;
     }
 
     public Tarifa getTarifaPorCategoria(CategoriaVehiculo categoria) {

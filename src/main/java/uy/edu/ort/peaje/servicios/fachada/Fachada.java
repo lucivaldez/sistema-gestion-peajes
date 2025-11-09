@@ -2,8 +2,10 @@ package uy.edu.ort.peaje.servicios.fachada;
 
 import java.util.List;
 
+import uy.edu.ort.peaje.dtos.EmularTransitoDto;
 import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
+import uy.edu.ort.peaje.modelo.Bonificacion;
 import uy.edu.ort.peaje.modelo.CategoriaVehiculo;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Puesto;
@@ -26,7 +28,6 @@ public class Fachada {
             instancia = new Fachada();
         }
         return instancia;
-
     }
 
     private Fachada(){
@@ -62,8 +63,7 @@ public class Fachada {
     }
 
     public void agregarCategoriaVehiculo(CategoriaVehiculo categoria) {
-        sTransito.agregarCategoriaVehiculo(categoria);
-        
+        sTransito.agregarCategoriaVehiculo(categoria);  
     }  
 
     public List<CategoriaVehiculo> getCategoriaVehiculos() {
@@ -92,9 +92,18 @@ public class Fachada {
 
     
 
-    
+    public void agregarTipoBonificacion(Bonificacion bonificacion) {
+        sTransito.agregarTipoBonificacion(bonificacion);
+    }
 
-  
+    public void asignarBonificacion(Propietario propietario, Bonificacion bonificacion, Puesto puesto) {
+        sTransito.asignarBonificacion(propietario, bonificacion, puesto);
+    }
+
+    // public EmularTransitoDto emularTransito(String nombrePuesto, String matricula, String fecha) throws PeajeException {
+    //     return sTransito.emularTransito(nombrePuesto, matricula, fecha);
+    // }
+
 
     
 

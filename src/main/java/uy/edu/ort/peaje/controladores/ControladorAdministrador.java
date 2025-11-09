@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import uy.edu.ort.peaje.dtos.SesionDto;
 import uy.edu.ort.peaje.modelo.Administrador;
 import uy.edu.ort.peaje.servicios.fachada.Fachada;
+import uy.edu.ort.peaje.utils.Respuesta;
 
 @RestController
 @RequestMapping("/administrador")

@@ -1,4 +1,4 @@
-package uy.edu.ort.peaje.controladores;
+package uy.edu.ort.peaje.utils;
 import java.util.ArrayList;
 import java.util.List;
 

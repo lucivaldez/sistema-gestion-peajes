@@ -1,10 +1,18 @@
 package uy.edu.ort.peaje.servicios;
 
+import java.util.Date;
+
 import uy.edu.ort.peaje.modelo.Administrador;
+import uy.edu.ort.peaje.modelo.AsignacionBonificacion;
+import uy.edu.ort.peaje.modelo.Bonificacion;
 import uy.edu.ort.peaje.modelo.CategoriaVehiculo;
+import uy.edu.ort.peaje.modelo.Exonerado;
+import uy.edu.ort.peaje.modelo.Frecuente;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Puesto;
 import uy.edu.ort.peaje.modelo.Tarifa;
+import uy.edu.ort.peaje.modelo.Trabajador;
+import uy.edu.ort.peaje.modelo.Vehiculo;
 import uy.edu.ort.peaje.servicios.fachada.Fachada;
 
 public class DatosPrueba {
@@ -13,8 +21,7 @@ public class DatosPrueba {
 
         Puesto puesto1 = new Puesto("Peaje Canelones", "Av. Principal 1234");
         Puesto puesto2 = new Puesto("Peaje Montevideo", "Calle Norte 5678");
-        Puesto puesto3 = new Puesto("PeajeMaldonado", "Ruta Sur 91011");
-
+        Puesto puesto3 = new Puesto("Peaje Maldonado", "Ruta Sur 91011");
         // Puesto puesto4 = new Puesto("Peaje Rocha", "Camino Este 1213");
         // Puesto puesto5 = new Puesto("Peaje Pando", "Ruta 8 km 22");
         // Puesto puesto6 = new Puesto("Peaje Solis", "Ruta 9 km 100");
@@ -26,13 +33,6 @@ public class DatosPrueba {
         Fachada.getInstancia().agregarPuesto(puesto1);
         Fachada.getInstancia().agregarPuesto(puesto2);
         Fachada.getInstancia().agregarPuesto(puesto3);
-        // Fachada.getInstancia().agregarPuesto(puesto4.getNombre(), puesto4.getDireccion());
-        // Fachada.getInstancia().agregarPuesto(puesto5.getNombre(), puesto5.getDireccion());
-        // Fachada.getInstancia().agregarPuesto(puesto6.getNombre(), puesto6.getDireccion());
-        // Fachada.getInstancia().agregarPuesto(puesto7.getNombre(), puesto7.getDireccion());
-        // Fachada.getInstancia().agregarPuesto(puesto8.getNombre(), puesto8.getDireccion());
-        // Fachada.getInstancia().agregarPuesto(puesto9.getNombre(), puesto9.getDireccion());
-        // Fachada.getInstancia().agregarPuesto(puesto10.getNombre(), puesto10.getDireccion());
 
         CategoriaVehiculo cat1 = new CategoriaVehiculo("Automóvil");
         CategoriaVehiculo cat2 = new CategoriaVehiculo("Camion");
@@ -51,7 +51,9 @@ public class DatosPrueba {
         fachada.agregarAdmin(admin1);
 
         Propietario prop1 = new Propietario("12345678", "prop1", "Propietario Uno", 100, 200);
+        Propietario prop2 = new Propietario("11223344", "prop1", "Propietario Dos", 100, 200);
         fachada.agregar(prop1);
+        fachada.agregar(prop2);
 
 
         //tarifas puesto 1
@@ -84,8 +86,21 @@ public class DatosPrueba {
         Fachada.getInstancia().agregarTarifa(tarifa10);
         Fachada.getInstancia().agregarTarifa(tarifa11);
         Fachada.getInstancia().agregarTarifa(tarifa12);
-        
-        
+
+        Vehiculo v1 = new Vehiculo("ABC123", "Toyota Corolla", "Rojo", cat1, prop1);
+        fachada.agregarVehiculo(v1);
+
+        Bonificacion exonerado = new Exonerado("Exonerado");
+        Bonificacion frecuente = new Frecuente("Frecuente");
+        Bonificacion trabajador = new Trabajador("Trabajador");
+
+        Fachada.getInstancia().agregarTipoBonificacion(exonerado);
+        Fachada.getInstancia().agregarTipoBonificacion(frecuente);
+        Fachada.getInstancia().agregarTipoBonificacion(trabajador);
+
+        Fachada.getInstancia().asignarBonificacion(prop1, exonerado, puesto1);
+        Fachada.getInstancia().asignarBonificacion(prop1, frecuente, puesto2);
+        Fachada.getInstancia().asignarBonificacion(prop2, trabajador, puesto1);
     
     
     

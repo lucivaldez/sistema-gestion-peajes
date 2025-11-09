@@ -1,5 +1,9 @@
 package uy.edu.ort.peaje.modelo;
 
+import java.util.Date;
+import java.util.ArrayList;
+import java.util.Calendar;
+
 public class Vehiculo {
     private String matricula;
     private String modelo;
@@ -7,11 +11,12 @@ public class Vehiculo {
     private CategoriaVehiculo categoriaVehiculo;
     private Propietario propietario;
     
-    public Vehiculo(String matricula, String modelo, String color, CategoriaVehiculo categoriaVehiculo) {
+    public Vehiculo(String matricula, String modelo, String color, CategoriaVehiculo categoriaVehiculo, Propietario propietario) {
         this.matricula = matricula;
         this.modelo = modelo;
         this.color = color;
         this.categoriaVehiculo = categoriaVehiculo;
+        this.propietario = propietario;
     }
 
     public String getMatricula() {
@@ -45,6 +50,7 @@ public class Vehiculo {
     public CategoriaVehiculo getCategoriaVehiculo() {
         return categoriaVehiculo;
     }
+    
 
     public void setCategoriaVehiculo(CategoriaVehiculo categoriaVehiculo) {
         this.categoriaVehiculo = categoriaVehiculo;

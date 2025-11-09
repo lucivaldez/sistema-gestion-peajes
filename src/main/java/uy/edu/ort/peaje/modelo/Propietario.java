@@ -2,12 +2,14 @@ package uy.edu.ort.peaje.modelo;
 
 import java.util.ArrayList;
 
+import uy.edu.ort.peaje.excepciones.PeajeException;
+
 public class Propietario extends Usuario 
 {
     private int saldoActual;
     private int saldoMinimo;
     private EstadoPropietario estado;
-    private ArrayList<Bonificacion> bonificacion;
+    private ArrayList<AsignacionBonificacion> bonificacionesAsignadas;
     private ArrayList<Vehiculo> vehiculos; 
     private ArrayList<Notificacion> notificaciones;
     
@@ -16,6 +18,7 @@ public class Propietario extends Usuario
          this.saldoActual = saldoActual;
          this.saldoMinimo = saldoMinimo;
          //this.estado = EstadoPropietario.HABILITADO;
+  
      }
 
      //PARA EMULAR TRANSITO
@@ -60,13 +63,9 @@ public class Propietario extends Usuario
          this.estado = estado;
      }
 
-     public ArrayList<Bonificacion> getBonificacion() {
-         return bonificacion;
-     }
-
-     public void setBonificacion(ArrayList<Bonificacion> bonificacion) {
-         this.bonificacion = bonificacion;
-     }
+    public ArrayList<AsignacionBonificacion> getAsignacionBonificacion() {
+        return bonificacionesAsignadas;
+    }
 
      public ArrayList<Vehiculo> getVehiculos() {
          return vehiculos;
@@ -83,5 +82,29 @@ public class Propietario extends Usuario
      public void setNotificaciones(ArrayList<Notificacion> notificaciones) {
          this.notificaciones = notificaciones;
      }
+
+    public void validarSaldoSuficiente(double monto) throws PeajeException {
+        if (getSaldoActual() < monto)
+            throw new PeajeException("Saldo insuficiente: $ " + String.format("%.2f", getSaldoActual()));
+    }
+
+    public void descontarSaldo(double monto) {
+        setSaldoActual(getSaldoActual() - (int)monto);
+    }
+
+    public void asignacionBonificacion(AsignacionBonificacion ab) {
+        bonificacionesAsignadas.add(ab);
+    }
+
+    public Vehiculo buscarVehiculoDelPropietario(String matricula) throws PeajeException {
+        for (Vehiculo v : vehiculos) {
+            if (v.getMatricula().equalsIgnoreCase(matricula)) {
+                return v;
+            }
+        }
+        throw new PeajeException("No se encontró un vehículo con la matrícula: " + matricula);
+    }
+
+      
 
 }

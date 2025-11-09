@@ -10,6 +10,7 @@ import uy.edu.ort.peaje.modelo.Administrador;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Sesion;
 import uy.edu.ort.peaje.servicios.fachada.Fachada;
+import uy.edu.ort.peaje.utils.Respuesta;
 
 import java.util.List;
 

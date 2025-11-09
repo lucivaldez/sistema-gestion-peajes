@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import uy.edu.ort.peaje.modelo.Administrador;
+import uy.edu.ort.peaje.utils.Respuesta;
 
 @RestController
 @RequestMapping("/menuAdmin") 

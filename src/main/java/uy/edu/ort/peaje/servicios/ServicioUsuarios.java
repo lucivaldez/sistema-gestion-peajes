@@ -5,15 +5,18 @@ import java.util.List;
 
 import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
+import uy.edu.ort.peaje.modelo.Bonificacion;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Sesion;
 import uy.edu.ort.peaje.modelo.Usuario;
 import uy.edu.ort.peaje.modelo.Vehiculo;
 
 public class ServicioUsuarios {
+    //experto en gestionar los usuarios
     private ArrayList<Propietario> propietarios;
     private ArrayList<Administrador> administradores;
-    private List<Sesion> sesiones;
+    private ArrayList<Sesion> sesiones;
+
     
     public ServicioUsuarios() {
         this.propietarios = new ArrayList<>();

@@ -21,6 +21,7 @@ import uy.edu.ort.peaje.modelo.Puesto;
 import uy.edu.ort.peaje.modelo.Tarifa;
 import uy.edu.ort.peaje.modelo.Transito;
 import uy.edu.ort.peaje.servicios.fachada.Fachada;
+import uy.edu.ort.peaje.utils.Respuesta;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -47,14 +48,14 @@ public class ControladorEmularTransito {
 
     @GetMapping("/tarifasPuesto")
     public List<Respuesta> tarifasPorPuesto(
-                @SessionAttribute(name = "usuarioAdmin", required = false) Administrador admin,
-                @RequestParam String puesto 
-        ){
+            @SessionAttribute(name = "usuarioAdmin", required = false) Administrador admin,
+            @RequestParam String puesto ){
         if (admin == null) {
         return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "index.html"));
         }
         return Respuesta.lista(listarTarifasPorPuesto(puesto));
     }
+    
 
     //SIN TERMINAR PUNTO 4 
     // @PostMapping("/emularTransito")
