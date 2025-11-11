@@ -5,16 +5,13 @@ import java.util.List;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import uy.edu.ort.peaje.dtos.CategoriaVehiculoDto;
-import uy.edu.ort.peaje.dtos.EmularTransitoDto;
 import uy.edu.ort.peaje.dtos.PuestoDto;
 import uy.edu.ort.peaje.dtos.TarifaDto;
-import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
 import uy.edu.ort.peaje.modelo.CategoriaVehiculo;
 import uy.edu.ort.peaje.modelo.Puesto;
@@ -29,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RestController
 @RequestMapping("/transito")
 @Scope("session")
-
 public class ControladorEmularTransito {
     private List<Puesto> puestos;
     private List<Tarifa> tarifas;
@@ -146,7 +142,4 @@ public class ControladorEmularTransito {
     private Respuesta mensaje(String msg){
         return new Respuesta("mensaje", msg);
     }   
-    
-
-
 }

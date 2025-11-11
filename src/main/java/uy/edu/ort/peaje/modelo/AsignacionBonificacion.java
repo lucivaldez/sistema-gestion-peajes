@@ -1,6 +1,7 @@
 package uy.edu.ort.peaje.modelo;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class AsignacionBonificacion {
     
@@ -35,6 +36,16 @@ public class AsignacionBonificacion {
         return this.puesto != null && this.puesto.equals(puesto);
     }
 
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AsignacionBonificacion)) return false;
+        AsignacionBonificacion that = (AsignacionBonificacion) o;
+        return Objects.equals(propietario, that.propietario)
+            && Objects.equals(puesto, that.puesto)
+            && Objects.equals(bonificacion.getClass(), that.bonificacion.getClass());
+    }
 
-    
+    @Override public int hashCode() {
+        return Objects.hash(propietario, puesto, bonificacion.getClass());
+    }    
 }

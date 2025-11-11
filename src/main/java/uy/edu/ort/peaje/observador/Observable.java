@@ -20,5 +20,4 @@ public class Observable {
             obs.actualizar(evento, this);
         }
     }
-
 }

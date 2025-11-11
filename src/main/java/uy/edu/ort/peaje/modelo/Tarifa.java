@@ -35,6 +35,4 @@ public class Tarifa {
     public void setCategoriaVehiculo(CategoriaVehiculo categoriaVehiculo) {
         this.categoriaVehiculo = categoriaVehiculo;
     }
-
-
 }

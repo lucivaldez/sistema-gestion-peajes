@@ -14,4 +14,18 @@ public class CategoriaVehiculo {
     public CategoriaVehiculo(String nombreCategoria) {
         this.nombreCategoria = nombreCategoria;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CategoriaVehiculo)) return false;
+        CategoriaVehiculo other = (CategoriaVehiculo) o;
+        return this.nombreCategoria != null &&
+               this.nombreCategoria.equalsIgnoreCase(other.nombreCategoria);
+    }
+
+    @Override
+    public int hashCode() {
+        return (nombreCategoria == null) ? 0 : nombreCategoria.toLowerCase().hashCode();
+    }
 }

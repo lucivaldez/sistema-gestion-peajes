@@ -5,7 +5,6 @@ import java.util.List;
 
 import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
-import uy.edu.ort.peaje.modelo.Bonificacion;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Sesion;
 import uy.edu.ort.peaje.modelo.Usuario;
@@ -75,6 +74,15 @@ public class ServicioUsuarios {
         }
     }
     throw new PeajeException("No existe vehículo con matrícula " + matricula);
-}
- 
+    }
+
+    public Propietario buscarPropietarioPorCedula(String cedula) {
+        if (cedula == null) return null;
+        for (Propietario p : propietarios) {
+            if (cedula.equals(p.getCedula())) {
+                return p;
+            }
+        }
+        return null;
+    }
 }

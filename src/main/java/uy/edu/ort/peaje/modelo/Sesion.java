@@ -19,7 +19,6 @@ public class Sesion {
 
     public Propietario getUsuario() {
         return usuario;
-    }
-        
+    }       
 }
 

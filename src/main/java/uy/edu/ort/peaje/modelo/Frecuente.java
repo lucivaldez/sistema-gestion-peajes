@@ -29,10 +29,6 @@ public class Frecuente extends Bonificacion {
         } else {
             return montoBase;
         }
-
     }
-
-
-
 }
 

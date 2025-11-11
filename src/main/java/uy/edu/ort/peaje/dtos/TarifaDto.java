@@ -16,11 +16,12 @@ public class TarifaDto {
     public String getCategoria() {
         return categoria;
     }
+
     public double getMonto() {
         return monto;
     }
+
     public String getPuesto() {
         return puesto;
-    }
-        
+    }       
 }

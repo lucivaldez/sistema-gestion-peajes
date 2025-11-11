@@ -12,7 +12,5 @@ public class Exonerado extends Bonificacion {
     public double calcularMonto(Transito transito) {
         return 0;
     }
-    
-
 }
 

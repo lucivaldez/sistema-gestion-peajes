@@ -37,6 +37,5 @@ public abstract class Usuario { //es abstract
 
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
-    }
-    
+    }    
 }

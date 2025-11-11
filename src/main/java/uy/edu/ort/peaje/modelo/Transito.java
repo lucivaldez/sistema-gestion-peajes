@@ -9,6 +9,7 @@ public class Transito {
     private Puesto puesto;
     private Tarifa tarifa;
     private double montoCobrado;
+    private String bonificacionAplicada;
 
     public Transito(Date fechaHora, Vehiculo vehiculo, Notificacion notificacion, Puesto puesto, Tarifa tarifa, double montoCobrado) {
         this.fechaHora = fechaHora;
@@ -19,14 +20,20 @@ public class Transito {
         this.montoCobrado = montoCobrado;
     }
 
-
-
     public Date getFechaHora() {
         return fechaHora;
     }
 
     public void setFechaHora(Date fechaHora) {
         this.fechaHora = fechaHora;
+    }
+
+    public String getBonificacionAplicada() {
+        return bonificacionAplicada;
+    }
+
+    public void setBonificacionAplicada(String bonificacionAplicada) {
+        this.bonificacionAplicada = bonificacionAplicada;
     }
 
     public Vehiculo getVehiculo() {
@@ -68,6 +75,4 @@ public class Transito {
     public void setMontoCobrado(double montoCobrado) {
         this.montoCobrado = montoCobrado;
     }
-    
-
 }

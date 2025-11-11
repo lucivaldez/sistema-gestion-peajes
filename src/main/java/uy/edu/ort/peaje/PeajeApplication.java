@@ -12,7 +12,4 @@ public class PeajeApplication {
 		SpringApplication.run(PeajeApplication.class, args);
 		DatosPrueba.cargar();
 	}
-
-
-
 }

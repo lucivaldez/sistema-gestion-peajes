@@ -1,6 +1,7 @@
 package uy.edu.ort.peaje.modelo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import uy.edu.ort.peaje.excepciones.PeajeException;
 
@@ -8,15 +9,19 @@ public class Propietario extends Usuario
 {
     private int saldoActual;
     private int saldoMinimo;
-    private EstadoPropietario estado;
+    //private EstadoPropietario estado;
     private ArrayList<AsignacionBonificacion> bonificacionesAsignadas;
     private ArrayList<Vehiculo> vehiculos; 
     private ArrayList<Notificacion> notificaciones;
     
     public Propietario(String cedula, String password, String nombreCompleto, int saldoActual, int saldoMinimo) {
         super(cedula, password, nombreCompleto);
-         this.saldoActual = saldoActual;
-         this.saldoMinimo = saldoMinimo;
+        this.saldoActual = saldoActual;
+        this.saldoMinimo = saldoMinimo;
+        this.bonificacionesAsignadas = new ArrayList<AsignacionBonificacion>();
+        this.vehiculos = new ArrayList<Vehiculo>();
+        this.notificaciones = new ArrayList<Notificacion>();
+
          //this.estado = EstadoPropietario.HABILITADO;
   
      }
@@ -30,14 +35,6 @@ public class Propietario extends Usuario
          }
          return null;
      }
-
-    //  public void validarSaldo(double monto) {
-    //      if (saldoActual < monto) {
-    //          estado = EstadoPropietario.INHABILITADO;
-    //      } else {
-    //          estado = EstadoPropietario.HABILITADO;
-    //      }
-    //  }
 
      public int getSaldoActual() {
          return saldoActual;
@@ -55,13 +52,13 @@ public class Propietario extends Usuario
          this.saldoMinimo = saldoMinimo;
      }
 
-     public EstadoPropietario getEstado() {
-         return estado;
-     }
+    //  public EstadoPropietario getEstado() {
+    //      return estado;
+    //  }
 
-     public void setEstado(EstadoPropietario estado) {
-         this.estado = estado;
-     }
+    //  public void setEstado(EstadoPropietario estado) {
+    //      this.estado = estado;
+    //  }
 
     public ArrayList<AsignacionBonificacion> getAsignacionBonificacion() {
         return bonificacionesAsignadas;
@@ -92,8 +89,28 @@ public class Propietario extends Usuario
         setSaldoActual(getSaldoActual() - (int)monto);
     }
 
-    public void asignacionBonificacion(AsignacionBonificacion ab) {
+    public void asignarBonificacion(AsignacionBonificacion ab) {
+        if (ab == null) return;
+        if (bonificacionesAsignadas == null) bonificacionesAsignadas = new ArrayList<>();
+        // Evita duplicar mismo tipo de bonificación en el mismo puesto
+        for (AsignacionBonificacion existente : bonificacionesAsignadas) {
+            if (existente.getPuesto().equals(ab.getPuesto()) &&
+                existente.getBonificacion().getClass().equals(ab.getBonificacion().getClass())) {
+                // ya existe: no agregar
+                return;
+            }
+        }
         bonificacionesAsignadas.add(ab);
+    }
+
+    public List<AsignacionBonificacion> bonificacionesPara(Puesto puesto) {
+        List<AsignacionBonificacion> resultado = new ArrayList<>();
+        for (AsignacionBonificacion ab : bonificacionesAsignadas) {
+            if (ab.aplicaA(puesto)) {
+                resultado.add(ab);
+            }
+        }
+        return resultado;
     }
 
     public Vehiculo buscarVehiculoDelPropietario(String matricula) throws PeajeException {
@@ -104,7 +121,4 @@ public class Propietario extends Usuario
         }
         throw new PeajeException("No se encontró un vehículo con la matrícula: " + matricula);
     }
-
-      
-
 }

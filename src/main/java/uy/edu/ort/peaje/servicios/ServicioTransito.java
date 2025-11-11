@@ -1,9 +1,14 @@
 package uy.edu.ort.peaje.servicios;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import uy.edu.ort.peaje.excepciones.PeajeException;
+import uy.edu.ort.peaje.modelo.AsignacionBonificacion;
+import uy.edu.ort.peaje.modelo.Bonificacion;
 import uy.edu.ort.peaje.modelo.CategoriaVehiculo;
+import uy.edu.ort.peaje.modelo.Notificacion;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Puesto;
 import uy.edu.ort.peaje.modelo.Tarifa;
@@ -25,27 +30,14 @@ public class ServicioTransito {
         puestos.add(puesto);
     }
 
-    public void agregarTransito(Transito transito){
-        listaTransitos.add(transito);
-    }
-
-//     public Transito emularTransito(Vehiculo vehiculo, Puesto puesto, String fechaHora) throws PeajeException {
-//     if (vehiculo == null) throw new PeajeException("Vehículo nulo");
-//     Tarifa tarifa = puesto.getTarifaPorCategoria(vehiculo.getCategoriaVehiculo());
-//     if (tarifa == null) throw new PeajeException("No hay tarifa para esa categoría en el puesto");
-//     // calcular monto final (bonificaciones, etc.)
-//     double montoFinal = calcularMontoFinal(vehiculo.getPropietario(), puesto, tarifa);
-//     Transito t = new Transito(vehiculo, puesto, montoFinal, fechaHora);
-//     // registrar transito (lista interna, notificaciones, etc.)
-//     this.transitos.add(t);
-//     return t;
-// }
- 
-    public ArrayList<Puesto> getPuestos(){
+      public ArrayList<Puesto> getPuestos(){
         return puestos;
     }
 
-    // === Categorías ===
+    public void agregarTransito(Transito transito){
+       if (transito != null) listaTransitos.add(transito);
+    }
+ 
     public void agregarCategoriaVehiculo(CategoriaVehiculo categoria){
         categorias.add(categoria);
     }
@@ -54,17 +46,20 @@ public class ServicioTransito {
         return categorias;
     }
     
-    // === Tarifas ===
     public void agregarTarifa(Tarifa tarifa){
+        if (tarifa == null) return;
         tarifas.add(tarifa);
+
+        Puesto p = tarifa.getPuesto();
+        if (p != null) {
+            p.addTarifa(tarifa); // 👉 el experto mantiene su colección
+        }
     }
 
     public ArrayList<Tarifa> getTarifas(){
         return tarifas;
     }
 
-
-    // === Vehiculo ===
     public void agregarVehiculo(Vehiculo vehiculo){
         vehiculos.add(vehiculo);
     }
@@ -72,53 +67,65 @@ public class ServicioTransito {
     public ArrayList<Vehiculo> getVehiculos(){
         return vehiculos;
     }
-
-    // === Bonificaciones ===
-
-    public void agregarTipoBonificacion(Bonificacion bonificacion) {
-        tiposBonificacion.add(bonificacion);
-    }
-
-    public ArrayList<Bonificacion> getTiposBonificacion() {
-        return tiposBonificacion;
-    }
-
+  
     public void asignarBonificacion(Propietario propietario, Bonificacion bonificacion, Puesto puesto) {
+        if (propietario == null || bonificacion == null || puesto == null) return;
         AsignacionBonificacion ab = new AsignacionBonificacion(new Date(), bonificacion, propietario, puesto);
-        propietario.asignacionBonificacion(ab);
+        // Si tu Propietario usa otro nombre, ajustá aquí:
+        propietario.asignarBonificacion(ab);
     }
-
-    // === Transitos ===
 
     public double calcularMontoFinal(Transito transito) {
         double montoBase = transito.getTarifa().getMonto();
         double montoFinal = montoBase;
 
         Propietario propietario = transito.getVehiculo().getPropietario();
+        Puesto puesto = transito.getPuesto();
 
-        for (AsignacionBonificacion ab : propietario.getAsignacionBonificacion()) {
-             Bonificacion b = ab.getBonificacion();
+        // Trae solo las bonificaciones asignadas a ese puesto
+        List<AsignacionBonificacion> asignaciones = propietario.bonificacionesPara(puesto);
 
-            if (ab.aplicaA(transito.getPuesto())) {
-                montoFinal = b.calcularMonto(transito);
-                break; 
+        for (AsignacionBonificacion ab : asignaciones) {
+            Bonificacion b = ab.getBonificacion();
+            double candidato = b.calcularMonto(transito); // cada Strategy aplica su regla
+
+            if (candidato < montoFinal) {
+                montoFinal = candidato;
+                if (candidato == 0.0) break; // Exonerado
             }
-        }   
+        }
 
-        // Si ninguna bonificación aplica, se cobra el monto completo
         return montoFinal;
     }
 
-    // public Transito emularTransito (Puesto p, String matricula, Date fecha){
+    public Transito emularTransito(Vehiculo vehiculo, Puesto puesto, Date fechaHora) throws PeajeException {
+        if (vehiculo == null) throw new PeajeException("Vehículo nulo");
+        if (puesto == null) throw new PeajeException("Puesto nulo");
+        if (fechaHora == null) fechaHora = new Date();
+        //se trae la tarifa por categoria
+        Tarifa tarifa = puesto.getTarifaPorCategoria(vehiculo.getCategoriaVehiculo());
+        if (tarifa == null) throw new PeajeException("No hay tarifa para la categoría del vehículo en el puesto");
+        //el propietario del vehiculo
+        Propietario propietario = vehiculo.getPropietario();
+        if (propietario == null) throw new PeajeException("El vehículo no tiene propietario");
+        //calcula el monto final a cobrar
+        Transito t = new Transito(fechaHora, vehiculo, null, puesto, tarifa, 0.0);
+        double montoFinal = calcularMontoFinal(t);     // elige la mejor bonificación o cobra tarifa base
+        //verifica si el propietario tiene saldo suficiente
+        if (propietario.getSaldoActual() < montoFinal) {
+            throw new PeajeException("Saldo insuficiente");
+        }
+        //descuenta el saldo del propietario
+        propietario.descontarSaldo(montoFinal);
 
-    //     vehiculo v = Fachada.getInstancia().buscarVehiculoPorMatricula(matricula);
-    // }
+        //todavia no se implementaron las notificaciones
+        Notificacion notificacion = null;
+        //crear el transito
+        Transito transito = new Transito(fechaHora, vehiculo, notificacion, puesto, tarifa, montoFinal);
 
 
-
-
-    
-
-
-
+        vehiculo.registrarTransito(transito);
+        listaTransitos.add(transito);
+        return transito;
+    }
 }

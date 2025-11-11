@@ -37,6 +37,4 @@ public class ResultadoDto {
     public double getSaldo() {
         return saldo;
     }
-    
-
 }

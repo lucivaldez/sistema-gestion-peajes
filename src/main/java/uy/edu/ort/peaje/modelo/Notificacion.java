@@ -45,8 +45,5 @@ public class Notificacion {
 
     public void setPropietario(Propietario propietario) {
         this.propietario = propietario;
-    }
-
-    
-    
+    }  
 }

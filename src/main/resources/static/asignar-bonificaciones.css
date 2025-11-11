@@ -1,0 +1,159 @@
+body.page-asignar-bonificaciones {
+  display: block;
+  min-height: 100vh;
+  background: #f8fafc; /* slate-50 */
+  font-family: Arial, sans-serif;
+  color: #0f172a; /* slate-900 */
+}
+
+/* Contenedor principal y card */
+.page-asignar-bonificaciones .et-container {
+  max-width: 1080px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+.page-asignar-bonificaciones .et-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0; /* slate-200 */
+  border-radius: 14px;
+  box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.06),
+              0 4px 6px -4px rgba(15, 23, 42, 0.06);
+  overflow: hidden;
+}
+
+/* Header */
+.page-asignar-bonificaciones .et-card__header {
+  padding: 20px 24px 8px 24px;
+}
+.page-asignar-bonificaciones .et-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.page-asignar-bonificaciones .et-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  background: #2563eb; /* blue-600 */
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+.page-asignar-bonificaciones .et-card__header h1 {
+  font-size: 1.12rem;
+  margin: 0;
+  color: #0f172a;
+}
+.page-asignar-bonificaciones .et-subtitle {
+  margin: 6px 0 0 28px;
+  font-size: 0.93rem;
+  color: #64748b; /* slate-500 */
+}
+
+/* Grid de 2 columnas (form a la izquierda, panel a la derecha) */
+.page-asignar-bonificaciones .et-grid {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 20px;
+  padding: 16px 24px 8px 24px;
+}
+@media (max-width: 900px) {
+  .page-asignar-bonificaciones .et-grid { grid-template-columns: 1fr; }
+}
+
+/* Formulario */
+.page-asignar-bonificaciones .et-form { background: #fff; }
+.page-asignar-bonificaciones .et-field { margin-bottom: 14px; }
+.page-asignar-bonificaciones .et-field label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+.page-asignar-bonificaciones .et-field input,
+.page-asignar-bonificaciones .et-field select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #cbd5e1; /* slate-300 */
+  border-radius: 10px;
+  background: #fff;
+  color: #0f172a;
+  outline: none;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.page-asignar-bonificaciones .et-field input::placeholder {
+  color: #94a3b8; /* slate-400 */
+}
+.page-asignar-bonificaciones .et-field input:focus,
+.page-asignar-bonificaciones .et-field select:focus {
+  border-color: #93c5fd; /* blue-300 */
+  box-shadow: 0 0 0 4px rgba(147, 197, 253, 0.35);
+}
+
+/* Botones */
+.page-asignar-bonificaciones .et-actions { margin-top: 10px; }
+.page-asignar-bonificaciones .et-btn {
+  display: inline-block;
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #1e40af; /* blue-800 */
+  color: #fff;
+  font-weight: 600;
+  transition: filter 0.15s ease, transform 0.02s ease;
+}
+.page-asignar-bonificaciones .et-btn:hover { filter: brightness(1.05); }
+.page-asignar-bonificaciones .et-btn:active { transform: translateY(1px); }
+
+/* Panel derecho (propietario + tabla asignadas) reutiliza .et-card */
+.page-asignar-bonificaciones .et-tarifas .et-card {
+  border: 1px dashed #e2e8f0;
+  padding: 12px;
+}
+
+/* Tabla asignadas */
+.page-asignar-bonificaciones .et-table {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+.page-asignar-bonificaciones .et-table__head {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  padding: 10px 14px;
+  background: #f8fafc;
+  color: #0f172a;
+  font-weight: 700;
+  border-bottom: 1px solid #e2e8f0;
+}
+.page-asignar-bonificaciones .et-table__body .et-table__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  padding: 10px 14px;
+  border-top: 1px solid #f1f5f9; /* slate-100 */
+  color: #0f172a;
+}
+.page-asignar-bonificaciones .et-empty {
+  color: #64748b;
+  padding: 12px;
+}
+
+/* Footer dentro de la card */
+.page-asignar-bonificaciones .et-footer {
+  margin: 10px 24px 18px 24px;
+  padding-top: 10px;
+  border-top: 1px dashed #e2e8f0;
+  color: #64748b;
+  font-size: 0.86rem;
+  text-align: left;
+}
+
+/* Ajuste fino como el mock */
+@media (min-width: 901px) {
+  .page-asignar-bonificaciones .et-card__header { padding-bottom: 6px; }
+  .page-asignar-bonificaciones .et-grid { padding-top: 8px; }
+}

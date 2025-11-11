@@ -12,8 +12,5 @@ public class GlobalExceptionHandler {
      public ResponseEntity<String> manejarException(PeajeException ex) {
         return ResponseEntity.status(errorCodeStatus).body(ex.getMessage());
      }
- 
-   
- 
 }
  

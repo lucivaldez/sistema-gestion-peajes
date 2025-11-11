@@ -1,8 +1,8 @@
 package uy.edu.ort.peaje.servicios.fachada;
 
+import java.util.Date;
 import java.util.List;
 
-import uy.edu.ort.peaje.dtos.EmularTransitoDto;
 import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
 import uy.edu.ort.peaje.modelo.Bonificacion;
@@ -86,23 +86,24 @@ public class Fachada {
         return sUsuarios.buscarVehiculoPorMatricula(matricula);
     }
 
- 
-    
-}
-
-    
-
-    public void agregarTipoBonificacion(Bonificacion bonificacion) {
-        sTransito.agregarTipoBonificacion(bonificacion);
+    public void agregarVehiculo(Vehiculo vehiculo){
+        sTransito.agregarVehiculo(vehiculo);
     }
 
     public void asignarBonificacion(Propietario propietario, Bonificacion bonificacion, Puesto puesto) {
-        sTransito.asignarBonificacion(propietario, bonificacion, puesto);
+          sTransito.asignarBonificacion(propietario, bonificacion, puesto);
     }
 
-    // public EmularTransitoDto emularTransito(String nombrePuesto, String matricula, String fecha) throws PeajeException {
-    //     return sTransito.emularTransito(nombrePuesto, matricula, fecha);
-    // }
+    public Transito emularTransito(Vehiculo vehiculo, Puesto puesto, Date fechaHora) throws PeajeException {
+        return sTransito.emularTransito(vehiculo, puesto, fechaHora);
+    }
+
+    public Propietario buscarPropietarioPorCedula(String cedula) throws PeajeException {
+    return sUsuarios.buscarPropietarioPorCedula(cedula);
+    }  
+}
+
+
 
 
     

@@ -35,10 +35,8 @@ public class Respuesta {
          List<Respuesta> retorno = new ArrayList();
          for(Respuesta r:respuestas){
              retorno.add(r);
-         }
+        }
          return retorno;
-    }
-    
-    
+    }   
 }
 

@@ -1,9 +1,7 @@
 package uy.edu.ort.peaje.servicios;
 
-import java.util.Date;
 
 import uy.edu.ort.peaje.modelo.Administrador;
-import uy.edu.ort.peaje.modelo.AsignacionBonificacion;
 import uy.edu.ort.peaje.modelo.Bonificacion;
 import uy.edu.ort.peaje.modelo.CategoriaVehiculo;
 import uy.edu.ort.peaje.modelo.Exonerado;
@@ -88,26 +86,16 @@ public class DatosPrueba {
         Fachada.getInstancia().agregarTarifa(tarifa12);
 
         Vehiculo v1 = new Vehiculo("ABC123", "Toyota Corolla", "Rojo", cat1, prop1);
-        fachada.agregarVehiculo(v1);
+        Fachada.getInstancia().agregarVehiculo(v1);
 
         Bonificacion exonerado = new Exonerado("Exonerado");
         Bonificacion frecuente = new Frecuente("Frecuente");
         Bonificacion trabajador = new Trabajador("Trabajador");
 
-        Fachada.getInstancia().agregarTipoBonificacion(exonerado);
-        Fachada.getInstancia().agregarTipoBonificacion(frecuente);
-        Fachada.getInstancia().agregarTipoBonificacion(trabajador);
-
         Fachada.getInstancia().asignarBonificacion(prop1, exonerado, puesto1);
         Fachada.getInstancia().asignarBonificacion(prop1, frecuente, puesto2);
         Fachada.getInstancia().asignarBonificacion(prop2, trabajador, puesto1);
-    
-    
-    
-    }
-
-    //
-    
+    }   
 }
 
 

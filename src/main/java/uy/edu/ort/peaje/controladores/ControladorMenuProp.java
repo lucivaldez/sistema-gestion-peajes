@@ -19,7 +19,6 @@ public class ControladorMenuProp {
              // Manejar el caso en que el usuario no está en la sesión pide redireccionar a la página de login
              return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "loginPropietario.html"));
          }
-         return Respuesta.lista(new Respuesta("nombreCompleto", usuario.getNombreCompleto()));
-        
+         return Respuesta.lista(new Respuesta("nombreCompleto", usuario.getNombreCompleto()));    
     }
 }

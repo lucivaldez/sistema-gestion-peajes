@@ -1,6 +1,7 @@
 package uy.edu.ort.peaje.modelo;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Puesto {
     private int id;
@@ -12,6 +13,8 @@ public class Puesto {
     public Puesto( String nombre, String direccion) {
         this.nombre = nombre;
         this.direccion = direccion;
+        this.tarifas = new ArrayList<>();
+        this.asignacionBonificacions = new ArrayList<>();
     }
 
     public int getId() {
@@ -54,6 +57,31 @@ public class Puesto {
         return null;
     }
 
-    
+    public void addTarifa(Tarifa t) {
+        if (t == null) return;
+        if (tarifas == null) tarifas = new ArrayList<>();
 
+        // Regla común: una tarifa por categoría -> reemplaza si ya existe
+        for (int i = 0; i < tarifas.size(); i++) {
+            Tarifa existente = tarifas.get(i);
+            if (existente.getCategoriaVehiculo().equals(t.getCategoriaVehiculo())) {
+                tarifas.set(i, t);
+                return;
+            }
+        }
+        tarifas.add(t);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Puesto)) return false;
+        Puesto other = (Puesto) o;
+        return this.id == other.id; // igualdad solo por id
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id); // hash solo por id
+    }
 }

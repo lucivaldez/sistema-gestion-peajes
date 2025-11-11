@@ -53,6 +53,4 @@ public class ControladorIngreso {
         }
         return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "index.html"));
     }
-
-
 }
