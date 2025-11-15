@@ -1,9 +1,14 @@
 package uy.edu.ort.peaje.servicios;
 
-
+import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
 import uy.edu.ort.peaje.modelo.Bonificacion;
 import uy.edu.ort.peaje.modelo.CategoriaVehiculo;
+import uy.edu.ort.peaje.modelo.EstadoPropietario;
+import uy.edu.ort.peaje.modelo.EstadoPropietarioDeshabilitado;
+import uy.edu.ort.peaje.modelo.EstadoPropietarioHabilitado;
+import uy.edu.ort.peaje.modelo.EstadoPropietarioPenalizado;
+import uy.edu.ort.peaje.modelo.EstadoPropietarioSuspendido;
 import uy.edu.ort.peaje.modelo.Exonerado;
 import uy.edu.ort.peaje.modelo.Frecuente;
 import uy.edu.ort.peaje.modelo.Propietario;
@@ -14,7 +19,7 @@ import uy.edu.ort.peaje.modelo.Vehiculo;
 import uy.edu.ort.peaje.servicios.fachada.Fachada;
 
 public class DatosPrueba {
-    public static void cargar(){
+    public static void cargar() throws PeajeException{  //preguntar si se puede
         Fachada fachada = Fachada.getInstancia();
 
         Puesto puesto1 = new Puesto("Peaje Canelones", "Av. Principal 1234");
@@ -92,10 +97,31 @@ public class DatosPrueba {
         Bonificacion frecuente = new Frecuente("Frecuente");
         Bonificacion trabajador = new Trabajador("Trabajador");
 
-        Fachada.getInstancia().asignarBonificacion(prop1, exonerado, puesto1);
-        Fachada.getInstancia().asignarBonificacion(prop1, frecuente, puesto2);
-        Fachada.getInstancia().asignarBonificacion(prop2, trabajador, puesto1);
+        // Agregar tipos de bonificaciones
+        Fachada.getInstancia().agregarTipoBonificacion("Exonerado");
+        Fachada.getInstancia().agregarTipoBonificacion("Frecuente");
+        Fachada.getInstancia().agregarTipoBonificacion("Trabajador");
+       
+        //Asignar bonificaciones a propietarios en puestos
+        Fachada.getInstancia().asignarBonificacion(prop1, "Exonerado", puesto1);
+        Fachada.getInstancia().asignarBonificacion(prop1, "Frecuente", puesto2);
+        Fachada.getInstancia().asignarBonificacion(prop2, "Trabajador", puesto1);
+
+        //estados
+        EstadoPropietario estadoHabilitado = new EstadoPropietarioHabilitado();
+        EstadoPropietario estadoDeshabilitado = new EstadoPropietarioDeshabilitado();
+        EstadoPropietario estadoSuspendido = new EstadoPropietarioSuspendido();
+        EstadoPropietario estadoPenalizado = new EstadoPropietarioPenalizado();
+
+        Fachada.getInstancia().agregarEstadoPropietario(estadoHabilitado);
+        Fachada.getInstancia().agregarEstadoPropietario(estadoDeshabilitado);
+        Fachada.getInstancia().agregarEstadoPropietario(estadoSuspendido);
+        Fachada.getInstancia().agregarEstadoPropietario(estadoPenalizado);
+
+
+
     }   
+
 }
 
 

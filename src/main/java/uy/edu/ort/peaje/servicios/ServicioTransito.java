@@ -8,12 +8,15 @@ import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.AsignacionBonificacion;
 import uy.edu.ort.peaje.modelo.Bonificacion;
 import uy.edu.ort.peaje.modelo.CategoriaVehiculo;
+import uy.edu.ort.peaje.modelo.FabricaBonificaciones;
 import uy.edu.ort.peaje.modelo.Notificacion;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Puesto;
 import uy.edu.ort.peaje.modelo.Tarifa;
+import uy.edu.ort.peaje.modelo.TipoBonificacion;
 import uy.edu.ort.peaje.modelo.Transito;
 import uy.edu.ort.peaje.modelo.Vehiculo;
+import uy.edu.ort.peaje.servicios.fachada.Fachada;
 
 
 
@@ -25,6 +28,15 @@ public class ServicioTransito {
     private ArrayList<CategoriaVehiculo> categorias = new ArrayList<CategoriaVehiculo> ();
     private ArrayList<Tarifa> tarifas = new ArrayList<Tarifa> ();
     private ArrayList<Transito> listaTransitos = new ArrayList<Transito> ();
+    private ArrayList<TipoBonificacion> tiposBonificacion = new ArrayList<>();
+    
+    public void agregarTipoBonificacion(String nombre) {
+        tiposBonificacion.add(new TipoBonificacion(nombre));
+    }
+
+    public ArrayList<TipoBonificacion> getTiposBonificacion() {
+        return tiposBonificacion;
+    }
         
     public void agregarPuesto(Puesto puesto){
         puestos.add(puesto);
@@ -67,14 +79,35 @@ public class ServicioTransito {
     public ArrayList<Vehiculo> getVehiculos(){
         return vehiculos;
     }
-  
-    public void asignarBonificacion(Propietario propietario, Bonificacion bonificacion, Puesto puesto) {
-        if (propietario == null || bonificacion == null || puesto == null) return;
-        AsignacionBonificacion ab = new AsignacionBonificacion(new Date(), bonificacion, propietario, puesto);
-        // Si tu Propietario usa otro nombre, ajustá aquí:
+
+
+    public void asignarBonificacion(Propietario propietario, String tipoBonificacion, Puesto puesto) throws PeajeException {
+        if (propietario == null) {
+            throw new PeajeException("Propietario inválido");
+        }
+        if (puesto == null) {
+            throw new PeajeException("Puesto inválido");
+        }
+        if (tipoBonificacion == null || tipoBonificacion.isBlank()) {
+            throw new PeajeException("Debe especificar una bonificación");
+        }
+
+        if (propietario.tieneBonificacionDeTipoEnPuesto(propietario, tipoBonificacion, puesto)) {
+            throw new PeajeException("Ya tiene una bonificación de ese tipo para el puesto seleccionado");
+        }
+
+        Bonificacion bonificacion = FabricaBonificaciones.crearBonificacion(tipoBonificacion);
+
+        AsignacionBonificacion ab = new AsignacionBonificacion(
+            new Date(),
+            bonificacion,
+            propietario,
+            puesto
+        );
+
         propietario.asignarBonificacion(ab);
     }
-
+    
     public double calcularMontoFinal(Transito transito) {
         double montoBase = transito.getTarifa().getMonto();
         double montoFinal = montoBase;
@@ -128,4 +161,39 @@ public class ServicioTransito {
         listaTransitos.add(transito);
         return transito;
     }
+
+    public Puesto buscarPuestoPorNombre(String nombre) {
+        if (nombre == null) return null;
+        for (Puesto p : puestos) {
+            if (p != null && p.getNombre() != null && p.getNombre().equalsIgnoreCase(nombre)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public List<Tarifa> getTarifasPorPuesto(String nombrePuesto) {
+        Puesto p = buscarPuestoPorNombre(nombrePuesto);
+        if (p == null) return new ArrayList<>();
+        
+        List<Tarifa> list = new ArrayList<>();
+        for (Tarifa t : tarifas) {
+            if (t != null && t.getPuesto() != null
+                    && t.getPuesto().getNombre().equalsIgnoreCase(nombrePuesto)) {
+                list.add(t);
+            }
+        }
+        return list;
+    }
+
+    public Puesto encontrarPuestoPorNombre(String nombrePuesto) {
+        for (Puesto p : Fachada.getInstancia().getPuestos()) {
+            if (p.getNombre() != null && p.getNombre().equalsIgnoreCase(nombrePuesto)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    
 }

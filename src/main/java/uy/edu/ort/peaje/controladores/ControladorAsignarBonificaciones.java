@@ -13,15 +13,13 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import uy.edu.ort.peaje.dtos.BonificacionAsignadaDto;
 import uy.edu.ort.peaje.dtos.PropietarioDto;
+import uy.edu.ort.peaje.dtos.TipoBonificacionDto;
 import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
 import uy.edu.ort.peaje.modelo.AsignacionBonificacion;
-import uy.edu.ort.peaje.modelo.Bonificacion;
-import uy.edu.ort.peaje.modelo.Exonerado;
-import uy.edu.ort.peaje.modelo.Frecuente;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Puesto;
-import uy.edu.ort.peaje.modelo.Trabajador;
+import uy.edu.ort.peaje.modelo.TipoBonificacion;
 import uy.edu.ort.peaje.servicios.fachada.Fachada;
 import uy.edu.ort.peaje.utils.Respuesta;
 
@@ -30,11 +28,13 @@ import uy.edu.ort.peaje.utils.Respuesta;
 @Scope("session")
 public class ControladorAsignarBonificaciones {
 
+    private List<TipoBonificacion> tiposBonificacion;
+
     @GetMapping("/vistaConectada")
     public List<Respuesta> inicializarVista(@SessionAttribute(name = "usuarioAdmin", required = false) Administrador admin){
         if (admin == null) {
-            return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "index.html"));
-        }
+             return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "index.html"));
+     }
         return Respuesta.lista(
             listarBonificacionesDefinidas(),   
             listarPuestos()                    
@@ -51,7 +51,7 @@ public class ControladorAsignarBonificaciones {
         try {
             Propietario p = Fachada.getInstancia().buscarPropietarioPorCedula(cedula);
             if (p == null) {
-                return Respuesta.lista(new Respuesta("error", "no existe el propietario"));
+                return Respuesta.lista(new Respuesta("error", "No existe el propietario"));
             }
             return Respuesta.lista(
                 propietarioDto(p),
@@ -81,21 +81,17 @@ public class ControladorAsignarBonificaciones {
 
         try {
             Propietario p = Fachada.getInstancia().buscarPropietarioPorCedula(cedula);
-            if (p == null) return Respuesta.lista(new Respuesta("error", "no existe el propietario"));
-
-            Puesto puesto = encontrarPuestoPorNombre(nombrePuesto);
-            if (puesto == null) return Respuesta.lista(new Respuesta("error", "El puesto no existe"));
-
-            // Evitar duplicado por tipo y puesto
-            Bonificacion nueva = crearBonificacion(tipoBonificacion);
-            for (AsignacionBonificacion ab : p.bonificacionesPara(puesto)) {
-                if (ab.getBonificacion().getClass().equals(nueva.getClass())) {
-                    return Respuesta.lista(new Respuesta("error",
-                        "Ya tiene una bonificación de ese tipo para el puesto seleccionado"));
-                }
+            if (p == null) {
+                return Respuesta.lista(new Respuesta("error", "No existe el propietario"));
             }
 
-            Fachada.getInstancia().asignarBonificacion(p, nueva, puesto);
+            Puesto puesto = Fachada.getInstancia().buscarPuestoPorNombre(nombrePuesto);
+            if (puesto == null) {
+                return Respuesta.lista(new Respuesta("error", "El puesto no existe"));
+            }
+
+            // TODA la lógica de negocio está en servicios/dominio
+            Fachada.getInstancia().asignarBonificacion(p, tipoBonificacion, puesto);
 
             return Respuesta.lista(
                 new Respuesta("mensaje", "Bonificación asignada correctamente"),
@@ -106,8 +102,6 @@ public class ControladorAsignarBonificaciones {
 
         } catch (PeajeException e) {
             return Respuesta.lista(new Respuesta("error", e.getMessage()));
-        } catch (IllegalArgumentException iae) {
-            return Respuesta.lista(new Respuesta("error", "Tipo de bonificación inválido"));
         } catch (Exception e) {
             return Respuesta.lista(new Respuesta("error", "Error inesperado al asignar"));
         }
@@ -128,12 +122,14 @@ public class ControladorAsignarBonificaciones {
     }
 
     private Respuesta listarBonificacionesDefinidas() {
-        // Como no hay catálogo, devolvemos los nombres fijos 
-        List<String> tipos = new ArrayList<>();
-        tipos.add("Exonerado");
-        tipos.add("Frecuente");
-        tipos.add("Trabajador");
-        return new Respuesta("bonificacionesDefinidas", tipos);
+        tiposBonificacion = new ArrayList<>(Fachada.getInstancia().getTiposBonificacion());
+
+        List<TipoBonificacionDto> dtos = new ArrayList<>();
+        for (TipoBonificacion tb : tiposBonificacion) {
+            dtos.add(new TipoBonificacionDto(tb));
+        }
+
+        return new Respuesta("bonificacionesDefinidas", dtos);
     }
 
     private Respuesta listarPuestos() {
@@ -145,21 +141,7 @@ public class ControladorAsignarBonificaciones {
         }
         return new Respuesta("puestos", nombres);
     }
+}
 
-    private Puesto encontrarPuestoPorNombre(String nombrePuesto) {
-        for (Puesto p : Fachada.getInstancia().getPuestos()) {
-            if (p.getNombre() != null && p.getNombre().equalsIgnoreCase(nombrePuesto)) {
-                return p;
-            }
-        }
-        return null;
-    }
-
-    private Bonificacion crearBonificacion(String tipo) {
-        if ("Exonerado".equalsIgnoreCase(tipo))  return new Exonerado("Exonerado");
-        if ("Frecuente".equalsIgnoreCase(tipo))  return new Frecuente("Frecuente");
-        if ("Trabajador".equalsIgnoreCase(tipo)) return new Trabajador("Trabajador");
-        throw new IllegalArgumentException("Tipo de bonificación inválido: " + tipo);
-        }
-    }
+    
 

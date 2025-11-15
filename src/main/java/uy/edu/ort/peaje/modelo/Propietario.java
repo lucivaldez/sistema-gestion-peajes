@@ -9,7 +9,7 @@ public class Propietario extends Usuario
 {
     private int saldoActual;
     private int saldoMinimo;
-    //private EstadoPropietario estado;
+    private EstadoPropietario estadoPropietario;
     private ArrayList<AsignacionBonificacion> bonificacionesAsignadas;
     private ArrayList<Vehiculo> vehiculos; 
     private ArrayList<Notificacion> notificaciones;
@@ -21,19 +21,18 @@ public class Propietario extends Usuario
         this.bonificacionesAsignadas = new ArrayList<AsignacionBonificacion>();
         this.vehiculos = new ArrayList<Vehiculo>();
         this.notificaciones = new ArrayList<Notificacion>();
-
-         //this.estado = EstadoPropietario.HABILITADO;
+        estadoPropietario = new EstadoPropietarioHabilitado(); 
   
      }
 
      //PARA EMULAR TRANSITO
      public Vehiculo buscarVehiculoPorMatricula(String matricula) {
-         for (Vehiculo v : vehiculos) {
-             if (v.getMatricula().equalsIgnoreCase(matricula)) {
-                 return v;
-             }
-         }
-         return null;
+        for (Vehiculo v : vehiculos) {
+            if (v.getMatricula().equalsIgnoreCase(matricula)) {
+                return v;
+            }
+        }
+        return null;
      }
 
      public int getSaldoActual() {
@@ -52,13 +51,13 @@ public class Propietario extends Usuario
          this.saldoMinimo = saldoMinimo;
      }
 
-    //  public EstadoPropietario getEstado() {
-    //      return estado;
-    //  }
+     public EstadoPropietario getEstadoPropietario() {
+         return estadoPropietario;
+     }
 
-    //  public void setEstado(EstadoPropietario estado) {
-    //      this.estado = estado;
-    //  }
+     public void setEstadoPropietario(EstadoPropietario nuevoEstado) {
+         this.estadoPropietario = nuevoEstado;
+     }
 
     public ArrayList<AsignacionBonificacion> getAsignacionBonificacion() {
         return bonificacionesAsignadas;
@@ -79,6 +78,20 @@ public class Propietario extends Usuario
      public void setNotificaciones(ArrayList<Notificacion> notificaciones) {
          this.notificaciones = notificaciones;
      }
+
+
+    
+    public boolean tieneBonificacionDeTipoEnPuesto(Propietario p, String tipoBonificacion, Puesto puesto) {
+        if (p == null || puesto == null || tipoBonificacion == null) return false;
+
+        for (AsignacionBonificacion ab : p.bonificacionesPara(puesto)) {
+            String nombreExistente = ab.getBonificacion().getnombre(); 
+            if (nombreExistente != null && nombreExistente.equalsIgnoreCase(tipoBonificacion)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void validarSaldoSuficiente(double monto) throws PeajeException {
         if (getSaldoActual() < monto)
@@ -121,4 +134,9 @@ public class Propietario extends Usuario
         }
         throw new PeajeException("No se encontró un vehículo con la matrícula: " + matricula);
     }
+
+    
+
+
+
 }

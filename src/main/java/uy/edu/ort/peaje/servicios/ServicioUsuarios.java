@@ -5,6 +5,7 @@ import java.util.List;
 
 import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
+import uy.edu.ort.peaje.modelo.EstadoPropietario;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Sesion;
 import uy.edu.ort.peaje.modelo.Usuario;
@@ -15,13 +16,23 @@ public class ServicioUsuarios {
     private ArrayList<Propietario> propietarios;
     private ArrayList<Administrador> administradores;
     private ArrayList<Sesion> sesiones;
-
+    private ArrayList<EstadoPropietario> estadosPropietarios;
     
     public ServicioUsuarios() {
         this.propietarios = new ArrayList<>();
         this.administradores = new ArrayList<>();
         this.sesiones = new ArrayList<>();
+        this.estadosPropietarios = new ArrayList<>();
+        
     }
+    public void agregarEstadoPropietario(EstadoPropietario ep){
+        estadosPropietarios.add(ep);
+    }
+
+    public ArrayList<EstadoPropietario> getEstadosPropietario() {
+        return estadosPropietarios;
+    }
+        
     public void agregar(Propietario propietario) {
         propietarios.add(propietario);
        
@@ -85,4 +96,14 @@ public class ServicioUsuarios {
         }
         return null;
     }
+
+    public EstadoPropietario obtenerEstadoPorNombre(String nombre) {
+        for (EstadoPropietario e : estadosPropietarios) {
+            if (e.getNombre().equalsIgnoreCase(nombre)) {
+                return e;
+            }
+        }
+        return null;
+    }
+
 }
