@@ -1,5 +1,6 @@
 package uy.edu.ort.peaje.servicios.fachada;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -7,10 +8,12 @@ import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
 import uy.edu.ort.peaje.modelo.Bonificacion;
 import uy.edu.ort.peaje.modelo.CategoriaVehiculo;
+import uy.edu.ort.peaje.modelo.EstadoPropietario;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Puesto;
 import uy.edu.ort.peaje.modelo.Sesion;
 import uy.edu.ort.peaje.modelo.Tarifa;
+import uy.edu.ort.peaje.modelo.TipoBonificacion;
 import uy.edu.ort.peaje.modelo.Transito;
 import uy.edu.ort.peaje.modelo.Vehiculo;
 import uy.edu.ort.peaje.servicios.ServicioUsuarios;
@@ -62,6 +65,14 @@ public class Fachada {
         return sTransito.getPuestos();
     }
 
+    public void agregarEstadoPropietario(EstadoPropietario ep) {
+        sUsuarios.agregarEstadoPropietario(ep);
+    }
+
+    public ArrayList<EstadoPropietario> getEstadoPropietario() {
+        return sUsuarios.getEstadosPropietario();
+    }  
+
     public void agregarCategoriaVehiculo(CategoriaVehiculo categoria) {
         sTransito.agregarCategoriaVehiculo(categoria);  
     }  
@@ -90,17 +101,41 @@ public class Fachada {
         sTransito.agregarVehiculo(vehiculo);
     }
 
-    public void asignarBonificacion(Propietario propietario, Bonificacion bonificacion, Puesto puesto) {
-          sTransito.asignarBonificacion(propietario, bonificacion, puesto);
+    public void asignarBonificacion(Propietario propietario, String nombreBonificacion, Puesto puesto) throws PeajeException {
+        sTransito.asignarBonificacion(propietario, nombreBonificacion, puesto);
     }
 
     public Transito emularTransito(Vehiculo vehiculo, Puesto puesto, Date fechaHora) throws PeajeException {
         return sTransito.emularTransito(vehiculo, puesto, fechaHora);
     }
+    public Puesto buscarPuestoPorNombre(String nombre) {
+        return sTransito.buscarPuestoPorNombre(nombre);
+    }
+    public List<Tarifa> getTarifasPorPuesto(String nombrePuesto) {
+        return sTransito.getTarifasPorPuesto(nombrePuesto);
+    }
+
 
     public Propietario buscarPropietarioPorCedula(String cedula) throws PeajeException {
-    return sUsuarios.buscarPropietarioPorCedula(cedula);
+        return sUsuarios.buscarPropietarioPorCedula(cedula);
     }  
+    
+    public void agregarTipoBonificacion(String nombre) {
+        sTransito.agregarTipoBonificacion(nombre);
+    }
+
+    public ArrayList<TipoBonificacion> getTiposBonificacion() {
+        return sTransito.getTiposBonificacion();
+    }
+
+    public EstadoPropietario obtenerEstadoPorNombre(String nombre) {
+        return sUsuarios.obtenerEstadoPorNombre(nombre);
+    }
+
+    
+
+
+    
 }
 
 
