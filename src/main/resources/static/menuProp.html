@@ -6,6 +6,7 @@
     <title>Agenda - Principal</title>
     <link rel="stylesheet" href="peaje.css" />
     <script src="vistaWeb.js"></script>
+    <script src="sse.js"></script>
   </head>
   <body>
     <div class="sidebar">
@@ -21,6 +22,7 @@
     </div>
     <script>
       urlIniciarVista = "/menuProp/vistaConectada";
+      urlRegistroSSE = "/menuProp/registrarSSE";
 
       const spnNombreCompleto = document.getElementById("nombreCompleto");
 
@@ -39,6 +41,30 @@
       function mostrar_nombreCompleto(nombreCompleto) {
         spnNombreCompleto.innerHTML =
           "USUARIO DE " + nombreCompleto.toUpperCase();
+      }
+
+      //Procesa los mensajes recibidos por SSE
+      function procesarMensajeSSE(mensaje) {
+        var iframe = document.getElementById("contenidoFrame");
+        var iframeWindow = iframe.contentWindow;
+        iframeWindow.procesarResultadosSubmit(mensaje); //asumo que el iFrame tiene vistaWeb.js incluida
+      }
+      //Se ejecuta cuando se cierra la conexion desde el servidor
+      //Si no se define esta funcion, por defecto se "borra" la pagina
+      function conexionSSECerrada(event) {
+        cerrar();
+      }
+      async function cerrar() {
+        let respuesta = await mostrarConfirmacion(
+          "Se ha cerrado la aplicacion en esta ventana",
+          "Intenar volver a abrirla",
+          "Cerrar"
+        );
+        if (respuesta) {
+          location.reload();
+        } else {
+          document.body.innerHTML = "";
+        }
       }
     </script>
   </body>

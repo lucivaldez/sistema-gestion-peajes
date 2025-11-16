@@ -36,14 +36,15 @@ public class ControladorIngreso {
         }
         return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "index.html"));
     }
-
-     @PostMapping("/loginAdmin")
+    
+    @PostMapping("/loginAdmin")
     public List<Respuesta> loginAdmin(HttpSession sesionHttp, @RequestParam String cedula, @RequestParam String password) throws PeajeException {
 
-        Administrador usuarioAdmin  = Fachada.getInstancia().loginAdmin(cedula, password);
-        sesionHttp.setAttribute("usuarioAdmin",usuarioAdmin);
-        return Respuesta.lista(new Respuesta("loginExitoso", "menuAdmin.html"));//hay que cambiarlo de acuerdo a donde tenga que ir
+        Sesion sesion   = Fachada.getInstancia().loginAdmin(cedula, password);
+        sesionHttp.setAttribute("usuarioAdmin", sesion.getUsuario());
+        return Respuesta.lista(new Respuesta("loginExitoso", "menuAdmin.html"));
     }
+
     @PostMapping("/logoutAdmin")
     public List<Respuesta> logoutAdmin(HttpSession sesionHttp) {
         Administrador usuario = (Administrador) sesionHttp.getAttribute("usuarioAdmin");

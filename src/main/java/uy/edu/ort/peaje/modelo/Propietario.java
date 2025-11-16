@@ -22,10 +22,8 @@ public class Propietario extends Usuario
         this.vehiculos = new ArrayList<Vehiculo>();
         this.notificaciones = new ArrayList<Notificacion>();
         estadoPropietario = new EstadoPropietarioHabilitado(); 
-  
-     }
+    }
 
-     //PARA EMULAR TRANSITO
      public Vehiculo buscarVehiculoPorMatricula(String matricula) {
         for (Vehiculo v : vehiculos) {
             if (v.getMatricula().equalsIgnoreCase(matricula)) {
@@ -62,6 +60,7 @@ public class Propietario extends Usuario
     public ArrayList<AsignacionBonificacion> getAsignacionBonificacion() {
         return bonificacionesAsignadas;
     }
+    
 
      public ArrayList<Vehiculo> getVehiculos() {
          return vehiculos;
@@ -134,6 +133,26 @@ public class Propietario extends Usuario
         }
         throw new PeajeException("No se encontró un vehículo con la matrícula: " + matricula);
     }
+
+    public void agregarNotificacion(Notificacion n) {
+        if (n == null) return;
+        if (notificaciones == null) {
+            notificaciones = new ArrayList<>();
+        }
+        notificaciones.add(n);
+    }
+
+    public void registrarNotificacion(Notificacion n) {
+        if (this.estadoPropietario.puedeSerNotificado()) {
+            this.agregarNotificacion(n);
+        }
+    }
+
+    public boolean tieneNotificaciones() {
+        return notificaciones != null && !notificaciones.isEmpty();
+    }
+
+
 
     
 

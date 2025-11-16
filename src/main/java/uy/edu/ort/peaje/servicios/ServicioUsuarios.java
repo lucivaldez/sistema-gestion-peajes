@@ -10,6 +10,7 @@ import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Sesion;
 import uy.edu.ort.peaje.modelo.Usuario;
 import uy.edu.ort.peaje.modelo.Vehiculo;
+import uy.edu.ort.peaje.servicios.fachada.Fachada;
 
 public class ServicioUsuarios {
     //experto en gestionar los usuarios
@@ -53,11 +54,14 @@ public class ServicioUsuarios {
         return null;
     }
 
-    public Administrador loginAdmin(String cedula, String password) throws PeajeException{
-        
+    public Sesion loginAdmin(String cedula, String password) throws PeajeException{
+        Sesion sesion = null;
         Administrador usuario = (Administrador) login(cedula, password, administradores);
         if(usuario!=null){
-            return usuario;
+            sesion = new Sesion(usuario);
+            sesiones.add(sesion);
+            Fachada.getInstancia().avisar(Fachada.Eventos.nuevoUsuarioConectado);
+            return sesion;
         }        
         throw new PeajeException("Usuario y/o contraseña incorrectos");
     }
@@ -75,6 +79,11 @@ public class ServicioUsuarios {
 
     public List<Sesion> getSesiones() {
         return sesiones;
+    }
+    public void logout(Sesion s){
+        sesiones.remove(s);
+        Fachada.getInstancia().avisar(Fachada.Eventos.usuarioDesconectado);
+       
     }
 
     public Vehiculo buscarVehiculoPorMatricula(String matricula) throws PeajeException {

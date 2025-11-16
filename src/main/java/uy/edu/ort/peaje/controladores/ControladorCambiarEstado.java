@@ -17,13 +17,16 @@ import uy.edu.ort.peaje.modelo.Administrador;
 import uy.edu.ort.peaje.modelo.EstadoPropietario;
 import uy.edu.ort.peaje.modelo.Notificacion;
 import uy.edu.ort.peaje.modelo.Propietario;
+import uy.edu.ort.peaje.observador.Observador;
 import uy.edu.ort.peaje.servicios.fachada.Fachada;
 import uy.edu.ort.peaje.utils.Respuesta;
+import uy.edu.ort.peaje.observador.Observable;
+import uy.edu.ort.peaje.observador.Observador;
 
 @RestController
 @RequestMapping("/cambiarEstado")
 @Scope("session")
-public class ControladorCambiarEstado {
+public class ControladorCambiarEstado implements Observador{
 
     private Propietario propietario;
     private List<EstadoPropietario> estadosAsignar;
@@ -87,19 +90,26 @@ public class ControladorCambiarEstado {
         // Cambiar estado
         this.propietario.setEstadoPropietario(estadoNuevo);
 
-    // Registrar notificación SIEMPRE (como dice la letra)
-    // this.propietario.agregarNotificacion(
-    //     new Notificacion("Se ha cambiado tu estado en el sistema. Tu estado actual es " 
-    //     + estadoNuevo.getNombre())
-    // );
+        //disparar evento
+        Fachada.getInstancia().avisar(Fachada.Eventos.cambioEstadoPropietario);
 
-    // Respuesta a la vista
+        // Respuesta a la vista
         return Respuesta.lista(
             new Respuesta("estadoActual", estadoNuevo.getNombre()),
             new Respuesta("mensaje", "Estado cambiado correctamente")
         );
     }
 
+    @Override
+    public void actualizar(Object evento, Observable origen) {
+        if (evento == Fachada.Eventos.cambioEstadoPropietario) {
+            manejarCambioEstado();
+        }  
+    }
+
+
+
+    
 
     
 }

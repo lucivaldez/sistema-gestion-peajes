@@ -6,7 +6,6 @@ import java.util.List;
 
 import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
-import uy.edu.ort.peaje.modelo.Bonificacion;
 import uy.edu.ort.peaje.modelo.CategoriaVehiculo;
 import uy.edu.ort.peaje.modelo.EstadoPropietario;
 import uy.edu.ort.peaje.modelo.Propietario;
@@ -16,26 +15,29 @@ import uy.edu.ort.peaje.modelo.Tarifa;
 import uy.edu.ort.peaje.modelo.TipoBonificacion;
 import uy.edu.ort.peaje.modelo.Transito;
 import uy.edu.ort.peaje.modelo.Vehiculo;
+import uy.edu.ort.peaje.observador.Observable;
+
 import uy.edu.ort.peaje.servicios.ServicioUsuarios;
 import uy.edu.ort.peaje.servicios.ServicioTransito;
 
+public class Fachada extends Observable{
 
-
-public class Fachada {
     private static Fachada instancia;
     private ServicioUsuarios sUsuarios;
     private ServicioTransito sTransito;
+
+    public enum Eventos {nuevoUsuarioConectado,usuarioDesconectado, cambioEstadoPropietario}
+    
+    private Fachada(){
+        sUsuarios = new ServicioUsuarios();
+        sTransito = new ServicioTransito();
+    }
     
     public static Fachada getInstancia(){
         if (instancia == null){
             instancia = new Fachada();
         }
         return instancia;
-    }
-
-    private Fachada(){
-        sUsuarios = new ServicioUsuarios();
-        sTransito = new ServicioTransito();
     }
 
     public void agregar(Propietario propietario) {
@@ -46,7 +48,7 @@ public class Fachada {
         sUsuarios.agregar(administrador);
     }
 
-    public Administrador loginAdmin(String cedula, String password) throws PeajeException {
+    public Sesion loginAdmin(String cedula, String password) throws PeajeException {
         return sUsuarios.loginAdmin(cedula, password);
     }
 
