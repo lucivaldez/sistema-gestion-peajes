@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
   //Quitar este metodo, ya no es necesario...revisar antes
   try {
     ejecutarCodigoDocumentReady();
-  } catch (e) {}
+  } catch (e) { }
 });
 
 // Ejecuta un endpoint usando fetch y envía datos en formato URL Encoded
@@ -65,7 +65,7 @@ function submit(endPointUrl, urlEncodedData, method = "POST") {
         isPrimerSubmitFinalizado = true;
         try {
           primerSubmitFinalizado();
-        } catch (e) {}
+        } catch (e) { }
       }
       //si se produce una Excepcion de aplicacion se asume que el servidor responde con status 299
       if (status === 299) {
@@ -130,9 +130,9 @@ function procesarResultadosSubmit(listaRespuestas) {
     } else {
       console.error(
         "No está definida la función " +
-          nombreFuncion +
-          " para procesar la respuesta " +
-          respuesta.id
+        nombreFuncion +
+        " para procesar la respuesta " +
+        respuesta.id
       );
     }
   });

@@ -5,11 +5,13 @@ body.page-cambiar-estado {
 
   min-height: 100vh;
 
-  background: #f8fafc; /* slate-50 */
+  background: #f8fafc;
+  /* slate-50 */
 
   font-family: Arial, sans-serif;
 
-  color: #0f172a; /* slate-900 */
+  color: #0f172a;
+  /* slate-900 */
 }
 
 .et-container {
@@ -183,7 +185,8 @@ body.page-cambiar-estado {
   background: #eef2ff;
   color: #3730a3;
   font-weight: 700;
-  font-size: 0.9rem; /* indigo */
+  font-size: 0.9rem;
+  /* indigo */
 
   border: 1px solid #c7d2fe;
 }
@@ -195,11 +198,13 @@ body.page-cambiar-estado {
   color: #64748b;
   font-size: 0.86rem;
 }
+
 .et-error {
   color: #d9534f;
   font-weight: bold;
   margin-top: 10px;
 }
+
 .et-msg-ok {
   color: #28a745;
   font-weight: bold;

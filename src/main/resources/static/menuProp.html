@@ -1,45 +1,48 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Agenda - Principal</title>
-    <link rel="stylesheet" href="peaje.css" />
-    <script src="vistaWeb.js"></script>
-  </head>
-  <body>
-    <div class="sidebar">
-      <label id="nombreCompleto"> </label>
-      <button onclick="cargarContenido('gestionContactos.html')">
-        Contactos
-      </button>
-      <button onclick="cargarContenido('busqueda.html')">Busqueda</button>
-      <button onclick="logout()">Salir</button>
-    </div>
-    <div class="content">
-      <iframe id="contenidoFrame" src="" frameborder="0"></iframe>
-    </div>
-    <script>
-      urlIniciarVista = "/menuProp/vistaConectada";
 
-      const spnNombreCompleto = document.getElementById("nombreCompleto");
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agenda - Principal</title>
+  <link rel="stylesheet" href="peaje.css" />
+  <script src="vistaWeb.js"></script>
+</head>
 
-      function cargarContenido(pagina) {
-        document.getElementById("contenidoFrame").src = pagina;
-      }
+<body>
+  <div class="sidebar">
+    <label id="nombreCompleto"> </label>
+    <button onclick="cargarContenido('gestionContactos.html')">
+      Contactos
+    </button>
+    <button onclick="cargarContenido('busqueda.html')">Busqueda</button>
+    <button onclick="logout()">Salir</button>
+  </div>
+  <div class="content">
+    <iframe id="contenidoFrame" src="" frameborder="0"></iframe>
+  </div>
+  <script>
+    urlIniciarVista = "/menuProp/vistaConectada";
 
-      function logout() {
-        submit("/ingreso/logoutPropietario", null);
-      }
+    const spnNombreCompleto = document.getElementById("nombreCompleto");
 
-      function mostrar_usuarioNoAutenticado(urlDestino) {
-        window.location.href = urlDestino;
-      }
+    function cargarContenido(pagina) {
+      document.getElementById("contenidoFrame").src = pagina;
+    }
 
-      function mostrar_nombreCompleto(nombreCompleto) {
-        spnNombreCompleto.innerHTML =
-          "USUARIO DE " + nombreCompleto.toUpperCase();
-      }
-    </script>
-  </body>
+    function logout() {
+      submit("/ingreso/logoutPropietario", null);
+    }
+
+    function mostrar_usuarioNoAutenticado(urlDestino) {
+      window.location.href = urlDestino;
+    }
+
+    function mostrar_nombreCompleto(nombreCompleto) {
+      spnNombreCompleto.innerHTML =
+        "USUARIO DE " + nombreCompleto.toUpperCase();
+    }
+  </script>
+</body>
+
 </html>

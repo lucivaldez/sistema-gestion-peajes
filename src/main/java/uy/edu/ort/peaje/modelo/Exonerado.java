@@ -6,8 +6,6 @@ public class Exonerado extends Bonificacion {
         super(nombreBonificacion);
     }
 
-    //No pagan el tránsito en un determinado puesto.
-
     @Override
     public double calcularMonto(Transito transito) {
         return 0;

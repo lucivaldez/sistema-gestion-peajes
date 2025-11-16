@@ -18,9 +18,11 @@ public class EmularTransitoDto  {
     public String getPuesto() {
         return puesto;
     }
+
     public String getMatricula() {
         return matricula;
     }
+    
     public Date getFechaHora() {
         return fechaHora;
     }

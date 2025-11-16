@@ -101,6 +101,7 @@ input[type="password"] {
   align-items: stretch;
   padding-top: 40px;
 }
+
 .sidebar button {
   background: none;
   border: none;
@@ -112,9 +113,11 @@ input[type="password"] {
   padding-left: 30px;
   transition: background 0.2s;
 }
+
 .sidebar button:hover {
   background: #1565c0;
 }
+
 .sidebar label {
   display: block;
   color: #fff;
@@ -128,8 +131,10 @@ input[type="password"] {
 
 /* Estilos del contenedor principal */
 .content {
-  margin-left: 180px; /* Espacio para el sidebar */
-  width: calc(100% - 180px); /* Usar todo el ancho restante */
+  margin-left: 180px;
+  /* Espacio para el sidebar */
+  width: calc(100% - 180px);
+  /* Usar todo el ancho restante */
   height: 100vh;
   overflow: hidden;
   padding: 0;
@@ -266,11 +271,13 @@ body {
   width: 100% !important;
   box-sizing: border-box !important;
 }
+
 .form-large .form-group {
   max-width: none !important;
   margin-bottom: 20px;
   width: 100% !important;
 }
+
 .form-large input[type="text"],
 .form-large input[type="tel"],
 .form-large input[type="password"],
@@ -286,6 +293,7 @@ body {
   box-sizing: border-box !important;
   max-width: none !important;
 }
+
 .form-large .btn-acceder {
   padding: 12px 16px;
   font-size: 1.05rem;
@@ -297,12 +305,14 @@ body {
   margin: 20px 0;
   width: 100% !important;
 }
+
 .tipos-contacto-group label {
   font-weight: bold;
   margin-bottom: 10px;
   display: block;
   color: #333;
 }
+
 .tipo-option {
   display: flex;
   align-items: center;
@@ -311,11 +321,13 @@ body {
   border-radius: 4px;
   background-color: #f9f9f9;
 }
+
 .tipo-option input[type="radio"] {
   margin-right: 10px;
   width: auto;
   height: auto;
 }
+
 .tipo-option label {
   margin: 0;
   font-weight: normal;
@@ -330,11 +342,13 @@ body {
   border-radius: 8px;
   border: 1px solid #e9ecef;
 }
+
 .contactos-lista h3 {
   color: #333;
   margin-bottom: 15px;
   font-size: 1.3rem;
 }
+
 .contacto-item {
   background-color: white;
   padding: 15px;
@@ -343,11 +357,13 @@ body {
   border-left: 4px solid #4caf50;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 .contacto-nombre {
   font-weight: bold;
   color: #333;
   font-size: 1.1rem;
 }
+
 .contacto-info {
   color: #666;
   margin-top: 5px;
@@ -370,10 +386,14 @@ body {
 
 /* In page-gestion-contactos mode, make form take more width */
 body.page-gestion-contactos .form-container-fullwidth {
-  max-width: none !important; /* Force remove width constraint */
-  margin: 0 !important; /* Force remove auto centering */
-  width: 100% !important; /* Force full width */
-  padding: 20px 40px !important; /* Force side padding */
+  max-width: none !important;
+  /* Force remove width constraint */
+  margin: 0 !important;
+  /* Force remove auto centering */
+  width: 100% !important;
+  /* Force full width */
+  padding: 20px 40px !important;
+  /* Force side padding */
   box-sizing: border-box !important;
 }
 
@@ -412,9 +432,11 @@ body.page-gestion-contactos .form-container-fullwidth {
 body.page-emular-transito {
   display: block;
   min-height: 100vh;
-  background: #f8fafc; /* slate-50 */
+  background: #f8fafc;
+  /* slate-50 */
   font-family: Arial, sans-serif;
-  color: #0f172a; /* slate-900 */
+  color: #0f172a;
+  /* slate-900 */
 }
 
 .page-emular-transito .et-container {
@@ -425,7 +447,8 @@ body.page-emular-transito {
 
 .page-emular-transito .et-card {
   background: #ffffff;
-  border: 1px solid #e2e8f0; /* slate-200 */
+  border: 1px solid #e2e8f0;
+  /* slate-200 */
   border-radius: 14px;
   box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.06),
     0 4px 6px -4px rgba(15, 23, 42, 0.06);
@@ -446,7 +469,8 @@ body.page-emular-transito {
   width: 18px;
   height: 18px;
   border-radius: 6px;
-  background: #2563eb; /* blue-600 */
+  background: #2563eb;
+  /* blue-600 */
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
@@ -459,7 +483,8 @@ body.page-emular-transito {
 .page-emular-transito .et-subtitle {
   margin: 6px 0 0 28px;
   font-size: 0.93rem;
-  color: #64748b; /* slate-500 */
+  color: #64748b;
+  /* slate-500 */
 }
 
 /* Grid de 2 columnas */
@@ -469,6 +494,7 @@ body.page-emular-transito {
   gap: 20px;
   padding: 16px 24px 8px 24px;
 }
+
 @media (max-width: 860px) {
   .page-emular-transito .et-grid {
     grid-template-columns: 1fr;
@@ -496,7 +522,8 @@ body.page-emular-transito {
 .page-emular-transito .et-field select {
   width: 100%;
   padding: 11px 12px;
-  border: 1px solid #cbd5e1; /* slate-300 */
+  border: 1px solid #cbd5e1;
+  /* slate-300 */
   border-radius: 10px;
   background: #fff;
   color: #0f172a;
@@ -505,12 +532,14 @@ body.page-emular-transito {
 }
 
 .page-emular-transito .et-field input::placeholder {
-  color: #94a3b8; /* slate-400 */
+  color: #94a3b8;
+  /* slate-400 */
 }
 
 .page-emular-transito .et-field input:focus,
 .page-emular-transito .et-field select:focus {
-  border-color: #93c5fd; /* blue-300 */
+  border-color: #93c5fd;
+  /* blue-300 */
   box-shadow: 0 0 0 4px rgba(147, 197, 253, 0.35);
 }
 
@@ -526,14 +555,17 @@ body.page-emular-transito {
   border: 0;
   border-radius: 10px;
   cursor: pointer;
-  background: #1e40af; /* blue-800 */
+  background: #1e40af;
+  /* blue-800 */
   color: #fff;
   font-weight: 600;
   transition: filter 0.15s ease, transform 0.02s ease;
 }
+
 .page-emular-transito .et-btn:hover {
   filter: brightness(1.05);
 }
+
 page-emular-transito .et-btn:active {
   transform: translateY(1px);
 }
@@ -562,9 +594,11 @@ page-emular-transito .et-btn:active {
   grid-template-columns: 1fr auto;
   gap: 12px;
   padding: 10px 14px;
-  border-top: 1px solid #f1f5f9; /* slate-100 */
+  border-top: 1px solid #f1f5f9;
+  /* slate-100 */
   color: #0f172a;
 }
+
 .page-emular-transito .et-table__row:nth-child(2) {
   border-top: 0;
 }
@@ -582,8 +616,10 @@ page-emular-transito .et-btn:active {
   border: 1px dashed #e2e8f0;
   border-radius: 10px;
   background: #fbfdff;
-  display: none; /* visible al emular */
+  display: none;
+  /* visible al emular */
 }
+
 .page-emular-transito .et-result.is-visible {
   display: block;
 }
@@ -600,9 +636,11 @@ page-emular-transito .et-btn:active {
   padding: 0;
   color: #0f172a;
 }
+
 .page-emular-transito .et-result li {
   padding: 4px 0;
 }
+
 .page-emular-transito .et-result strong {
   color: #0f172a;
 }
@@ -622,6 +660,7 @@ page-emular-transito .et-btn:active {
   .page-emular-transito .et-card__header {
     padding-bottom: 6px;
   }
+
   .page-emular-transito .et-grid {
     padding-top: 8px;
   }

@@ -15,7 +15,6 @@ import uy.edu.ort.peaje.dtos.PropietarioDto;
 import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
 import uy.edu.ort.peaje.modelo.EstadoPropietario;
-import uy.edu.ort.peaje.modelo.Notificacion;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.servicios.fachada.Fachada;
 import uy.edu.ort.peaje.utils.Respuesta;
@@ -34,18 +33,14 @@ public class ControladorCambiarEstado {
             return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "index.html"));
         }
         return Respuesta.lista(estadosAsignar());
-
-
     }
     
     private Respuesta estadosAsignar(){
         estadosAsignar = new ArrayList<EstadoPropietario>(Fachada.getInstancia().getEstadoPropietario());
              
         return new Respuesta("estadosAsignar", estadosAsignar);
-
     }
     
-
     @PostMapping("/buscar")
     public List<Respuesta> buscarPropietario(@RequestParam String cedula) throws PeajeException {
         // Validación básica
@@ -63,7 +58,6 @@ public class ControladorCambiarEstado {
         new Respuesta("propietario", new PropietarioDto(p)),
         new Respuesta("estadoActual", p.getEstadoPropietario().getNombre()));
     }
-
 
     @PostMapping("/cambiar")
     public List<Respuesta> cambiarEstadoPropietario(@RequestParam String nuevoEstado) throws PeajeException {
@@ -98,10 +92,7 @@ public class ControladorCambiarEstado {
             new Respuesta("estadoActual", estadoNuevo.getNombre()),
             new Respuesta("mensaje", "Estado cambiado correctamente")
         );
-    }
-
-
-    
+    }  
 }
 
 

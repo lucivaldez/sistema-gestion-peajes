@@ -18,10 +18,7 @@ public abstract class EstadoPropietario {
     public abstract boolean puedeIngresarAlSistema();
     public abstract boolean puedeRealizarTransito();
     public abstract boolean puedeSerNotificado();
-    public abstract boolean puedeRecibirBonificaciones();
-
-
-    
+    public abstract boolean puedeRecibirBonificaciones();  
 }
 
 

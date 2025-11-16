@@ -1,240 +1,243 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Asignar bonificaciones</title>
-    <link rel="stylesheet" href="peaje.css" />
-    <link rel="stylesheet" href="asignar-bonificaciones.css" />
-    <script src="vistaWeb.js"></script>
-  </head>
-  <body class="page-asignar-bonificaciones">
-    <script src="utilesVista.js"></script>
-    <main class="et-container">
-      <section class="et-card">
-        <header class="et-card__header">
-          <div class="et-title">
-            <span class="et-dot" aria-hidden="true"></span>
-            <h1>Asignar bonificaciones</h1>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Asignar bonificaciones</title>
+  <link rel="stylesheet" href="peaje.css" />
+  <link rel="stylesheet" href="asignar-bonificaciones.css" />
+  <script src="vistaWeb.js"></script>
+</head>
+
+<body class="page-asignar-bonificaciones">
+  <script src="utilesVista.js"></script>
+  <main class="et-container">
+    <section class="et-card">
+      <header class="et-card__header">
+        <div class="et-title">
+          <span class="et-dot" aria-hidden="true"></span>
+          <h1>Asignar bonificaciones</h1>
+        </div>
+        <p class="et-subtitle">
+          Busque un propietario, vea sus bonificaciones y asigne una nueva
+          para un puesto.
+        </p>
+      </header>
+
+      <!-- Contenido -->
+      <div class="et-grid">
+        <!-- Columna izquierda: formulario -->
+        <form class="et-form" id="form-asignar" autocomplete="off">
+          <div class="et-field">
+            <label for="cedula">Cédula del propietario</label>
+            <input id="cedula" name="cedula" type="text" placeholder="Ej: 41234567" />
           </div>
-          <p class="et-subtitle">
-            Busque un propietario, vea sus bonificaciones y asigne una nueva
-            para un puesto.
-          </p>
-        </header>
 
-        <!-- Contenido -->
-        <div class="et-grid">
-          <!-- Columna izquierda: formulario -->
-          <form class="et-form" id="form-asignar" autocomplete="off">
-            <div class="et-field">
-              <label for="cedula">Cédula del propietario</label>
-              <input
-                id="cedula"
-                name="cedula"
-                type="text"
-                placeholder="Ej: 41234567"
-              />
-            </div>
+          <div class="et-actions" style="gap: 8px">
+            <button type="button" class="et-btn" id="btnBuscar">
+              Buscar propietario
+            </button>
+          </div>
 
-            <div class="et-actions" style="gap: 8px">
-              <button type="button" class="et-btn" id="btnBuscar">
-                Buscar propietario
-              </button>
-            </div>
+          <hr class="et-sep" />
 
-            <hr class="et-sep" />
+          <div class="et-field">
+            <label for="bonif">Bonificación</label>
+            <div id="bonif-container"></div>
+          </div>
 
-            <div class="et-field">
-              <label for="bonif">Bonificación</label>
-              <div id="bonif-container"></div>
-            </div>
+          <div class="et-field">
+            <label for="puesto">Puesto</label>
+            <div id="puesto-container"></div>
+          </div>
 
-            <div class="et-field">
-              <label for="puesto">Puesto</label>
-              <div id="puesto-container"></div>
-            </div>
+          <div class="et-actions">
+            <button type="submit" class="et-btn">Asignar bonificación</button>
+          </div>
+        </form>
 
-            <div class="et-actions">
-              <button type="submit" class="et-btn">Asignar bonificación</button>
-            </div>
-          </form>
+        <!-- Columna derecha: info propietario + asignadas -->
+        <aside class="et-tarifas">
+          <div class="et-card" style="padding: 12px">
+            <h3>Propietario</h3>
+            <div id="propietario-box" class="et-help">Sin seleccionar</div>
+          </div>
 
-          <!-- Columna derecha: info propietario + asignadas -->
-          <aside class="et-tarifas">
-            <div class="et-card" style="padding: 12px">
-              <h3>Propietario</h3>
-              <div id="propietario-box" class="et-help">Sin seleccionar</div>
-            </div>
-
-            <div class="et-card" style="padding: 12px; margin-top: 12px">
-              <h3>Bonificaciones asignadas</h3>
-              <div class="et-table">
-                <div class="et-table__head">
-                  <div>Bonificación</div>
-                  <div>Puesto</div>
-                  <div>Asignada</div>
-                </div>
-                <div class="et-table__body" id="tabla-asignadas-body">
-                  <div class="et-empty">Sin datos</div>
-                </div>
+          <div class="et-card" style="padding: 12px; margin-top: 12px">
+            <h3>Bonificaciones asignadas</h3>
+            <div class="et-table">
+              <div class="et-table__head">
+                <div>Bonificación</div>
+                <div>Puesto</div>
+                <div>Asignada</div>
+              </div>
+              <div class="et-table__body" id="tabla-asignadas-body">
+                <div class="et-empty">Sin datos</div>
               </div>
             </div>
-          </aside>
-        </div>
+          </div>
+        </aside>
+      </div>
 
-        <!-- Footer -->
-        <footer class="et-footer">© 2025 — Asignar bonificaciones</footer>
-      </section>
-    </main>
+      <!-- Footer -->
+      <footer class="et-footer">© 2025 — Asignar bonificaciones</footer>
+    </section>
+  </main>
 
-    <script>
-      // Endpoints
-      var urlIniciarVista = "/bonificaciones/vistaConectada";
-      var parametrosInicioVista = "";
+  <script>
+    // Endpoints
+    var urlIniciarVista = "/bonificaciones/vistaConectada";
+    var parametrosInicioVista = "";
 
-      // Refs
-      const formAsignar = document.getElementById("form-asignar");
-      const btnBuscar = document.getElementById("btnBuscar");
-      const divBonif = document.getElementById("bonif-container");
-      const divPuesto = document.getElementById("puesto-container");
-      const boxProp = document.getElementById("propietario-box");
-      const bodyAsign = document.getElementById("tabla-asignadas-body");
+    // Refs
+    const formAsignar = document.getElementById("form-asignar");
+    const btnBuscar = document.getElementById("btnBuscar");
+    const divBonif = document.getElementById("bonif-container");
+    const divPuesto = document.getElementById("puesto-container");
+    const boxProp = document.getElementById("propietario-box");
+    const bodyAsign = document.getElementById("tabla-asignadas-body");
 
-      document.addEventListener("DOMContentLoaded", function () {
-        submit(urlIniciarVista, parametrosInicioVista, "GET");
+    document.addEventListener("DOMContentLoaded", function () {
+      submit(urlIniciarVista, parametrosInicioVista, "GET");
+    });
+
+    btnBuscar.addEventListener("click", function () {
+      const ced = document.getElementById("cedula").value.trim();
+      if (!ced) {
+        mostrar_mensaje("Ingresá una cédula");
+        return;
+      }
+      submit(
+        "/bonificaciones/buscarPropietario",
+        "cedula=" + encodeURIComponent(ced),
+        "GET"
+      );
+    });
+
+    formAsignar.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const fd = serializarFormulario("form-asignar");
+      submit("/bonificaciones/asignar", fd, "POST");
+    });
+
+    function mostrar_usuarioNoAutenticado(urlDestino) {
+      window.location.href = urlDestino;
+    }
+
+    function mostrar_bonificacionesDefinidas(lista) {
+      const data = Array.isArray(lista) ? lista : [];
+
+      divBonif.innerHTML = crearListaDesdeJson({
+        data: data,
+        campoMostrar: "nombre",
+        campoValor: "nombre",
+        multiple: false,
+        mostrarOpcionInicial: true,
+        id: "bonif",
       });
 
-      btnBuscar.addEventListener("click", function () {
-        const ced = document.getElementById("cedula").value.trim();
-        if (!ced) {
-          mostrar_mensaje("Ingresá una cédula");
-          return;
+      const sel =
+        divBonif.querySelector("select") || document.getElementById("bonif");
+      if (sel) {
+        sel.id = "bonif";
+        sel.name = "tipoBonificacion";
+
+        if (
+          sel.options.length > 0 &&
+          (sel.options[0].value === "" || sel.options[0].value == null)
+        ) {
+          sel.options[0].value = "-1";
         }
-        submit(
-          "/bonificaciones/buscarPropietario",
-          "cedula=" + encodeURIComponent(ced),
-          "GET"
-        );
+      }
+    }
+
+    function mostrar_puestos(lista) {
+      const data = (Array.isArray(lista) ? lista : []).map((n) => ({
+        nombre: n,
+      }));
+      divPuesto.innerHTML = crearListaDesdeJson({
+        data: data,
+        campoMostrar: "nombre",
+        campoValor: "nombre",
+        multiple: false,
+        mostrarOpcionInicial: true,
+        id: "puesto",
       });
+      const sel =
+        divPuesto.querySelector("select") ||
+        document.getElementById("puesto");
+      if (sel) {
+        sel.id = "puesto";
+        sel.name = "nombrePuesto";
+        sel.disabled = false;
+      }
+    }
 
-      formAsignar.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const fd = serializarFormulario("form-asignar");
-        submit("/bonificaciones/asignar", fd, "POST");
-      });
-
-      function mostrar_usuarioNoAutenticado(urlDestino) {
-        window.location.href = urlDestino;
+    function mostrar_propietario(dto) {
+      if (!dto) {
+        boxProp.textContent = "Sin seleccionar";
+        return;
       }
 
-      function mostrar_bonificacionesDefinidas(lista) {
-        const data = Array.isArray(lista) ? lista : [];
+      boxProp.innerHTML = `
+    <div>
+      <strong>${dto.nombreCompleto}</strong><br>
+      <span class="et-help">CI: ${dto.cedula}</span><br>
+      <span class="et-help">Estado: ${dto.estado}</span>
+    </div>`;
+    
+    }
 
-        divBonif.innerHTML = crearListaDesdeJson({
-          data: data,
-          campoMostrar: "nombre",
-          campoValor: "nombre",
-          multiple: false,
-          mostrarOpcionInicial: true,
-          id: "bonif",
-        });
-
-        const sel =
-          divBonif.querySelector("select") || document.getElementById("bonif");
-        if (sel) {
-          sel.id = "bonif";
-          sel.name = "tipoBonificacion";
-
-          if (
-            sel.options.length > 0 &&
-            (sel.options[0].value === "" || sel.options[0].value == null)
-          ) {
-            sel.options[0].value = "-1";
-          }
-        }
+    function mostrar_bonificacionesAsignadas(lista) {
+      if (!Array.isArray(lista) || !lista.length) {
+        bodyAsign.innerHTML = `<div class="et-empty">Sin datos</div>`;
+        return;
       }
-
-      function mostrar_puestos(lista) {
-        const data = (Array.isArray(lista) ? lista : []).map((n) => ({
-          nombre: n,
-        }));
-        divPuesto.innerHTML = crearListaDesdeJson({
-          data: data,
-          campoMostrar: "nombre",
-          campoValor: "nombre",
-          multiple: false,
-          mostrarOpcionInicial: true,
-          id: "puesto",
-        });
-        const sel =
-          divPuesto.querySelector("select") ||
-          document.getElementById("puesto");
-        if (sel) {
-          sel.id = "puesto";
-          sel.name = "nombrePuesto";
-          sel.disabled = false;
-        }
-      }
-
-      function mostrar_propietario(dto) {
-        if (!dto) {
-          boxProp.textContent = "Sin seleccionar";
-          return;
-        }
-        boxProp.innerHTML = `
-          <div><strong>${dto.nombreCompleto}</strong> — <span class="et-help">CI: ${dto.cedula}</span></div>
-          <div class="et-help">Saldo: $${dto.saldoActual} (mín: $${dto.saldoMinimo})</div>`;
-      }
-
-      function mostrar_bonificacionesAsignadas(lista) {
-        if (!Array.isArray(lista) || !lista.length) {
-          bodyAsign.innerHTML = `<div class="et-empty">Sin datos</div>`;
-          return;
-        }
-        bodyAsign.innerHTML = lista
-          .map((ab) => {
-            const fecha = ab.fechaAsignacion
-              ? new Date(ab.fechaAsignacion).toLocaleString()
-              : "-";
-            return `
+      bodyAsign.innerHTML = lista
+        .map((ab) => {
+          const fecha = ab.fechaAsignacion
+            ? new Date(ab.fechaAsignacion).toLocaleString()
+            : "-";
+          return `
             <div class="et-table__row">
               <div>${ab.nombreBonificacion}</div>
               <div>${ab.nombrePuesto}</div>
               <div>${fecha}</div>
             </div>
           `;
-          })
-          .join("");
-      }
+        })
+        .join("");
+    }
 
-      async function mostrar_mensaje(mensaje) {
-        if (window.mostrarMensaje) {
-          await mostrarMensaje(mensaje);
-          return;
-        }
-        console.log("MENSAJE:", mensaje);
+    async function mostrar_mensaje(mensaje) {
+      if (window.mostrarMensaje) {
+        await mostrarMensaje(mensaje);
+        return;
       }
+      console.log("MENSAJE:", mensaje);
+    }
 
-      async function mostrar_error(mensaje) {
-        if (window.mostrarMensaje) {
-          await mostrarMensaje(mensaje);
-          return;
-        }
-        console.error("ERROR:", mensaje);
+    async function mostrar_error(mensaje) {
+      if (window.mostrarMensaje) {
+        await mostrarMensaje(mensaje);
+        return;
       }
+      console.error("ERROR:", mensaje);
+    }
 
-      async function excepcionDeAplicacion(text) {
-        if (window.mostrarMensaje) {
-          await mostrarMensaje(text);
-          return;
-        }
-        console.error("EXCEPCIÓN:", text);
+    async function excepcionDeAplicacion(text) {
+      if (window.mostrarMensaje) {
+        await mostrarMensaje(text);
+        return;
       }
+      console.error("EXCEPCIÓN:", text);
+    }
 
-      function mostrar_limpiarFormulario() {
-        formAsignar.reset();
-      }
-    </script>
-  </body>
+    function mostrar_limpiarFormulario() {
+      formAsignar.reset();
+    }
+  </script>
+</body>
+
 </html>

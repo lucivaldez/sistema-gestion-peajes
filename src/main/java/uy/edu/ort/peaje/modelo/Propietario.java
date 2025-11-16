@@ -5,15 +5,14 @@ import java.util.List;
 
 import uy.edu.ort.peaje.excepciones.PeajeException;
 
-public class Propietario extends Usuario 
-{
+public class Propietario extends Usuario {
     private int saldoActual;
     private int saldoMinimo;
     private EstadoPropietario estadoPropietario;
     private ArrayList<AsignacionBonificacion> bonificacionesAsignadas;
-    private ArrayList<Vehiculo> vehiculos; 
+    private ArrayList<Vehiculo> vehiculos;
     private ArrayList<Notificacion> notificaciones;
-    
+
     public Propietario(String cedula, String password, String nombreCompleto, int saldoActual, int saldoMinimo) {
         super(cedula, password, nombreCompleto);
         this.saldoActual = saldoActual;
@@ -21,71 +20,70 @@ public class Propietario extends Usuario
         this.bonificacionesAsignadas = new ArrayList<AsignacionBonificacion>();
         this.vehiculos = new ArrayList<Vehiculo>();
         this.notificaciones = new ArrayList<Notificacion>();
-        estadoPropietario = new EstadoPropietarioHabilitado(); 
-  
-     }
+        estadoPropietario = new EstadoPropietarioHabilitado();
 
-     //PARA EMULAR TRANSITO
-     public Vehiculo buscarVehiculoPorMatricula(String matricula) {
+    }
+
+    // PARA EMULAR TRANSITO
+    public Vehiculo buscarVehiculoPorMatricula(String matricula) {
         for (Vehiculo v : vehiculos) {
             if (v.getMatricula().equalsIgnoreCase(matricula)) {
                 return v;
             }
         }
         return null;
-     }
+    }
 
-     public int getSaldoActual() {
-         return saldoActual;
-     }
+    public int getSaldoActual() {
+        return saldoActual;
+    }
 
-     public void setSaldoActual(int saldoActual) {
-         this.saldoActual = saldoActual;
-     }
+    public void setSaldoActual(int saldoActual) {
+        this.saldoActual = saldoActual;
+    }
 
-     public int getSaldoMinimo() {
-         return saldoMinimo;
-     }
+    public int getSaldoMinimo() {
+        return saldoMinimo;
+    }
 
-     public void setSaldoMinimo(int saldoMinimo) {
-         this.saldoMinimo = saldoMinimo;
-     }
+    public void setSaldoMinimo(int saldoMinimo) {
+        this.saldoMinimo = saldoMinimo;
+    }
 
-     public EstadoPropietario getEstadoPropietario() {
-         return estadoPropietario;
-     }
+    public EstadoPropietario getEstadoPropietario() {
+        return estadoPropietario;
+    }
 
-     public void setEstadoPropietario(EstadoPropietario nuevoEstado) {
-         this.estadoPropietario = nuevoEstado;
-     }
+    public void setEstadoPropietario(EstadoPropietario nuevoEstado) {
+        this.estadoPropietario = nuevoEstado;
+    }
 
     public ArrayList<AsignacionBonificacion> getAsignacionBonificacion() {
         return bonificacionesAsignadas;
     }
 
-     public ArrayList<Vehiculo> getVehiculos() {
-         return vehiculos;
-     }
+    public ArrayList<Vehiculo> getVehiculos() {
+        return vehiculos;
+    }
 
-     public void setVehiculos(ArrayList<Vehiculo> vehiculos) {
-         this.vehiculos = vehiculos;
-     }
+    public void setVehiculos(ArrayList<Vehiculo> vehiculos) {
+        this.vehiculos = vehiculos;
+    }
 
-     public ArrayList<Notificacion> getNotificaciones() {
-         return notificaciones;
-     }
+    public ArrayList<Notificacion> getNotificaciones() {
+        return notificaciones;
+    }
 
-     public void setNotificaciones(ArrayList<Notificacion> notificaciones) {
-         this.notificaciones = notificaciones;
-     }
+    public void setNotificaciones(ArrayList<Notificacion> notificaciones) {
+        this.notificaciones = notificaciones;
+    }
 
-
-    
     public boolean tieneBonificacionDeTipoEnPuesto(Propietario p, String tipoBonificacion, Puesto puesto) {
-        if (p == null || puesto == null || tipoBonificacion == null) return false;
+        if (p == null || puesto == null || tipoBonificacion == null)
+            return false;
 
         for (AsignacionBonificacion ab : p.bonificacionesPara(puesto)) {
-            String nombreExistente = ab.getBonificacion().getnombre(); 
+            String nombreExistente = ab.getBonificacion().getnombre();
             if (nombreExistente != null && nombreExistente.equalsIgnoreCase(tipoBonificacion)) {
                 return true;
             }
@@ -99,17 +97,18 @@ public class Propietario extends Usuario
     }
 
     public void descontarSaldo(double monto) {
-        setSaldoActual(getSaldoActual() - (int)monto);
+        setSaldoActual(getSaldoActual() - (int) monto);
     }
 
     public void asignarBonificacion(AsignacionBonificacion ab) {
-        if (ab == null) return;
-        if (bonificacionesAsignadas == null) bonificacionesAsignadas = new ArrayList<>();
-        // Evita duplicar mismo tipo de bonificación en el mismo puesto
+        if (ab == null)
+            return;
+        if (bonificacionesAsignadas == null)
+            bonificacionesAsignadas = new ArrayList<>();
+
         for (AsignacionBonificacion existente : bonificacionesAsignadas) {
             if (existente.getPuesto().equals(ab.getPuesto()) &&
-                existente.getBonificacion().getClass().equals(ab.getBonificacion().getClass())) {
-                // ya existe: no agregar
+                    existente.getBonificacion().getClass().equals(ab.getBonificacion().getClass())) {
                 return;
             }
         }
@@ -134,9 +133,4 @@ public class Propietario extends Usuario
         }
         throw new PeajeException("No se encontró un vehículo con la matrícula: " + matricula);
     }
-
-    
-
-
-
 }

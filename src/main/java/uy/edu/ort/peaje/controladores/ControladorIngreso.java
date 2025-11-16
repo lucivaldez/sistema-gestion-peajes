@@ -37,7 +37,7 @@ public class ControladorIngreso {
         return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "index.html"));
     }
 
-     @PostMapping("/loginAdmin")
+    @PostMapping("/loginAdmin")
     public List<Respuesta> loginAdmin(HttpSession sesionHttp, @RequestParam String cedula, @RequestParam String password) throws PeajeException {
 
         Administrador usuarioAdmin  = Fachada.getInstancia().loginAdmin(cedula, password);
