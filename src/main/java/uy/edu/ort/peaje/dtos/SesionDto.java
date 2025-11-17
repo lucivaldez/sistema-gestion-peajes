@@ -29,6 +29,7 @@ public class SesionDto {
     public String getNombreCompleto() {
         return nombreCompleto;
     }
+    
     public static List<SesionDto> listaSesionesDto(List<Sesion> sesiones) {
                 
         List<SesionDto> sesionDtos = new ArrayList<>();

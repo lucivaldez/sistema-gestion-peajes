@@ -11,7 +11,8 @@ public class Transito {
     private double montoCobrado;
     private String bonificacionAplicada;
 
-    public Transito(Date fechaHora, Vehiculo vehiculo, Notificacion notificacion, Puesto puesto, Tarifa tarifa, double montoCobrado) {
+    public Transito(Date fechaHora, Vehiculo vehiculo, Notificacion notificacion, Puesto puesto, Tarifa tarifa,
+            double montoCobrado) {
         this.fechaHora = fechaHora;
         this.vehiculo = vehiculo;
         this.notificacion = notificacion;

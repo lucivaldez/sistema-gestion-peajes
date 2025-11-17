@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import uy.edu.ort.peaje.dtos.ResultadoDto;
 import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
 import uy.edu.ort.peaje.modelo.CategoriaVehiculo;
@@ -63,6 +64,7 @@ public class Fachada extends Observable{
     public void agregarPuesto(Puesto puesto) {
         sTransito.agregarPuesto(puesto);
     }
+
     public List<Puesto> getPuestos() {
         return sTransito.getPuestos();
     }
@@ -73,17 +75,13 @@ public class Fachada extends Observable{
 
     public ArrayList<EstadoPropietario> getEstadoPropietario() {
         return sUsuarios.getEstadosPropietario();
-    }  
+    }
 
     public void agregarCategoriaVehiculo(CategoriaVehiculo categoria) {
-        sTransito.agregarCategoriaVehiculo(categoria);  
-    }  
-
-    public List<CategoriaVehiculo> getCategoriaVehiculos() {
-        return sTransito.getCategoriasVehiculos();
+        sTransito.agregarCategoriaVehiculo(categoria);
     }
-    
-    public void agregarTarifa(Tarifa tarifa){
+
+    public void agregarTarifa(Tarifa tarifa) {
         sTransito.agregarTarifa(tarifa);
     }
 
@@ -91,37 +89,31 @@ public class Fachada extends Observable{
         return sTransito.getTarifas();
     }
 
-    public void agregarTransito(Transito transito){
-        sTransito.agregarTransito(transito);
-    }
-    
     public Vehiculo buscarVehiculoPorMatricula(String matricula) throws PeajeException {
-        return sUsuarios.buscarVehiculoPorMatricula(matricula);
+        return sTransito.buscarVehiculoPorMatricula(matricula);
     }
 
-    public void agregarVehiculo(Vehiculo vehiculo){
+    public void agregarVehiculo(Vehiculo vehiculo) {
         sTransito.agregarVehiculo(vehiculo);
     }
 
-    public void asignarBonificacion(Propietario propietario, String nombreBonificacion, Puesto puesto) throws PeajeException {
+    public void asignarBonificacion(Propietario propietario, String nombreBonificacion, Puesto puesto)
+            throws PeajeException {
         sTransito.asignarBonificacion(propietario, nombreBonificacion, puesto);
     }
 
     public Transito emularTransito(Vehiculo vehiculo, Puesto puesto, Date fechaHora) throws PeajeException {
         return sTransito.emularTransito(vehiculo, puesto, fechaHora);
     }
+
     public Puesto buscarPuestoPorNombre(String nombre) {
         return sTransito.buscarPuestoPorNombre(nombre);
     }
-    public List<Tarifa> getTarifasPorPuesto(String nombrePuesto) {
-        return sTransito.getTarifasPorPuesto(nombrePuesto);
-    }
-
-
+    
     public Propietario buscarPropietarioPorCedula(String cedula) throws PeajeException {
         return sUsuarios.buscarPropietarioPorCedula(cedula);
-    }  
-    
+    }
+
     public void agregarTipoBonificacion(String nombre) {
         sTransito.agregarTipoBonificacion(nombre);
     }
@@ -134,14 +126,8 @@ public class Fachada extends Observable{
         return sUsuarios.obtenerEstadoPorNombre(nombre);
     }
 
-    
+    public ResultadoDto construirResultadoTransito(Transito transito) {
+        return sTransito.construirResultadoTransito(transito);
+    }
 
-
-    
 }
-
-
-
-
-    
-

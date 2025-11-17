@@ -7,14 +7,15 @@ public class PropietarioDto {
     private String nombreCompleto;
     private int saldoActual;
     private int saldoMinimo;
-    // private String estado; // si luego lo agregan
+    private String estado;
+
 
     public PropietarioDto(Propietario p) {
         this.cedula = p.getCedula();
         this.nombreCompleto = p.getNombreCompleto();
         this.saldoActual = p.getSaldoActual();
         this.saldoMinimo = p.getSaldoMinimo();
-        // this.estado = p.getEstado().name();
+        this.estado = p.getEstadoPropietario().getNombre(); 
     }
 
     public String getCedula() { 
@@ -33,6 +34,9 @@ public class PropietarioDto {
         return saldoMinimo; 
     }
     
-    // public String getEstado() { return estado; }
+    public String getEstado() { 
+        return estado; 
+    }
+    
 }
 

@@ -3,7 +3,7 @@ package uy.edu.ort.peaje.modelo;
 import java.util.Date;
 
 public class Sesion {
-    
+
     private Date fechaIngreso = new Date();
     private Usuario usuario;
 
@@ -11,13 +11,11 @@ public class Sesion {
         this.usuario = usuario;
     }
 
-
     public Date getFechaIngreso() {
         return fechaIngreso;
     }
 
     public Usuario getUsuario() {
         return usuario;
-    }       
+    }
 }
-

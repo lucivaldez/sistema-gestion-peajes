@@ -238,9 +238,8 @@ function crearTablaDesdeJson(data, onRowClick) {
   data.forEach((fila, index) => {
     html += `<tr data-index="${index}">`;
     columnas.forEach((col) => {
-      html += `<td>${
-        fila[col] !== undefined && fila[col] !== null ? fila[col] : ""
-      }</td>`;
+      html += `<td>${fila[col] !== undefined && fila[col] !== null ? fila[col] : ""
+        }</td>`;
     });
     html += "</tr>";
   });

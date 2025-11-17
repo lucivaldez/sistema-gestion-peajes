@@ -22,18 +22,23 @@ public class ResultadoDto {
     public String getPropietario() {
         return propietario;
     }
+
     public String getEstado() {
         return estado;
     }
+
     public String getCategoria() {
         return categoria;
     }
+
     public String getBonificacion() {
         return bonificacion;
     }
+
     public double getCosto() {
         return costo;
     }
+    
     public double getSaldo() {
         return saldo;
     }

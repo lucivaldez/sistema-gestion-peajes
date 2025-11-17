@@ -5,7 +5,7 @@ public class Tarifa {
     private Puesto puesto;
     private double monto;
     private CategoriaVehiculo categoriaVehiculo;
-    
+
     public Tarifa(Puesto puesto, double monto, CategoriaVehiculo categoriaVehiculo) {
         this.puesto = puesto;
         this.monto = monto;

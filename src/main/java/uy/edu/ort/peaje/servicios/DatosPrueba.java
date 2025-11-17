@@ -2,19 +2,15 @@ package uy.edu.ort.peaje.servicios;
 
 import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
-import uy.edu.ort.peaje.modelo.Bonificacion;
 import uy.edu.ort.peaje.modelo.CategoriaVehiculo;
 import uy.edu.ort.peaje.modelo.EstadoPropietario;
 import uy.edu.ort.peaje.modelo.EstadoPropietarioDeshabilitado;
 import uy.edu.ort.peaje.modelo.EstadoPropietarioHabilitado;
 import uy.edu.ort.peaje.modelo.EstadoPropietarioPenalizado;
 import uy.edu.ort.peaje.modelo.EstadoPropietarioSuspendido;
-import uy.edu.ort.peaje.modelo.Exonerado;
-import uy.edu.ort.peaje.modelo.Frecuente;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Puesto;
 import uy.edu.ort.peaje.modelo.Tarifa;
-import uy.edu.ort.peaje.modelo.Trabajador;
 import uy.edu.ort.peaje.modelo.Vehiculo;
 import uy.edu.ort.peaje.servicios.fachada.Fachada;
 
@@ -93,10 +89,6 @@ public class DatosPrueba {
         Vehiculo v1 = new Vehiculo("ABC123", "Toyota Corolla", "Rojo", cat1, prop1);
         Fachada.getInstancia().agregarVehiculo(v1);
 
-        Bonificacion exonerado = new Exonerado("Exonerado");
-        Bonificacion frecuente = new Frecuente("Frecuente");
-        Bonificacion trabajador = new Trabajador("Trabajador");
-
         // Agregar tipos de bonificaciones
         Fachada.getInstancia().agregarTipoBonificacion("Exonerado");
         Fachada.getInstancia().agregarTipoBonificacion("Frecuente");
@@ -117,11 +109,7 @@ public class DatosPrueba {
         Fachada.getInstancia().agregarEstadoPropietario(estadoDeshabilitado);
         Fachada.getInstancia().agregarEstadoPropietario(estadoSuspendido);
         Fachada.getInstancia().agregarEstadoPropietario(estadoPenalizado);
-
-
-
     }   
-
 }
 
 

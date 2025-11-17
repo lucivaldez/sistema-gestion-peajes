@@ -10,7 +10,7 @@ public class Puesto {
     private ArrayList<Tarifa> tarifas;
     private ArrayList<AsignacionBonificacion> asignacionBonificacions;
 
-    public Puesto( String nombre, String direccion) {
+    public Puesto(String nombre, String direccion) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.tarifas = new ArrayList<>();
@@ -20,30 +20,39 @@ public class Puesto {
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
+
     public String getNombre() {
         return nombre;
     }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
     public String getDireccion() {
         return direccion;
     }
+
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
+
     public ArrayList<Tarifa> getTarifas() {
         return tarifas;
     }
+
     public void setTarifas(ArrayList<Tarifa> tarifas) {
         this.tarifas = tarifas;
     }
+
     public ArrayList<AsignacionBonificacion> getAsignacionBonificacions() {
         return asignacionBonificacions;
     }
+
     public void setAsignacionBonificacion(ArrayList<AsignacionBonificacion> bonificacion) {
         this.asignacionBonificacions = bonificacion;
     }
@@ -58,8 +67,10 @@ public class Puesto {
     }
 
     public void addTarifa(Tarifa t) {
-        if (t == null) return;
-        if (tarifas == null) tarifas = new ArrayList<>();
+        if (t == null)
+            return;
+        if (tarifas == null)
+            tarifas = new ArrayList<>();
 
         // Regla común: una tarifa por categoría -> reemplaza si ya existe
         for (int i = 0; i < tarifas.size(); i++) {
@@ -74,14 +85,16 @@ public class Puesto {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Puesto)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Puesto))
+            return false;
         Puesto other = (Puesto) o;
-        return this.id == other.id; // igualdad solo por id
+        return this.nombre != null && this.nombre.equalsIgnoreCase(other.nombre);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id); // hash solo por id
+        return Objects.hash(nombre != null ? nombre.toLowerCase() : null);
     }
 }

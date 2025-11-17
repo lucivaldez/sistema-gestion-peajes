@@ -24,9 +24,11 @@ public class AsignacionBonificacion {
     public Bonificacion getBonificacion() {
         return bonificacion;
     }
+
     public Propietario getPropietario() {
         return propietario;
     }
+    
     public Puesto getPuesto() {
         return puesto;
     }

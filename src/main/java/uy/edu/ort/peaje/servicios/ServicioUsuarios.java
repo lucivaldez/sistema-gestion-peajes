@@ -13,40 +13,40 @@ import uy.edu.ort.peaje.modelo.Vehiculo;
 import uy.edu.ort.peaje.servicios.fachada.Fachada;
 
 public class ServicioUsuarios {
-    //experto en gestionar los usuarios
     private ArrayList<Propietario> propietarios;
     private ArrayList<Administrador> administradores;
     private ArrayList<Sesion> sesiones;
     private ArrayList<EstadoPropietario> estadosPropietarios;
-    
+
     public ServicioUsuarios() {
         this.propietarios = new ArrayList<>();
         this.administradores = new ArrayList<>();
         this.sesiones = new ArrayList<>();
         this.estadosPropietarios = new ArrayList<>();
-        
+
     }
-    public void agregarEstadoPropietario(EstadoPropietario ep){
+
+    public void agregarEstadoPropietario(EstadoPropietario ep) {
         estadosPropietarios.add(ep);
     }
 
     public ArrayList<EstadoPropietario> getEstadosPropietario() {
         return estadosPropietarios;
     }
-        
+
     public void agregar(Propietario propietario) {
         propietarios.add(propietario);
-       
-    }
-    public void agregar(Administrador administrador) {
-        administradores.add(administrador);
-       
+
     }
 
-    private Usuario login(String cedula, String password, List lista) throws PeajeException{
+    public void agregar(Administrador administrador) {
+        administradores.add(administrador);
+    }
+
+    private Usuario login(String cedula, String password, List lista) throws PeajeException {
         Usuario usuario;
-        for (Object o: lista) {
-            usuario = (Usuario)o;
+        for (Object o : lista) {
+            usuario = (Usuario) o;
             if (usuario.getCedula().equals(cedula) && usuario.esContrasenaValida(password)) {
                 return usuario;
             }
@@ -66,14 +66,14 @@ public class ServicioUsuarios {
         throw new PeajeException("Usuario y/o contraseña incorrectos");
     }
 
-    public Sesion loginPropietario(String cedula, String password) throws PeajeException{
+    public Sesion loginPropietario(String cedula, String password) throws PeajeException {
         Sesion sesion = null;
         Propietario usuario = (Propietario) login(cedula, password, propietarios);
-        if(usuario!=null){
+        if (usuario != null) {
             sesion = new Sesion(usuario);
             sesiones.add(sesion);
             return sesion;
-        }        
+        }
         throw new PeajeException("Usuario y/o contraseña incorrectos");
     }
 
@@ -86,18 +86,9 @@ public class ServicioUsuarios {
        
     }
 
-    public Vehiculo buscarVehiculoPorMatricula(String matricula) throws PeajeException {
-    for (Propietario p : propietarios) {
-        Vehiculo encontrado = p.buscarVehiculoPorMatricula(matricula);
-        if (encontrado != null) {
-            return encontrado;
-        }
-    }
-    throw new PeajeException("No existe vehículo con matrícula " + matricula);
-    }
-
     public Propietario buscarPropietarioPorCedula(String cedula) {
-        if (cedula == null) return null;
+        if (cedula == null)
+            return null;
         for (Propietario p : propietarios) {
             if (cedula.equals(p.getCedula())) {
                 return p;
@@ -114,5 +105,4 @@ public class ServicioUsuarios {
         }
         return null;
     }
-
 }
