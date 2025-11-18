@@ -101,7 +101,7 @@ public class ServicioTransito {
             throw new PeajeException("Debe especificar una bonificación");
         }
 
-        if (propietario.tieneBonificacionDeTipoEnPuesto(propietario, tipoBonificacion, puesto)) {
+        if (propietario.tieneBonificacionDeTipoEnPuesto(puesto)) {
             throw new PeajeException("Ya tiene una bonificación de ese tipo para el puesto seleccionado");
         }
 
@@ -111,7 +111,8 @@ public class ServicioTransito {
                 new Date(),
                 bonificacion,
                 propietario,
-                puesto);
+                puesto
+                );
 
         propietario.asignarBonificacion(ab);
 
@@ -146,75 +147,6 @@ public class ServicioTransito {
         transito.setBonificacionAplicada(bonificacionElegida);
         return montoFinal;
     }
-
-    // public Transito emularTransito(Vehiculo vehiculo, Puesto puesto, Date fechaHora) throws PeajeException {
-    //     if (vehiculo == null)
-    //         throw new PeajeException("Vehículo nulo");
-    //     if (puesto == null)
-    //         throw new PeajeException("Puesto nulo");
-    //     if (fechaHora == null)
-    //         fechaHora = new Date();
-
-    //     // Tarifa por categoría
-    //     Tarifa tarifa = puesto.getTarifaPorCategoria(vehiculo.getCategoriaVehiculo());
-    //     if (tarifa == null) {
-    //         throw new PeajeException("No hay tarifa para la categoría del vehículo en el puesto");
-    //     }
-
-    //     // Propietario
-    //     Propietario propietario = vehiculo.getPropietario();
-    //     if (propietario == null) {
-    //         throw new PeajeException("El vehículo no tiene propietario");
-    //     }
-
-    //     // Estado del propietario
-    //     EstadoPropietario estado = propietario.getEstadoPropietario();
-
-    //     // Si NO puede realizar tránsito...
-    //     if (!estado.puedeRealizarTransito()) {
-    //         if (estado instanceof EstadoPropietarioDeshabilitado) {
-    //             throw new PeajeException("El propietario del vehículo está deshabilitado, no puede realizar tránsitos");
-    //         } else if (estado instanceof EstadoPropietarioSuspendido) {
-    //             throw new PeajeException("El propietario del vehículo está suspendido, no puede realizar tránsitos");
-    //         } else {
-    //             throw new PeajeException("El propietario no puede realizar tránsitos");
-    //         }
-    //     }
-
-    //     // Armo el tránsito base
-    //     Transito transito = new Transito(fechaHora, vehiculo, null, puesto, tarifa, 0.0);
-
-    //     // Calcula monto final según si puede recibir bonificaciones
-    //     double montoFinal;
-    //     if (estado.puedeRecibirBonificaciones()) {
-    //         montoFinal = calcularMontoFinal(transito);
-    //     } else {
-    //         // No puede recibir bonificaciones
-    //         montoFinal = tarifa.getMonto();
-    //         transito.setBonificacionAplicada(null);
-    //     }
-
-    //     // Verificar saldo suficiente
-    //     propietario.validarSaldoSuficiente(montoFinal);
-
-    //     // Descontar saldo
-    //     propietario.descontarSaldo(montoFinal);
-
-    //     transito.setMontoCobrado(montoFinal);
-    //     // transito.setNotificacion(notificacionTransito);
-
-    //     vehiculo.registrarTransito(transito);
-    //     listaTransitos.add(transito);
-
-    //     //notificacion
-
-    //     //Crear notificación para el propietario
-    //     String mensaje = "Nuevo tránsito en " + puesto.getNombre() +
-    //              " del vehículo " + vehiculo.getMatricula() +
-    //              ". Monto cobrado: $" + montoFinal;
-
-    //     return transito;
-    // }
 
     public Transito emularTransito(Vehiculo vehiculo, Puesto puesto, Date fechaHora) throws PeajeException {
 
@@ -260,7 +192,7 @@ public class ServicioTransito {
     vehiculo.registrarTransito(transito);
     listaTransitos.add(transito);
 
-    // 🔔 DISPARAR NOTIFICACIONES desde métodos especializados
+    // DISPARAR NOTIFICACIONES desde métodos especializados
     notificarTransito(propietario, puesto);
 
     if (propietario.getSaldoActual() < 100) {

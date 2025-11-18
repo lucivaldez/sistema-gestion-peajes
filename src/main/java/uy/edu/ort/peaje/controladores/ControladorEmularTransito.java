@@ -79,6 +79,12 @@ public class ControladorEmularTransito {
                 return Respuesta.lista(new Respuesta("error", "No existe el vehículo."));
             }
 
+            if (fechaHoraStr == null || fechaHoraStr.isBlank()) {
+                return Respuesta.lista(
+                new Respuesta("error", "Debe ingresar una fecha para emular el tránsito.")
+                );
+            }
+            
             Date fechaHora = parsearFecha(fechaHoraStr);
 
             Date ahora = new Date();
@@ -105,10 +111,6 @@ public class ControladorEmularTransito {
 
 
     private Date parsearFecha(String fechaHoraStr){
-        if(fechaHoraStr == null || fechaHoraStr.isBlank()){
-            return new Date();
-        }
-
         String limpio = fechaHoraStr.replace("T", " ") + ":00";
         return java.sql.Timestamp.valueOf(limpio);
     }

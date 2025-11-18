@@ -77,15 +77,11 @@ public class Propietario extends Usuario {
         this.notificaciones = notificaciones;
     }
 
-    public boolean tieneBonificacionDeTipoEnPuesto(Propietario p, String tipoBonificacion, Puesto puesto) {
-        if (p == null || puesto == null || tipoBonificacion == null)
+    public boolean tieneBonificacionDeTipoEnPuesto(Puesto puesto) {
+        if (puesto == null)
             return false;
-
-        for (AsignacionBonificacion ab : p.bonificacionesPara(puesto)) {
-            String nombreExistente = ab.getBonificacion().getnombre();
-            if (nombreExistente != null && nombreExistente.equalsIgnoreCase(tipoBonificacion)) {
-                return true;
-            }
+        for (AsignacionBonificacion ab : this.bonificacionesPara(puesto)) {
+            return true;
         }
         return false;
     }
@@ -98,9 +94,15 @@ public class Propietario extends Usuario {
 
 
     public void validarSaldoSuficiente(double monto) throws PeajeException {
-        if (getSaldoActual() < monto)
-            throw new PeajeException("Saldo insuficiente: $ " + String.format("%.2f", getSaldoActual()));
-    }
+        double saldo = getSaldoActual();
+        if (saldo < monto){
+            throw new PeajeException(
+            "Saldo insuficiente: " 
+            + " El propietario tiene $" + String.format("%.2f", saldo)
+            );
+
+        } 
+    }   
 
     public void descontarSaldo(double monto) {
         setSaldoActual(getSaldoActual() - (int) monto);
