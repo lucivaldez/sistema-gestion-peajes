@@ -13,7 +13,6 @@ import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
 import uy.edu.ort.peaje.modelo.CategoriaVehiculo;
 import uy.edu.ort.peaje.modelo.EstadoPropietario;
-import uy.edu.ort.peaje.modelo.Notificacion;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Puesto;
 import uy.edu.ort.peaje.modelo.Sesion;
@@ -37,7 +36,8 @@ public class Fachada extends Observable{
         usuarioDesconectado, 
         nuevoTransito, 
         saldoBajo, 
-        cambioEstadoPropietario
+        cambioEstadoPropietario,
+        nuevaBonificacion
     }
     
     private Fachada(){

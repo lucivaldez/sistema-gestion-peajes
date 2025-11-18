@@ -27,7 +27,7 @@ import uy.edu.ort.peaje.utils.Respuesta;
 @RequestMapping("/bonificaciones")
 @Scope("session")
 public class ControladorAsignarBonificaciones {
-
+    
     private List<TipoBonificacion> tiposBonificacion;
 
     @GetMapping("/vistaConectada")

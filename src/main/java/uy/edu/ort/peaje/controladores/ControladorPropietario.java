@@ -17,7 +17,6 @@ import uy.edu.ort.peaje.dtos.NotificacionDto;
 import uy.edu.ort.peaje.dtos.PropietarioDto;
 import uy.edu.ort.peaje.dtos.TransitoTableroDto;
 import uy.edu.ort.peaje.dtos.VehiculoTableroDto;
-import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.AsignacionBonificacion;
 import uy.edu.ort.peaje.modelo.Notificacion;
 import uy.edu.ort.peaje.modelo.Transito;
@@ -71,7 +70,8 @@ public class ControladorPropietario implements Observador {
     public void actualizar(Object evento, Observable origen) {
     if (evento.equals(Fachada.Eventos.nuevoTransito) ||
         evento.equals(Fachada.Eventos.cambioEstadoPropietario) ||
-        evento.equals(Fachada.Eventos.saldoBajo)) 
+        evento.equals(Fachada.Eventos.saldoBajo) ||
+        evento.equals(Fachada.Eventos.nuevaBonificacion)) 
     {
         Propietario p = propietarioActual;
 

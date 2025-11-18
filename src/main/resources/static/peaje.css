@@ -665,3 +665,28 @@ page-emular-transito .et-btn:active {
     padding-top: 8px;
   }
 }
+
+/* ======== ESTILO PARA EL DATETIME-LOCAL ======== */
+.et-input-datetime {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccd1d5;
+  border-radius: 6px;
+  font-size: 15px;
+  background-color: #fff;
+  color: #2c3e50;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.et-input-datetime:focus {
+  border-color: #0077cc;
+  box-shadow: 0 0 0 3px rgba(0, 119, 204, 0.25);
+  outline: none;
+}
+
+/* Placeholder uniforme cuando el campo está vacío */
+.et-input-datetime:invalid::-webkit-datetime-edit {
+  color: #6c7a89;
+  opacity: 0.7;
+}

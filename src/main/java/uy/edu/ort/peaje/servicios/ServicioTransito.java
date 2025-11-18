@@ -12,8 +12,6 @@ import uy.edu.ort.peaje.modelo.AsignacionBonificacion;
 import uy.edu.ort.peaje.modelo.Bonificacion;
 import uy.edu.ort.peaje.modelo.CategoriaVehiculo;
 import uy.edu.ort.peaje.modelo.EstadoPropietario;
-import uy.edu.ort.peaje.modelo.EstadoPropietarioDeshabilitado;
-import uy.edu.ort.peaje.modelo.EstadoPropietarioSuspendido;
 import uy.edu.ort.peaje.modelo.FabricaBonificaciones;
 import uy.edu.ort.peaje.modelo.Notificacion;
 import uy.edu.ort.peaje.modelo.Propietario;
@@ -24,7 +22,6 @@ import uy.edu.ort.peaje.modelo.TipoNotificacion;
 import uy.edu.ort.peaje.modelo.Transito;
 import uy.edu.ort.peaje.modelo.Vehiculo;
 import uy.edu.ort.peaje.servicios.fachada.Fachada;
-import uy.edu.ort.peaje.servicios.fachada.Fachada.Eventos;
 
 public class ServicioTransito {
 
@@ -117,6 +114,9 @@ public class ServicioTransito {
                 puesto);
 
         propietario.asignarBonificacion(ab);
+
+        Fachada.getInstancia().avisar(Fachada.Eventos.nuevaBonificacion);
+
     }
 
     public double calcularMontoFinal(Transito transito) {
@@ -456,12 +456,11 @@ public class ServicioTransito {
     public void notificarCambioEstado(Propietario p) {
         Notificacion n = new Notificacion(
             TipoNotificacion.CAMBIO_ESTADO,
-            "Tu estado cambió a: " + p.getEstadoPropietario(),
+            "Tu estado cambió a: " + p.getEstadoPropietario().getNombre(),
             p
         );
         p.getNotificaciones().add(n);
 
-        //dispara el evento para actualizar las notificaciones en la interfaz
         Fachada.getInstancia().avisar(Fachada.Eventos.cambioEstadoPropietario);
     }
 

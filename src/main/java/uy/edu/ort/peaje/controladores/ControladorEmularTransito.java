@@ -2,6 +2,8 @@ package uy.edu.ort.peaje.controladores;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -77,7 +79,14 @@ public class ControladorEmularTransito {
                 return Respuesta.lista(new Respuesta("error", "No existe el vehículo."));
             }
 
-            Date fechaHora = parsearFechaHora(fechaHoraStr);
+            Date fechaHora = parsearFecha(fechaHoraStr);
+
+            Date ahora = new Date();
+            if (fechaHora.after(ahora)) {
+                    return Respuesta.lista(
+                    new Respuesta("error", "La fecha del tránsito no puede ser posterior a la actual.")
+                );
+            }
 
             Transito nuevo = Fachada.getInstancia().emularTransito(v, p, fechaHora);
 
@@ -87,7 +96,6 @@ public class ControladorEmularTransito {
                     new Respuesta("resultado", resultadoDto),
                     new Respuesta("mensaje","Tránsito emulado correctamente"),
                     new Respuesta("limpiarFormulario", null));
-
         } catch (PeajeException e) {
             return Respuesta.lista(new Respuesta("error", e.getMessage()));
         } catch (Exception e) {
@@ -95,20 +103,14 @@ public class ControladorEmularTransito {
         }
     }
 
-    private Date parsearFechaHora(String fechaHoraStr) throws PeajeException {
 
-        if (fechaHoraStr == null || fechaHoraStr.isBlank()) {
-            throw new PeajeException("Debe ingresar la fecha y hora del tránsito (formato yyyy-MM-dd HH:mm).");
+    private Date parsearFecha(String fechaHoraStr){
+        if(fechaHoraStr == null || fechaHoraStr.isBlank()){
+            return new Date();
         }
 
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            sdf.setLenient(false);
-            return sdf.parse(fechaHoraStr);
-
-        } catch (ParseException e) {
-            throw new PeajeException("Formato de fecha inválido. Use yyyy-MM-dd HH:mm.");
-        }
+        String limpio = fechaHoraStr.replace("T", " ") + ":00";
+        return java.sql.Timestamp.valueOf(limpio);
     }
 
     private Respuesta listarTarifasPorPuesto(String nombrePuesto) {
