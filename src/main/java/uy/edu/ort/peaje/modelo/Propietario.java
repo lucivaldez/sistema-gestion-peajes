@@ -89,6 +89,13 @@ public class Propietario extends Usuario {
         }
         return false;
     }
+    
+    public void agregarVehiculo(Vehiculo v) {
+        if (v != null && !vehiculos.contains(v)) {
+            vehiculos.add(v);
+        }
+    }
+
 
     public void validarSaldoSuficiente(double monto) throws PeajeException {
         if (getSaldoActual() < monto)

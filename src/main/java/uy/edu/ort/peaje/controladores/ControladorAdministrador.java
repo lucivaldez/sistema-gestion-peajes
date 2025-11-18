@@ -36,8 +36,6 @@ public class ControladorAdministrador implements Observador{
              return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "index.html"));
          }
          Fachada.getInstancia().agregarObservador(this);
-
-
         return Respuesta.lista(
             new Respuesta("sesiones", SesionDto.listaSesionesDto(Fachada.getInstancia().getSesiones()))
         );

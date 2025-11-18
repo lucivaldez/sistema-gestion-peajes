@@ -3,13 +3,17 @@ package uy.edu.ort.peaje.servicios;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import uy.edu.ort.peaje.dtos.BonificacionAsignadaDto;
+import uy.edu.ort.peaje.dtos.NotificacionDto;
 import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
+import uy.edu.ort.peaje.modelo.AsignacionBonificacion;
 import uy.edu.ort.peaje.modelo.EstadoPropietario;
+import uy.edu.ort.peaje.modelo.Notificacion;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Sesion;
 import uy.edu.ort.peaje.modelo.Usuario;
-import uy.edu.ort.peaje.modelo.Vehiculo;
 import uy.edu.ort.peaje.servicios.fachada.Fachada;
 
 public class ServicioUsuarios {
@@ -105,4 +109,32 @@ public class ServicioUsuarios {
         }
         return null;
     }
+    public void borrarNotificaciones(Propietario propietario) {
+        if (propietario == null) return;
+        if (propietario.getNotificaciones() == null) return;
+        propietario.getNotificaciones().clear();
+    }
+
+    public List<BonificacionAsignadaDto> construirBonificacionesAsignadas(Propietario propietario) {
+        List<BonificacionAsignadaDto> res = new ArrayList<>();
+        if (propietario == null) return res;
+
+        for (AsignacionBonificacion ab : propietario.getAsignacionBonificacion()) {
+            res.add(new BonificacionAsignadaDto(ab));
+        }
+        return res;
+    }
+
+    public List<NotificacionDto> construirNotificacionesDto(Propietario propietario) {
+        List<NotificacionDto> res = new ArrayList<>();
+        if (propietario == null || propietario.getNotificaciones() == null) return res;
+
+        for (Notificacion n : propietario.getNotificaciones()) {
+            res.add(new NotificacionDto(n));
+        }
+        return res;
+    }
+
+    
+
 }

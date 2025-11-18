@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import uy.edu.ort.peaje.dtos.ResultadoDto;
+import uy.edu.ort.peaje.dtos.TransitoTableroDto;
+import uy.edu.ort.peaje.dtos.VehiculoTableroDto;
 import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.AsignacionBonificacion;
 import uy.edu.ort.peaje.modelo.Bonificacion;
@@ -13,13 +15,16 @@ import uy.edu.ort.peaje.modelo.EstadoPropietario;
 import uy.edu.ort.peaje.modelo.EstadoPropietarioDeshabilitado;
 import uy.edu.ort.peaje.modelo.EstadoPropietarioSuspendido;
 import uy.edu.ort.peaje.modelo.FabricaBonificaciones;
+import uy.edu.ort.peaje.modelo.Notificacion;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Puesto;
 import uy.edu.ort.peaje.modelo.Tarifa;
 import uy.edu.ort.peaje.modelo.TipoBonificacion;
+import uy.edu.ort.peaje.modelo.TipoNotificacion;
 import uy.edu.ort.peaje.modelo.Transito;
 import uy.edu.ort.peaje.modelo.Vehiculo;
 import uy.edu.ort.peaje.servicios.fachada.Fachada;
+import uy.edu.ort.peaje.servicios.fachada.Fachada.Eventos;
 
 public class ServicioTransito {
 
@@ -82,6 +87,10 @@ public class ServicioTransito {
     public ArrayList<Vehiculo> getVehiculos() {
         return vehiculos;
     }
+    
+    public void agregarVehiculoAPropietario(Propietario p, Vehiculo v){
+        p.agregarVehiculo(v);
+    }
 
     public void asignarBonificacion(Propietario propietario, String tipoBonificacion, Puesto puesto)
             throws PeajeException {
@@ -138,97 +147,129 @@ public class ServicioTransito {
         return montoFinal;
     }
 
+    // public Transito emularTransito(Vehiculo vehiculo, Puesto puesto, Date fechaHora) throws PeajeException {
+    //     if (vehiculo == null)
+    //         throw new PeajeException("Vehículo nulo");
+    //     if (puesto == null)
+    //         throw new PeajeException("Puesto nulo");
+    //     if (fechaHora == null)
+    //         fechaHora = new Date();
+
+    //     // Tarifa por categoría
+    //     Tarifa tarifa = puesto.getTarifaPorCategoria(vehiculo.getCategoriaVehiculo());
+    //     if (tarifa == null) {
+    //         throw new PeajeException("No hay tarifa para la categoría del vehículo en el puesto");
+    //     }
+
+    //     // Propietario
+    //     Propietario propietario = vehiculo.getPropietario();
+    //     if (propietario == null) {
+    //         throw new PeajeException("El vehículo no tiene propietario");
+    //     }
+
+    //     // Estado del propietario
+    //     EstadoPropietario estado = propietario.getEstadoPropietario();
+
+    //     // Si NO puede realizar tránsito...
+    //     if (!estado.puedeRealizarTransito()) {
+    //         if (estado instanceof EstadoPropietarioDeshabilitado) {
+    //             throw new PeajeException("El propietario del vehículo está deshabilitado, no puede realizar tránsitos");
+    //         } else if (estado instanceof EstadoPropietarioSuspendido) {
+    //             throw new PeajeException("El propietario del vehículo está suspendido, no puede realizar tránsitos");
+    //         } else {
+    //             throw new PeajeException("El propietario no puede realizar tránsitos");
+    //         }
+    //     }
+
+    //     // Armo el tránsito base
+    //     Transito transito = new Transito(fechaHora, vehiculo, null, puesto, tarifa, 0.0);
+
+    //     // Calcula monto final según si puede recibir bonificaciones
+    //     double montoFinal;
+    //     if (estado.puedeRecibirBonificaciones()) {
+    //         montoFinal = calcularMontoFinal(transito);
+    //     } else {
+    //         // No puede recibir bonificaciones
+    //         montoFinal = tarifa.getMonto();
+    //         transito.setBonificacionAplicada(null);
+    //     }
+
+    //     // Verificar saldo suficiente
+    //     propietario.validarSaldoSuficiente(montoFinal);
+
+    //     // Descontar saldo
+    //     propietario.descontarSaldo(montoFinal);
+
+    //     transito.setMontoCobrado(montoFinal);
+    //     // transito.setNotificacion(notificacionTransito);
+
+    //     vehiculo.registrarTransito(transito);
+    //     listaTransitos.add(transito);
+
+    //     //notificacion
+
+    //     //Crear notificación para el propietario
+    //     String mensaje = "Nuevo tránsito en " + puesto.getNombre() +
+    //              " del vehículo " + vehiculo.getMatricula() +
+    //              ". Monto cobrado: $" + montoFinal;
+
+    //     return transito;
+    // }
+
     public Transito emularTransito(Vehiculo vehiculo, Puesto puesto, Date fechaHora) throws PeajeException {
-        if (vehiculo == null)
-            throw new PeajeException("Vehículo nulo");
-        if (puesto == null)
-            throw new PeajeException("Puesto nulo");
-        if (fechaHora == null)
-            fechaHora = new Date();
 
-        // Tarifa por categoría
-        Tarifa tarifa = puesto.getTarifaPorCategoria(vehiculo.getCategoriaVehiculo());
-        if (tarifa == null) {
-            throw new PeajeException("No hay tarifa para la categoría del vehículo en el puesto");
-        }
+    if (vehiculo == null)
+        throw new PeajeException("Vehículo nulo");
+    if (puesto == null)
+        throw new PeajeException("Puesto nulo");
+    if (fechaHora == null)
+        fechaHora = new Date();
 
-        // Propietario
-        Propietario propietario = vehiculo.getPropietario();
-        if (propietario == null) {
-            throw new PeajeException("El vehículo no tiene propietario");
-        }
+    // Tarifa por categoría
+    Tarifa tarifa = puesto.getTarifaPorCategoria(vehiculo.getCategoriaVehiculo());
+    if (tarifa == null)
+        throw new PeajeException("No hay tarifa para la categoría del vehículo en este puesto");
 
-        // Estado del propietario
-        EstadoPropietario estado = propietario.getEstadoPropietario();
+    // Propietario
+    Propietario propietario = vehiculo.getPropietario();
+    if (propietario == null)
+        throw new PeajeException("El vehículo no tiene propietario");
 
-        // Si NO puede realizar tránsito...
-        if (!estado.puedeRealizarTransito()) {
-            if (estado instanceof EstadoPropietarioDeshabilitado) {
-                throw new PeajeException("El propietario del vehículo está deshabilitado, no puede realizar tránsitos");
-            } else if (estado instanceof EstadoPropietarioSuspendido) {
-                throw new PeajeException("El propietario del vehículo está suspendido, no puede realizar tránsitos");
-            } else {
-                throw new PeajeException("El propietario no puede realizar tránsitos");
-            }
-        }
+    // Estado
+    EstadoPropietario estado = propietario.getEstadoPropietario();
+    if (!estado.puedeRealizarTransito())
+        throw new PeajeException("El propietario no puede realizar tránsitos");
 
-        // Armo el tránsito base
-        Transito transito = new Transito(fechaHora, vehiculo, null, puesto, tarifa, 0.0);
+    // Crear tránsito base
+    Transito transito = new Transito(fechaHora, vehiculo, null, puesto, tarifa, 0.0);
 
-        // Calcula monto final según si puede recibir bonificaciones
-        double montoFinal;
-        if (estado.puedeRecibirBonificaciones()) {
-            montoFinal = calcularMontoFinal(transito);
-        } else {
-            // No puede recibir bonificaciones
-            montoFinal = tarifa.getMonto();
-            transito.setBonificacionAplicada(null);
-        }
+    // Calcular monto
+    double montoFinal = estado.puedeRecibirBonificaciones()
+            ? calcularMontoFinal(transito)
+            : tarifa.getMonto();
 
-        // Verificar saldo suficiente
-        propietario.validarSaldoSuficiente(montoFinal);
+    if (!estado.puedeRecibirBonificaciones())
+        transito.setBonificacionAplicada(null);
 
-        // Descontar saldo
-        propietario.descontarSaldo(montoFinal);
+    // Validar y descontar saldo
+    propietario.validarSaldoSuficiente(montoFinal);
+    propietario.descontarSaldo(montoFinal);
+    transito.setMontoCobrado(montoFinal);
 
-        // Notificaciones
-        // Notificacion notificacionTransito = null;
+    // Registrar tránsito
+    vehiculo.registrarTransito(transito);
+    listaTransitos.add(transito);
 
-        // if (estado.puedeSerNotificado()) {
-        // Date ahora = new Date();
+    // 🔔 DISPARAR NOTIFICACIONES desde métodos especializados
+    notificarTransito(propietario, puesto);
 
-        // // Notificación de tránsito
-        // String mensajeTransito = "[" + ahora + "] " +
-        // "Pasaste por el puesto " + puesto.getNombre() +
-        // " con el vehículo " + vehiculo.getMatricula();
-
-        // notificacionTransito = new Notificacion(ahora, mensajeTransito);
-        // propietario.getNotificaciones().add(notificacionTransito);
-        // // Si tenés un método tipo propietario.registrar(notificacionTransito), usalo
-        // en vez del getNotificaciones().add(...)
-
-        // // Notificación de saldo bajo
-        // int saldoLuego = propietario.getSaldoActual();
-        // int saldoMinimoAlerta = propietario.getSaldoMinimo();
-
-        // if (saldoLuego < saldoMinimoAlerta) {
-        // String mensajeSaldo = "[" + ahora + "] " +
-        // "Tu saldo actual es de $ " + saldoLuego +
-        // " Te recomendamos hacer una recarga";
-
-        // Notificacion notificacionSaldo = new Notificacion(ahora, mensajeSaldo);
-        // propietario.getNotificaciones().add(notificacionSaldo);
-        // }
-        // }
-
-        transito.setMontoCobrado(montoFinal);
-        // transito.setNotificacion(notificacionTransito);
-
-        vehiculo.registrarTransito(transito);
-        listaTransitos.add(transito);
-
-        return transito;
+    if (propietario.getSaldoActual() < 100) {
+        notificarSaldoBajo(propietario);
     }
+
+    return transito;
+}
+
 
     public Puesto buscarPuestoPorNombre(String nombre) {
         if (nombre == null)
@@ -305,4 +346,123 @@ public class ServicioTransito {
         }
         return null;
     }
+    public List<Transito> obtenerTransitosDePropietario(Propietario propietario) {
+        List<Transito> resultado = new ArrayList<>();
+        if (propietario == null) return resultado;
+
+        String cedulaProp = propietario.getCedula();
+
+        for (Transito t : listaTransitos) {
+            if (t == null || t.getVehiculo() == null || t.getVehiculo().getPropietario() == null) continue;
+
+            Propietario dueño = t.getVehiculo().getPropietario();
+            if (dueño.getCedula() != null && dueño.getCedula().equals(cedulaProp)) {
+                resultado.add(t);
+            }
+        }
+
+        resultado.sort((t1, t2) -> t2.getFechaHora().compareTo(t1.getFechaHora()));
+        return resultado;
+    }
+
+    public List<VehiculoTableroDto> construirVehiculosTablero(Propietario propietario) {
+        List<VehiculoTableroDto> vehiculosDto = new ArrayList<>();
+        if (propietario == null) return vehiculosDto;
+
+        List<Transito> transitosProp = obtenerTransitosDePropietario(propietario);
+
+        for (Vehiculo v : propietario.getVehiculos()) {
+            int cantidad = 0;
+            double montoTotal = 0.0;
+
+            for (Transito t : transitosProp) {
+                if (t.getVehiculo() != null
+                        && t.getVehiculo().getMatricula().equalsIgnoreCase(v.getMatricula())) {
+                    cantidad++;
+                    montoTotal += t.getMontoCobrado();
+                }
+            }
+
+            vehiculosDto.add(new VehiculoTableroDto(v, cantidad, montoTotal));
+        }
+
+        return vehiculosDto;
+    }
+
+    public List<TransitoTableroDto> construirTransitosTablero(Propietario propietario) {
+        List<TransitoTableroDto> dto = new ArrayList<>();
+        if (propietario == null) return dto;
+
+        List<Transito> transitosProp = obtenerTransitosDePropietario(propietario);
+        for (Transito t : transitosProp) {
+            dto.add(new TransitoTableroDto(t));
+        }
+        return dto;
+    }
+
+    public int cantidadTransitosVehiculo(Vehiculo v, Propietario p) {
+        List<Transito> transitosProp = obtenerTransitosDePropietario(p);
+        int cantidad = 0;
+
+        for (Transito t : transitosProp) {
+            if (t.getVehiculo() != null &&
+                t.getVehiculo().getMatricula().equalsIgnoreCase(v.getMatricula())) {
+                cantidad++;
+            }
+        }
+        return cantidad;
+    }
+
+    public double montoTotalVehiculo(Vehiculo v, Propietario p) {
+        List<Transito> transitosProp = obtenerTransitosDePropietario(p);
+        double total = 0;
+
+        for (Transito t : transitosProp) {
+            if (t.getVehiculo() != null &&
+                t.getVehiculo().getMatricula().equalsIgnoreCase(v.getMatricula())) {
+                total += t.getMontoCobrado();
+            }
+        }
+        return total;
+    }
+
+
+
+    //NOTIFICACIONES
+
+    public void notificarTransito(Propietario p, Puesto puesto) {
+    Notificacion n = new Notificacion(
+        TipoNotificacion.TRANSITO,
+        "Tránsito registrado en " + puesto.getNombre(),
+        p
+    );
+    p.getNotificaciones().add(n);
+
+    Fachada.getInstancia().avisar(Fachada.Eventos.nuevoTransito);
+    }
+
+    public void notificarSaldoBajo(Propietario p) {
+
+        Notificacion n = new Notificacion(
+            TipoNotificacion.SALDO_BAJO,
+            "Saldo bajo: $" + p.getSaldoActual(),
+            p
+        );
+        p.getNotificaciones().add(n);
+
+        Fachada.getInstancia().avisar(Fachada.Eventos.saldoBajo);
+    }
+
+    public void notificarCambioEstado(Propietario p) {
+        Notificacion n = new Notificacion(
+            TipoNotificacion.CAMBIO_ESTADO,
+            "Tu estado cambió a: " + p.getEstadoPropietario(),
+            p
+        );
+        p.getNotificaciones().add(n);
+
+        //dispara el evento para actualizar las notificaciones en la interfaz
+        Fachada.getInstancia().avisar(Fachada.Eventos.cambioEstadoPropietario);
+    }
+
 }

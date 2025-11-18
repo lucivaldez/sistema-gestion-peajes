@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Tablero de control del propietario</title>
+
+    <link rel="stylesheet" href="peaje.css" />
+    <link rel="stylesheet" href="tableroProp.css" />
+    <script src="vistaWeb.js"></script>
+  </head>
+
+  <body class="page-tablero-prop">
+    <script src="utilesVista.js"></script>
+
+    <main class="et-container">
+      <!-- MINI RESUMEN SUPERIOR + SALIR -->
+      <section class="et-card tp-mini-summary">
+        <div class="tp-mini-grid">
+          <div class="tp-mini-item">
+            <span class="tp-label">NOMBRE COMPLETO</span>
+            <span class="tp-value" id="miniNombre">—</span>
+          </div>
+          <div class="tp-mini-item">
+            <span class="tp-label">ESTADO</span>
+            <span class="tp-value" id="miniEstado">—</span>
+          </div>
+          <div class="tp-mini-item">
+            <span class="tp-label">SALDO ACTUAL</span>
+            <span class="tp-value" id="miniSaldo">$ 0,00</span>
+          </div>
+        </div>
+        <a href="index.html" class="tp-link-salir">Salir</a>
+      </section>
+
+      <!-- CARD PRINCIPAL -->
+      <section class="et-card tp-main-card">
+        <!-- Header con título grande -->
+        <header class="et-card__header tp-main-header">
+          <div class="et-title">
+            <span class="et-dot" aria-hidden="true"></span>
+            <h1>Tablero de control del propietario</h1>
+          </div>
+        </header>
+
+        <!-- Resumen del propietario -->
+        <section class="tp-card tp-summary-card">
+          <h2 class="tp-card__title">Resumen del propietario</h2>
+          <div class="tp-summary-row">
+            <div class="tp-summary-item">
+              <span class="tp-label">NOMBRE COMPLETO</span>
+              <span class="tp-value" id="resNombre">—</span>
+            </div>
+            <div class="tp-summary-item">
+              <span class="tp-label">ESTADO</span>
+              <span class="tp-value" id="resEstado">—</span>
+            </div>
+            <div class="tp-summary-item tp-summary-item--saldo">
+              <span class="tp-label">SALDO ACTUAL</span>
+              <span class="tp-value" id="resSaldo">$ 0,00</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Bonificaciones + Vehículos -->
+        <section class="tp-grid-2cols">
+          <!-- Bonificaciones asignadas -->
+          <article class="tp-card">
+            <h2 class="tp-card__title">Bonificaciones asignadas</h2>
+            <div class="tp-table-wrapper">
+              <table class="tp-table">
+                <thead>
+                  <tr>
+                    <th>Bonificación</th>
+                    <th>Puesto</th>
+                    <th>Fecha asignada</th>
+                  </tr>
+                </thead>
+                <tbody id="tblBonif">
+                  <tr class="tp-empty-row">
+                    <td colspan="3">No hay bonificaciones asignadas.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <!-- Vehículos registrados -->
+          <article class="tp-card">
+            <h2 class="tp-card__title">Vehículos registrados</h2>
+            <div class="tp-table-wrapper">
+              <table class="tp-table">
+                <thead>
+                  <tr>
+                    <th>Matrícula</th>
+                    <th>Modelo</th>
+                    <th>Color</th>
+                    <th>Tránsitos</th>
+                    <th>Monto total</th>
+                  </tr>
+                </thead>
+                <tbody id="tblVehiculos">
+                  <tr class="tp-empty-row">
+                    <td colspan="5">No hay vehículos registrados.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <!-- Tránsitos realizados -->
+        <section class="tp-card">
+          <h2 class="tp-card__title">Tránsitos realizados</h2>
+          <div class="tp-table-wrapper">
+            <table class="tp-table tp-table--scroll">
+              <thead>
+                <tr>
+                  <th>Puesto</th>
+                  <th>Matrícula</th>
+                  <th>Categoría</th>
+                  <th>Monto tarifa</th>
+                  <th>Bonificación</th>
+                  <th>Monto bonificación</th>
+                  <th>Monto pagado</th>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                </tr>
+              </thead>
+              <tbody id="tblTransitos">
+                <tr class="tp-empty-row">
+                  <td colspan="9">No hay tránsitos registrados.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Notificaciones -->
+        <section class="tp-card tp-notificaciones">
+          <div class="tp-notificaciones-header">
+            <h2 class="tp-card__title">Notificaciones del sistema</h2>
+            <button
+              type="button"
+              class="tp-btn-danger"
+              id="btnBorrarNotificaciones"
+            >
+              Borrar notificaciones
+            </button>
+          </div>
+
+          <div class="tp-table-wrapper">
+            <table class="tp-table">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Mensaje</th>
+                </tr>
+              </thead>
+              <tbody id="tblNotifs">
+                <tr class="tp-empty-row">
+                  <td colspan="3">No hay notificaciones para mostrar.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <footer class="et-footer">
+          © 2025 — Tablero de control del propietario
+        </footer>
+      </section>
+    </main>
+
+    <!-- JS estilo "asignar bonificaciones" -->
+    <script>
+      // Endpoint para cargar todo el tablero
+      urlIniciarVista = "/menuProp/vistaConectada";
+      urlRegistroSSE = "/menuProp/registrarSSE";
+
+      var parametrosInicioVista = "";
+
+      // Refs de resumen mini
+      const miniNombre = document.getElementById("miniNombre");
+      const miniEstado = document.getElementById("miniEstado");
+      const miniSaldo = document.getElementById("miniSaldo");
+
+      // Refs de resumen grande
+      const resNombre = document.getElementById("resNombre");
+      const resEstado = document.getElementById("resEstado");
+      const resSaldo = document.getElementById("resSaldo");
+
+      // Tablas
+      const tblBonif = document.getElementById("tblBonif");
+      const tblVehiculos = document.getElementById("tblVehiculos");
+      const tblTransitos = document.getElementById("tblTransitos");
+      const tblNotifs = document.getElementById("tblNotifs");
+
+      const btnBorrar = document.getElementById("btnBorrarNotificaciones");
+
+      document.addEventListener("DOMContentLoaded", function () {
+        submit(urlIniciarVista, parametrosInicioVista, "GET");
+
+        btnBorrar.addEventListener("click", function () {
+          submit("/propietario/borrarNotificaciones", "", "POST");
+        });
+      });
+
+      // Helpers simples
+      function formatoPesos(valor) {
+        const n = Number(valor || 0);
+        return (
+          "$ " +
+          n.toLocaleString("es-UY", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+        );
+      }
+
+      function fechaStr(millis) {
+        if (!millis) return "-";
+        return new Date(millis).toLocaleDateString("es-UY");
+      }
+
+      function horaStr(millis) {
+        if (!millis) return "-";
+        return new Date(millis).toLocaleTimeString("es-UY", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
+
+      function mostrar_usuarioNoAutenticado(urlDestino) {
+        window.location.href = urlDestino;
+      }
+
+      // PropietarioDto
+      function mostrar_propietario(dto) {
+        if (!dto) return;
+
+        // Mini resumen
+        miniNombre.textContent = dto.nombreCompleto || "—";
+        miniEstado.textContent = dto.estado || "—";
+        miniSaldo.textContent = formatoPesos(dto.saldoActual);
+
+        // Resumen grande
+        resNombre.textContent = dto.nombreCompleto || "—";
+        resEstado.textContent = dto.estado || "—";
+        resSaldo.textContent = formatoPesos(dto.saldoActual);
+      }
+
+      function mostrar_bonificaciones(lista) {
+        if (!Array.isArray(lista) || !lista.length) {
+          tblBonif.innerHTML =
+            '<tr class="tp-empty-row"><td colspan="3">No hay bonificaciones asignadas.</td></tr>';
+          return;
+        }
+
+        tblBonif.innerHTML = lista
+          .map(function (b) {
+            return `
+              <tr>
+                <td>${b.nombreBonificacion}</td>
+                <td>${b.nombrePuesto}</td>
+                <td>${fechaStr(b.fechaAsignacion)}</td>
+              </tr>`;
+          })
+          .join("");
+      }
+
+      function mostrar_vehiculos(lista) {
+        if (!Array.isArray(lista) || !lista.length) {
+          tblVehiculos.innerHTML =
+            '<tr class="tp-empty-row"><td colspan="5">No hay vehículos registrados.</td></tr>';
+          return;
+        }
+
+        tblVehiculos.innerHTML = lista
+          .map(function (v) {
+            return `
+              <tr>
+                <td>${v.matricula}</td>
+                <td>${v.modelo}</td>
+                <td>${v.color}</td>
+                <td>${v.cantidadTransitos}</td>
+                <td>${formatoPesos(v.montoTotal)}</td>
+              </tr>`;
+          })
+          .join("");
+      }
+
+      function mostrar_transitos(lista) {
+        if (!Array.isArray(lista) || !lista.length) {
+          tblTransitos.innerHTML =
+            '<tr class="tp-empty-row"><td colspan="9">No hay tránsitos registrados.</td></tr>';
+          return;
+        }
+
+        tblTransitos.innerHTML = lista
+          .map(function (t) {
+            return `
+              <tr>
+                <td>${t.puesto}</td>
+                <td>${t.matricula}</td>
+                <td>${t.categoria}</td>
+                <td>${formatoPesos(t.montoTarifa)}</td>
+                <td>${t.bonificacion}</td>
+                <td>${formatoPesos(t.montoBonificacion)}</td>
+                <td>${formatoPesos(t.montoPagado)}</td>
+                <td>${fechaStr(t.fechaHora)}</td>
+                <td>${horaStr(t.fechaHora)}</td>
+              </tr>`;
+          })
+          .join("");
+      }
+
+      // Notificaciones: fechaHora, mensaje
+      function mostrar_notificaciones(lista) {
+        if (!Array.isArray(lista) || !lista.length) {
+          tblNotifs.innerHTML =
+            '<tr class="tp-empty-row"><td colspan="3">No hay notificaciones para mostrar.</td></tr>';
+          return;
+        }
+
+        tblNotifs.innerHTML = lista
+          .map(function (n) {
+            return `
+              <tr>
+                <td>${fechaStr(n.fechaHora)}</td>
+                <td>${horaStr(n.fechaHora)}</td>
+                <td>${n.mensaje}</td>
+              </tr>`;
+          })
+          .join("");
+      }
+
+      // Mensajes genéricos
+      async function mostrar_mensaje(mensaje) {
+        if (window.mostrarMensaje) {
+          await mostrarMensaje(mensaje);
+          return;
+        }
+        console.log("MENSAJE:", mensaje);
+      }
+
+      async function mostrar_error(mensaje) {
+        if (window.mostrarMensaje) {
+          await mostrarMensaje(mensaje);
+          return;
+        }
+        console.error("ERROR:", mensaje);
+      }
+
+      async function excepcionDeAplicacion(texto) {
+        if (window.mostrarMensaje) {
+          await mostrarMensaje(texto);
+          return;
+        }
+        console.error("EXCEPCIÓN:", texto);
+      }
+      // IMPORTANTE: Exponer función al iframe padre para SSE
+      window.procesarResultadosSubmit = procesarResultadosSubmit;
+    </script>
+  </body>
+</html>

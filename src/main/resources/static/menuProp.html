@@ -9,19 +9,20 @@
     <script src="sse.js"></script>
   </head>
   <body>
+    <script src="utilesVista.js"></script>
     <div class="sidebar">
       <label id="nombreCompleto"> </label>
-      <button onclick="cargarContenido('gestionContactos.html')">
-        Contactos
-      </button>
-      <button onclick="cargarContenido('busqueda.html')">Busqueda</button>
       <button onclick="logout()">Salir</button>
     </div>
     <div class="content">
-      <iframe id="contenidoFrame" src="" frameborder="0"></iframe>
+      <iframe
+        id="contenidoFrame"
+        src="tableroProp.html"
+        frameborder="0"
+      ></iframe>
     </div>
     <script>
-      urlIniciarVista = "/menuProp/vistaConectada";
+      urlIniciarVista = "/propietario/vistaConectada";
       urlRegistroSSE = "/menuProp/registrarSSE";
 
       const spnNombreCompleto = document.getElementById("nombreCompleto");

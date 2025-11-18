@@ -55,7 +55,7 @@ public class ConexionNavegador  {
 	} catch (Throwable e) {
             System.out.println("Error al enviar mensaje:" + e.getMessage());
             cerrarConexion();
-	}
+	    }
     }
     
   

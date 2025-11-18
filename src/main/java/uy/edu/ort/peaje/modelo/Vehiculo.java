@@ -102,4 +102,5 @@ public class Vehiculo {
         return ca.get(Calendar.YEAR) == cb.get(Calendar.YEAR)
                 && ca.get(Calendar.DAY_OF_YEAR) == cb.get(Calendar.DAY_OF_YEAR);
     }
+
 }

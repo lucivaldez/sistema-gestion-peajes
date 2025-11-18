@@ -18,7 +18,6 @@ import uy.edu.ort.peaje.dtos.ResultadoDto;
 import uy.edu.ort.peaje.dtos.TarifaDto;
 import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
-import uy.edu.ort.peaje.modelo.CategoriaVehiculo;
 import uy.edu.ort.peaje.modelo.Puesto;
 import uy.edu.ort.peaje.modelo.Tarifa;
 import uy.edu.ort.peaje.modelo.Transito;

@@ -89,6 +89,9 @@ public class DatosPrueba {
         Vehiculo v1 = new Vehiculo("ABC123", "Toyota Corolla", "Rojo", cat1, prop1);
         Fachada.getInstancia().agregarVehiculo(v1);
 
+        //Asignar vehiculo a propietario
+        Fachada.getInstancia().agregarVehiculoAPropietario(prop1, v1);
+
         // Agregar tipos de bonificaciones
         Fachada.getInstancia().agregarTipoBonificacion("Exonerado");
         Fachada.getInstancia().agregarTipoBonificacion("Frecuente");

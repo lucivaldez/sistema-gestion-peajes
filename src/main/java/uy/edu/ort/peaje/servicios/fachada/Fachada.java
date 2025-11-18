@@ -4,11 +4,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import uy.edu.ort.peaje.dtos.BonificacionAsignadaDto;
+import uy.edu.ort.peaje.dtos.NotificacionDto;
 import uy.edu.ort.peaje.dtos.ResultadoDto;
+import uy.edu.ort.peaje.dtos.TransitoTableroDto;
+import uy.edu.ort.peaje.dtos.VehiculoTableroDto;
 import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
 import uy.edu.ort.peaje.modelo.CategoriaVehiculo;
 import uy.edu.ort.peaje.modelo.EstadoPropietario;
+import uy.edu.ort.peaje.modelo.Notificacion;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Puesto;
 import uy.edu.ort.peaje.modelo.Sesion;
@@ -27,7 +32,13 @@ public class Fachada extends Observable{
     private ServicioUsuarios sUsuarios;
     private ServicioTransito sTransito;
 
-    public enum Eventos {nuevoUsuarioConectado,usuarioDesconectado, cambioEstadoPropietario}
+    public enum Eventos {
+        nuevoUsuarioConectado,
+        usuarioDesconectado, 
+        nuevoTransito, 
+        saldoBajo, 
+        cambioEstadoPropietario
+    }
     
     private Fachada(){
         sUsuarios = new ServicioUsuarios();
@@ -68,7 +79,7 @@ public class Fachada extends Observable{
     public List<Puesto> getPuestos() {
         return sTransito.getPuestos();
     }
-
+    
     public void agregarEstadoPropietario(EstadoPropietario ep) {
         sUsuarios.agregarEstadoPropietario(ep);
     }
@@ -95,6 +106,10 @@ public class Fachada extends Observable{
 
     public void agregarVehiculo(Vehiculo vehiculo) {
         sTransito.agregarVehiculo(vehiculo);
+    }
+
+    public void agregarVehiculoAPropietario(Propietario p, Vehiculo v){
+        sTransito.agregarVehiculoAPropietario(p,v);
     }
 
     public void asignarBonificacion(Propietario propietario, String nombreBonificacion, Puesto puesto)
@@ -129,5 +144,50 @@ public class Fachada extends Observable{
     public ResultadoDto construirResultadoTransito(Transito transito) {
         return sTransito.construirResultadoTransito(transito);
     }
+    public List<Transito> obtenerTransitosDePropietario(Propietario propietario) {
+        return sTransito.obtenerTransitosDePropietario(propietario);
+    }
+
+    public void borrarNotificaciones(Propietario propietario) {
+        sUsuarios.borrarNotificaciones(propietario);
+    }
+
+    public List<BonificacionAsignadaDto> obtenerBonificacionesAsignadasDto(Propietario propietario) {
+        return sUsuarios.construirBonificacionesAsignadas(propietario);
+    }
+
+    public List<VehiculoTableroDto> obtenerVehiculosTableroDto(Propietario propietario) {
+        return sTransito.construirVehiculosTablero(propietario);
+    }
+
+    public List<TransitoTableroDto> obtenerTransitosTableroDto(Propietario propietario) {
+        return sTransito.construirTransitosTablero(propietario);
+    }
+
+    public List<NotificacionDto> obtenerNotificacionesDto(Propietario propietario) {
+        return sUsuarios.construirNotificacionesDto(propietario);
+    }
+
+    public void notificarTransito(Propietario p, Puesto puesto) {
+        sTransito.notificarTransito(p, puesto);
+    }
+
+    public void notificarSaldoBajo(Propietario p) {
+        sTransito.notificarSaldoBajo(p);
+    }
+
+    public void notificarCambioEstado(Propietario p) {
+        sTransito.notificarCambioEstado(p);
+    }
+
+    public int cantidadTransitosVehiculo(Vehiculo v, Propietario p) {
+        return sTransito.cantidadTransitosVehiculo(v, p);
+    }
+
+    public double montoTotalVehiculo(Vehiculo v, Propietario p) {
+        return sTransito.montoTotalVehiculo(v, p);
+    }
+
+
 
 }

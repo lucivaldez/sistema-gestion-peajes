@@ -1,0 +1,169 @@
+.page-tablero-prop {
+  background: #f4f5fb;
+}
+
+/* Mini resumen superior */
+.tp-mini-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  margin-bottom: 12px;
+  padding: 12px 20px;
+}
+
+.tp-mini-grid {
+  display: flex;
+  gap: 32px;
+}
+
+.tp-mini-item {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+}
+
+.tp-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #9aa0b5;
+  margin-bottom: 4px;
+}
+
+.tp-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #151b35;
+}
+
+.tp-link-salir {
+  font-size: 14px;
+  color: #3859d8;
+  text-decoration: none;
+}
+
+.tp-link-salir:hover {
+  text-decoration: underline;
+}
+
+/* Card principal y título */
+.tp-main-card {
+  margin-top: 8px;
+  padding-bottom: 16px;
+}
+
+.tp-main-header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-top: 8px; /* baja un poco el h1 para que no se corte */
+}
+
+/* Cards internas */
+.tp-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px 20px;
+  box-shadow: 0 6px 12px rgba(15, 23, 42, 0.04);
+  margin-bottom: 16px;
+}
+
+.tp-card__title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+/* Resumen del propietario */
+.tp-summary-card {
+  margin-bottom: 20px;
+}
+
+.tp-summary-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.tp-summary-item {
+  background: #f9fafc;
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+
+/* Saldo con fondo verde suave, como en la maqueta */
+.tp-summary-item--saldo .tp-value {
+  background: #e5f7e9;
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+/* Grilla 2 columnas (bonificaciones / vehículos) */
+.tp-grid-2cols {
+  display: grid;
+  grid-template-columns: 1.3fr 1.1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+/* Tablas */
+.tp-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.tp-table thead {
+  background: #f2f4fb;
+}
+
+.tp-table th,
+.tp-table td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid #eef0f6;
+  white-space: nowrap;
+}
+
+.tp-table th {
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.tp-table--scroll {
+  max-height: 260px;
+}
+
+.tp-empty-row td {
+  text-align: center;
+  font-style: italic;
+  color: #9ca3af;
+}
+
+/* Notificaciones */
+.tp-notificaciones-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.tp-btn-danger {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 20px;
+  background: #e11d48;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tp-btn-danger:hover {
+  background: #be123c;
+}

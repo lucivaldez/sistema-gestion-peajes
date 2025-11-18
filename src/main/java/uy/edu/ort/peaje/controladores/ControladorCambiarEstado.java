@@ -16,16 +16,13 @@ import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
 import uy.edu.ort.peaje.modelo.EstadoPropietario;
 import uy.edu.ort.peaje.modelo.Propietario;
-import uy.edu.ort.peaje.observador.Observador;
 import uy.edu.ort.peaje.servicios.fachada.Fachada;
 import uy.edu.ort.peaje.utils.Respuesta;
-import uy.edu.ort.peaje.observador.Observable;
-import uy.edu.ort.peaje.observador.Observador;
 
 @RestController
 @RequestMapping("/cambiarEstado")
 @Scope("session")
-public class ControladorCambiarEstado implements Observador{
+public class ControladorCambiarEstado{
 
     private Propietario propietario;
     private List<EstadoPropietario> estadosAsignar;
@@ -46,7 +43,6 @@ public class ControladorCambiarEstado implements Observador{
     
     @PostMapping("/buscar")
     public List<Respuesta> buscarPropietario(@RequestParam String cedula) throws PeajeException {
-        // Validación básica
         if (cedula == null || cedula.isBlank()) {
             throw new PeajeException("Debe ingresar una cédula");
         }
@@ -81,24 +77,15 @@ public class ControladorCambiarEstado implements Observador{
             
         }
 
-        // Cambiar estado
+        // esta bien esto?
         this.propietario.setEstadoPropietario(estadoNuevo);
 
-        //disparar evento
-        Fachada.getInstancia().avisar(Fachada.Eventos.cambioEstadoPropietario);
-
+        Fachada.getInstancia().notificarCambioEstado(this.propietario);
         // Respuesta a la vista
         return Respuesta.lista(
             new Respuesta("estadoActual", estadoNuevo.getNombre()),
             new Respuesta("mensaje", "Estado cambiado correctamente")
         );
-    }
-
-    @Override
-    public void actualizar(Object evento, Observable origen) {
-        if (evento == Fachada.Eventos.cambioEstadoPropietario) {
-            //manejarCambioEstado();
-        }  
     }
     
 }
