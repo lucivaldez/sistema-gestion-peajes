@@ -10,6 +10,7 @@ import uy.edu.ort.peaje.excepciones.PeajeException;
 import uy.edu.ort.peaje.modelo.Administrador;
 import uy.edu.ort.peaje.modelo.AsignacionBonificacion;
 import uy.edu.ort.peaje.modelo.EstadoPropietario;
+import uy.edu.ort.peaje.modelo.EstadoPropietarioDeshabilitado;
 import uy.edu.ort.peaje.modelo.Notificacion;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Sesion;
@@ -74,6 +75,10 @@ public class ServicioUsuarios {
         Sesion sesion = null;
         Propietario usuario = (Propietario) login(cedula, password, propietarios);
         if (usuario != null) {
+            if (usuario.getEstadoPropietario() instanceof EstadoPropietarioDeshabilitado) {
+                throw new PeajeException("Su usuario está deshabilitado por el administrador.");
+            }
+
             sesion = new Sesion(usuario);
             sesiones.add(sesion);
             return sesion;

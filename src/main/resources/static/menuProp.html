@@ -45,11 +45,50 @@
       }
 
       //Procesa los mensajes recibidos por SSE
+      // function procesarMensajeSSE(mensaje) {
+      //   var iframe = document.getElementById("contenidoFrame");
+      //   var iframeWindow = iframe.contentWindow;
+      //   iframeWindow.procesarResultadosSubmit(mensaje); //asumo que el iFrame tiene vistaWeb.js incluida
+      // }
+
       function procesarMensajeSSE(mensaje) {
+        const evento = mensaje.find((x) => x.id === "evento");
+
+        if (evento) {
+          const tipo = evento.parametro;
+
+          if (tipo === "CAMBIO_ESTADO") {
+            const estado = mensaje.find(
+              (x) => x.id === "estadoNuevo"
+            ).parametro;
+
+            if (estado === "Deshabilitado") {
+              alert("Has sido deshabilitado por el administrador.");
+              cerrarSesionForzada();
+              return; //  NO mandar al iframe
+            }
+
+            // Podés agregar más casos...
+          }
+
+          return; // No pasar mensaje al iframe
+        }
         var iframe = document.getElementById("contenidoFrame");
         var iframeWindow = iframe.contentWindow;
-        iframeWindow.procesarResultadosSubmit(mensaje); //asumo que el iFrame tiene vistaWeb.js incluida
+        iframeWindow.procesarResultadosSubmit(mensaje);
       }
+
+      function cerrarSesionForzada() {
+        // Forzar cierre de conexión SSE usando la API prevista
+        try {
+          conexionSSECerrada();
+        } catch (e) {
+          // si no existe NO pasa nada
+        }
+        // Volver al login
+        window.location.href = "loginPropietario.html";
+      }
+
       //Se ejecuta cuando se cierra la conexion desde el servidor
       //Si no se define esta funcion, por defecto se "borra" la pagina
       function conexionSSECerrada(event) {

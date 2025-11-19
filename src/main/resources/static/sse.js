@@ -24,7 +24,9 @@ function registrarSSE() {
     //LLEGA UN MENSAJE DESDE EL SERVIDOR!
     eventSource.onmessage = function (event) {
       //Se asume que todos los mensajes llegan en formtato JSON
+      console.log("EVENT DATA RAW:", event.data);
       json = JSON.parse(event.data); // Convertir el JSON a objeto
+      console.log("JSON PARSEADO:", json); // Esto te muestra el objeto como JSON REAL
       procesarMensajeSSE(json);
     };
     //ERROR EN LA CONEXION CON EL SERVIDOR

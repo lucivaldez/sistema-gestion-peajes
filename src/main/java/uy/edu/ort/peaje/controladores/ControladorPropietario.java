@@ -66,15 +66,41 @@ public class ControladorPropietario implements Observador {
         
     }
 
+    // @Override
+    // public void actualizar(Object evento, Observable origen) {
+    // if (evento.equals(Fachada.Eventos.nuevoTransito) ||
+    //     evento.equals(Fachada.Eventos.cambioEstadoPropietario) ||
+    //     evento.equals(Fachada.Eventos.saldoBajo) ||
+    //     evento.equals(Fachada.Eventos.nuevaBonificacion)) 
+    // {
+    //     Propietario p = propietarioActual;
+
+    //     conexionNavegador.enviarJSON(
+    //         Respuesta.lista(
+    //             new Respuesta("propietario", new PropietarioDto(p)),
+    //             listarBonificaciones(p),
+    //             listarVehiculos(p),
+    //             listarTransitos(p),
+    //             listarNotificaciones(p)
+    //         )
+    //         );
+    //     }
+    // }
     @Override
     public void actualizar(Object evento, Observable origen) {
-    if (evento.equals(Fachada.Eventos.nuevoTransito) ||
-        evento.equals(Fachada.Eventos.cambioEstadoPropietario) ||
-        evento.equals(Fachada.Eventos.saldoBajo) ||
-        evento.equals(Fachada.Eventos.nuevaBonificacion)) 
-    {
         Propietario p = propietarioActual;
 
+    // 1) Notificación real de evento criticico
+        if (evento.equals(Fachada.Eventos.cambioEstadoPropietario)) {
+            conexionNavegador.enviarJSON(
+                Respuesta.lista(
+                    new Respuesta("evento", "CAMBIO_ESTADO"),
+                    new Respuesta("estadoNuevo", p.getEstadoPropietario().getNombre())
+                )
+            );
+        }
+
+    // 2) Vista completa (lo que ya mandabas antes)
         conexionNavegador.enviarJSON(
             Respuesta.lista(
                 new Respuesta("propietario", new PropietarioDto(p)),
@@ -83,9 +109,9 @@ public class ControladorPropietario implements Observador {
                 listarTransitos(p),
                 listarNotificaciones(p)
             )
-            );
-        }
+        );
     }
+
 
 
 
