@@ -46,8 +46,9 @@ public class ControladorCambiarEstado{
         if (cedula == null || cedula.isBlank()) {
             throw new PeajeException("Debe ingresar una cédula");
         }
+        //me guardo este propietario
         Propietario p = Fachada.getInstancia().buscarPropietarioPorCedula(cedula);
-
+        
         if (p == null) {
             throw new PeajeException("No existe el propietario");
         }
