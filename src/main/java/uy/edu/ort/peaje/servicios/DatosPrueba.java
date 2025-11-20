@@ -18,7 +18,7 @@ public class DatosPrueba {
     public static void cargar() throws PeajeException { 
         Fachada fachada = Fachada.getInstancia();
  
-        Puesto puesto1 = new Puesto("Peaje Canelones", "Av. Principal 1234");
+        Puesto puesto1 = new Puesto("Peaje Canelones", "Av. Principal 1231");
         Puesto puesto2 = new Puesto("Peaje Montevideo", "Calle Norte 5678");
         Puesto puesto3 = new Puesto("Peaje Maldonado", "Ruta Sur 91011");
 
