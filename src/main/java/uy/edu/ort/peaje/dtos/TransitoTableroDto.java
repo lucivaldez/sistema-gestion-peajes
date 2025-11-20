@@ -15,7 +15,7 @@ public class TransitoTableroDto {
     private String bonificacion;
     private double montoBonificacion;
     private double montoPagado;
-    private long fechaHora; // epoch millis
+    private long fechaHora; 
 
     public TransitoTableroDto(Transito t) {
         Vehiculo v = t.getVehiculo();
@@ -30,7 +30,6 @@ public class TransitoTableroDto {
         this.montoTarifa = (tarifa != null) ? tarifa.getMonto() : 0.0;
         this.montoPagado = t.getMontoCobrado();
 
-        // monto bonificación = tarifa - monto pagado (si hay tarifa)
         this.montoBonificacion = montoTarifa - montoPagado;
 
         String bonif = t.getBonificacionAplicada();

@@ -26,7 +26,6 @@ import uy.edu.ort.peaje.servicios.fachada.Fachada;
 
 public class ServicioTransito {
 
-    // experto en gestionar los transitos
     private ArrayList<Vehiculo> vehiculos = new ArrayList<Vehiculo>();
     private ArrayList<Puesto> puestos = new ArrayList<Puesto>();
     private ArrayList<CategoriaVehiculo> categorias = new ArrayList<CategoriaVehiculo>();
@@ -103,7 +102,7 @@ public class ServicioTransito {
         }
 
         if (propietario.tieneBonificacionDeTipoEnPuesto(puesto)) {
-            throw new PeajeException("Ya tiene una bonificación de ese tipo para el puesto seleccionado");
+            throw new PeajeException("Ya tiene una bonificación para el puesto seleccionado");
         }
 
         Bonificacion bonificacion = FabricaBonificaciones.crearBonificacion(tipoBonificacion);

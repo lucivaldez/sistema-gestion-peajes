@@ -42,11 +42,23 @@
       urlRegistroSSE = "/menuAdmin/registrarSSE";
       const spnNombreCompleto = document.getElementById("nombreCompleto");
 
+      document.addEventListener("DOMContentLoaded", function () {
+        submit(urlIniciarVista, "", "GET");
+
+        const ultima = sessionStorage.getItem("ultimaPaginaAdmin");
+        if (ultima) {
+          cargarContenido(ultima); // <<< CAMBIO
+        }
+      });
+
       function cargarContenido(pagina) {
+        sessionStorage.setItem("ultimaPaginaAdmin", pagina);
         document.getElementById("contenidoFrame").src = pagina;
       }
 
       function logout() {
+        sessionStorage.removeItem("ultimaPaginaAdmin");
+
         submit("/ingreso/logoutAdmin", null);
       }
 

@@ -240,12 +240,12 @@
 
         // Mini resumen
         miniNombre.textContent = dto.nombreCompleto || "—";
-        miniEstado.textContent = dto.estado || "—";
+        miniEstado.textContent = dto.estadoActual || "—";
         miniSaldo.textContent = formatoPesos(dto.saldoActual);
 
         // Resumen grande
         resNombre.textContent = dto.nombreCompleto || "—";
-        resEstado.textContent = dto.estado || "—";
+        resEstado.textContent = dto.estadoActual || "—";
         resSaldo.textContent = formatoPesos(dto.saldoActual);
       }
 

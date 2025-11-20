@@ -32,9 +32,21 @@ public class ControladorCambiarEstado{
         if (admin == null) {
             return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "index.html"));
         }
-        return Respuesta.lista(estadosAsignar());
+        return Respuesta.lista(
+            estadosAsignar());
     }
-    
+    @GetMapping("/estadoActual")
+    public List<Respuesta> estadoActual() {
+
+        if (propietario == null) {
+            return Respuesta.lista(new Respuesta("estadoCU", "vacio"));
+        }
+
+        return Respuesta.lista(
+            new Respuesta("estadoCU", new PropietarioDto(propietario))
+        );
+    }
+
     private Respuesta estadosAsignar(){
         estadosAsignar = new ArrayList<EstadoPropietario>(Fachada.getInstancia().getEstadoPropietario());
              
@@ -46,13 +58,13 @@ public class ControladorCambiarEstado{
         if (cedula == null || cedula.isBlank()) {
             throw new PeajeException("Debe ingresar una cédula");
         }
-        //me guardo este propietario
         Propietario p = Fachada.getInstancia().buscarPropietarioPorCedula(cedula);
         
         if (p == null) {
             throw new PeajeException("No existe el propietario");
         }
         this.propietario = p;
+
 
         return Respuesta.lista(
         new Respuesta("propietario", new PropietarioDto(p)),
@@ -81,7 +93,7 @@ public class ControladorCambiarEstado{
 
         Fachada.getInstancia().notificarCambioEstado(this.propietario);
 
-        // Respuesta a la vista
+        
         return Respuesta.lista(
             new Respuesta("estadoActual", estadoNuevo.getNombre()),
             new Respuesta("mensaje", "Estado cambiado correctamente")

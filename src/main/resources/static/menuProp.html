@@ -43,14 +43,7 @@
         spnNombreCompleto.innerHTML =
           "USUARIO DE " + nombreCompleto.toUpperCase();
       }
-
-      //Procesa los mensajes recibidos por SSE
-      // function procesarMensajeSSE(mensaje) {
-      //   var iframe = document.getElementById("contenidoFrame");
-      //   var iframeWindow = iframe.contentWindow;
-      //   iframeWindow.procesarResultadosSubmit(mensaje); //asumo que el iFrame tiene vistaWeb.js incluida
-      // }
-
+      
       function procesarMensajeSSE(mensaje) {
         const evento = mensaje.find((x) => x.id === "evento");
 

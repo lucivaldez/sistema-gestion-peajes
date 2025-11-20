@@ -123,12 +123,33 @@
       const inputFecha = document.getElementById("fecha");
       const puestoDiv = document.getElementById("puesto-container");
 
-      //ver si esta okey
+      // ================================
+      //    INICIO DE LA VISTA
+      // ================================
       document.addEventListener("DOMContentLoaded", function () {
         submit(urlIniciarVista, parametrosInicioVista, "GET");
+        submit("/transito/estadoActual", "", "GET");
       });
 
+      // ================================
+      //   RESTAURAR ESTADO DEL CU
+      // ================================
+      function mostrar_estadoCU(estado) {
+        if (!estado || estado === "vacio") {
+          return;
+        }
+
+        // Caso 2: hay resultado
+        if (estado.propietario) {
+          mostrar_resultado(estado);
+        }
+      }
+
+      // ================================
+      //   FORMULARIO EMULAR TRÁNSITO
+      // ================================
       formEmulacion.addEventListener("submit", emularTransito);
+
       function emularTransito(event) {
         event.preventDefault();
         submit(
@@ -141,6 +162,9 @@
         window.location.href = urlDestino;
       }
 
+      // ================================
+      //    MOSTRAR PUESTOS
+      // ================================
       function mostrar_puesto(puesto) {
         // Carga select de puestos
         puestoDiv.innerHTML = crearListaDesdeJson({
@@ -155,19 +179,25 @@
         const sel = document.getElementById("selPuesto");
         if (sel) {
           sel.name = "puesto";
-        }
 
-        sel.addEventListener("change", () => {
-          if (!sel.value || sel.value === "-1") return;
-          resultadoSection.style.display = "none";
-          submit(
-            "/transito/tarifasPuesto",
-            "puesto=" + encodeURIComponent(sel.value),
-            "GET"
-          );
-        });
+          // al cambiar de puesto, recargar tarifas
+          sel.addEventListener("change", () => {
+            if (!sel.value || sel.value === "-1") return;
+
+            resultadoSection.style.display = "none";
+
+            submit(
+              "/transito/tarifasPuesto",
+              "puesto=" + encodeURIComponent(sel.value),
+              "GET"
+            );
+          });
+        }
       }
 
+      // ================================
+      //    MOSTRAR TARIFAS
+      // ================================
       function mostrar_tarifa(tarifas) {
         const body = document.getElementById("tabla-tarifas-body");
         if (!Array.isArray(tarifas) || tarifas.length === 0) {
@@ -178,25 +208,21 @@
         body.innerHTML = tarifas
           .map(
             (t) => `
-          <div class="et-table__row">
-            <div>${t.categoria}</div>
-            <div>$ ${Number(t.monto).toFixed(2)}</div>
-          </div>
-        `
+      <div class="et-table__row">
+        <div>${t.categoria}</div>
+        <div>$ ${Number(t.monto).toFixed(2)}</div>
+      </div>
+    `
           )
           .join("");
       }
 
-      function mostrar_categoria(categoria) {
-        tablaTarifas.innerHTML = crearTablaDesdeJson({
-          data: categoria,
-          camposMostrar: ["nombreCategoria"],
-        });
-      }
-
+      // ================================
+      //    MOSTRAR RESULTADO
+      // ================================
       function mostrar_resultado(resultado) {
-        // Muestra el resultado de la emulación
         resultadoSection.style.display = "block";
+
         document.getElementById("res-propietario").textContent =
           resultado.propietario;
         document.getElementById("res-estado").textContent = resultado.estado;
@@ -210,6 +236,9 @@
           resultado.saldo.toFixed(2);
       }
 
+      // ================================
+      //     OTROS HANDLERS
+      // ================================
       async function mostrar_mensaje(mensaje) {
         await mostrarMensaje(mensaje);
       }

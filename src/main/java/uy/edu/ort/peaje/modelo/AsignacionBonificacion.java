@@ -32,8 +32,6 @@ public class AsignacionBonificacion {
     public Puesto getPuesto() {
         return puesto;
     }
-
-    //verifica si la bonificacion aplica para el puesto recibido por parametro
     public boolean aplicaA(Puesto puesto){
         return this.puesto != null && this.puesto.equals(puesto);
     }

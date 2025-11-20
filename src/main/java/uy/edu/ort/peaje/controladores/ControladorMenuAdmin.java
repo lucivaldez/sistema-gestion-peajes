@@ -30,7 +30,6 @@ private final ConexionNavegador conexionNavegador;
     @GetMapping("/vistaConectada")
     public List<Respuesta> inicializarVista(@SessionAttribute(name = "usuarioAdmin", required=false) Administrador usuario){
         if (usuario == null) {
-             // Manejar el caso en que el usuario no está en la sesión pide redireccionar a la página de login
              return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "loginAdmin.html"));
          }
          return Respuesta.lista(new Respuesta("nombreCompleto", usuario.getNombreCompleto()));   
@@ -38,7 +37,6 @@ private final ConexionNavegador conexionNavegador;
 
     @GetMapping(value = "/registrarSSE", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter registrarSSE() {
-        // Establecer la conexión SSE con el navegador en este caso el menú admin
         conexionNavegador.conectarSSE();
         return conexionNavegador.getConexionSSE(); 
        

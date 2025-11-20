@@ -47,7 +47,6 @@ public class ControladorPropietario implements Observador {
     public List<Respuesta> inicializarVista(@SessionAttribute(name = "propietario") Propietario propietario){
 
          if (propietario == null) {
-             // Manejar el caso en que el usuario no está en la sesión pide redireccionar a la página de login
              return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "login.html"));
          }
 

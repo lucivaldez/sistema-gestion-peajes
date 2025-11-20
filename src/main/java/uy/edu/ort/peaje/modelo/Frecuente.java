@@ -17,13 +17,10 @@ public class Frecuente extends Bonificacion {
         Vehiculo vehiculo = transito.getVehiculo();
         Puesto puesto = transito.getPuesto();
         Date fechaHora = transito.getFechaHora();
-
-        // contar tránsitos previos del mismo día y puesto
         int pasadasPrevias = vehiculo.getPasadasPorDia(fechaHora, puesto);
 
         double montoBase = transito.getTarifa().getMonto();
 
-        // si ya hay al menos 1 pasada previa -> este es 2º o más -> aplica 50%
         if (pasadasPrevias >= 1) {
             return montoBase * 0.5;
         } else {

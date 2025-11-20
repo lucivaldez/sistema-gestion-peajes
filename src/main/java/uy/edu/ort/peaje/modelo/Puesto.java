@@ -71,8 +71,6 @@ public class Puesto {
             return;
         if (tarifas == null)
             tarifas = new ArrayList<>();
-
-        // Regla común: una tarifa por categoría -> reemplaza si ya existe
         for (int i = 0; i < tarifas.size(); i++) {
             Tarifa existente = tarifas.get(i);
             if (existente.getCategoriaVehiculo().equals(t.getCategoriaVehiculo())) {

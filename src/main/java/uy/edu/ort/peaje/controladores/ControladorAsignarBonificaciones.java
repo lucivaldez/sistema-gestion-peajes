@@ -29,6 +29,8 @@ import uy.edu.ort.peaje.utils.Respuesta;
 public class ControladorAsignarBonificaciones {
     
     private List<TipoBonificacion> tiposBonificacion;
+    private Propietario propietarioSeleccionado;
+
 
     @GetMapping("/vistaConectada")
     public List<Respuesta> inicializarVista(@SessionAttribute(name = "usuarioAdmin", required = false) Administrador admin){
@@ -37,26 +39,44 @@ public class ControladorAsignarBonificaciones {
      }
         return Respuesta.lista(
             listarBonificacionesDefinidas(),   
-            listarPuestos()                    
+            listarPuestos()
         );
     }
+
+@GetMapping("/estadoActual")
+public List<Respuesta> estadoActual() {
+
+    if (propietarioSeleccionado == null) {
+        return Respuesta.lista(new Respuesta("estadoCU", "vacio"));
+    }
+
+    return Respuesta.lista(new Respuesta("estadoCU", new PropietarioDto(propietarioSeleccionado)));
+}
+
 
     @GetMapping("/buscarPropietario")
     public List<Respuesta> buscarPropietario(
             @SessionAttribute(name = "usuarioAdmin", required = false) Administrador admin,
             @RequestParam String cedula) {
+
         if (admin == null) {
             return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "index.html"));
         }
+
         try {
             Propietario p = Fachada.getInstancia().buscarPropietarioPorCedula(cedula);
+
             if (p == null) {
                 return Respuesta.lista(new Respuesta("error", "No existe el propietario"));
             }
+
+            propietarioSeleccionado = p;
+
             return Respuesta.lista(
-                propietarioDto(p),
-                bonificacionesAsignadasDto(p)
+                    propietarioDto(p),
+                    bonificacionesAsignadasDto(p)
             );
+
         } catch (Exception e) {
             return Respuesta.lista(new Respuesta("error", "Error al buscar propietario"));
         }
@@ -90,8 +110,10 @@ public class ControladorAsignarBonificaciones {
                 return Respuesta.lista(new Respuesta("error", "El puesto no existe"));
             }
 
-            // TODA la lógica de negocio está en servicios/dominio
+
             Fachada.getInstancia().asignarBonificacion(p, tipoBonificacion, puesto);
+
+            propietarioSeleccionado = p;
 
             return Respuesta.lista(
                 new Respuesta("mensaje", "Bonificación asignada correctamente"),

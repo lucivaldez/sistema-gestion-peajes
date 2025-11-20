@@ -11,7 +11,6 @@ public class Vehiculo {
     private String color;
     private CategoriaVehiculo categoriaVehiculo;
     private Propietario propietario;
-    // historial de transitos de ese vehiculo
     private final List<Transito> historialTransitos = new ArrayList<>();
 
     public Vehiculo(String matricula, String modelo, String color, CategoriaVehiculo categoriaVehiculo,
@@ -59,8 +58,6 @@ public class Vehiculo {
         this.categoriaVehiculo = categoriaVehiculo;
     }
 
-    // si en frecuente se concreta el transito lo registra en el historial asi puede
-    // aplicar el 50%
     public void registrarTransito(Transito transito) {
         if (transito != null) {
             historialTransitos.add(transito);
@@ -76,15 +73,12 @@ public class Vehiculo {
             if (t == null || t.getFechaHora() == null)
                 continue;
 
-            // mismo puesto
             if (!puesto.equals(t.getPuesto()))
                 continue;
 
-            // misma fecha (día civil)
             if (!mismoDia(t.getFechaHora(), fechaHoraActual))
                 continue;
 
-            // solo pasadas anteriores (no incluir la actual)
             if (t.getFechaHora().before(fechaHoraActual)) {
                 count++;
             }

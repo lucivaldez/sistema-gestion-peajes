@@ -1,224 +1,243 @@
 <!DOCTYPE html>
 <html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Cambiar estado de propietario</title>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Cambiar estado de propietario</title>
+    <!-- CSS global del proyecto -->
+    <link rel="stylesheet" href="peaje.css" />
+    <!-- CSS específico de esta vista -->
+    <link rel="stylesheet" href="CambiarEstado.css" />
 
-  <!-- CSS global del proyecto -->
-  <link rel="stylesheet" href="peaje.css" />
-  <!-- CSS específico de esta vista -->
-  <link rel="stylesheet" href="CambiarEstado.css" />
+    <!-- Lib principal de vistas -->
+    <script src="vistaWeb.js"></script>
+  </head>
 
-  <!-- Lib principal de vistas -->
-  <script src="vistaWeb.js"></script>
-</head>
+  <body class="page-cambiar-estado">
+    <script src="utilesVista.js"></script>
 
-<body class="page-cambiar-estado">
-  <script src="utilesVista.js"></script>
-
-  <main class="et-container">
-    <section class="et-card">
-      <!-- Header -->
-      <header class="et-card__header">
-        <div class="et-title">
-          <span class="et-dot" aria-hidden="true"></span>
-          <h1>Cambiar estado de propietario</h1>
-        </div>
-        <p class="et-subtitle">
-          Ingrese la cédula, revise el estado actual y seleccione un nuevo
-          estado.
-        </p>
-      </header>
-
-      <!-- Contenido -->
-      <div class="et-grid">
-        <!-- Columna izquierda: formulario -->
-        <form class="et-form" id="form-cambiar-estado" autocomplete="off">
-          <div class="et-field">
-            <label for="cedula">Cédula del propietario</label>
-            <input id="cedula" name="cedula" type="text" placeholder="Ej: 41234567" />
+    <main class="et-container">
+      <section class="et-card">
+        <!-- Header -->
+        <header class="et-card__header">
+          <div class="et-title">
+            <span class="et-dot" aria-hidden="true"></span>
+            <h1>Cambiar estado de propietario</h1>
           </div>
+          <p class="et-subtitle">
+            Ingrese la cédula, revise el estado actual y seleccione un nuevo
+            estado.
+          </p>
+        </header>
 
-          <div class="et-actions" style="gap: 8px">
-            <button type="button" class="et-btn" id="btnBuscar">
-              Buscar propietario
-            </button>
-          </div>
+        <!-- Contenido -->
+        <div class="et-grid">
+          <!-- Columna izquierda: formulario -->
+          <form class="et-form" id="form-cambiar-estado" autocomplete="off">
+            <div class="et-field">
+              <label for="cedula">Cédula del propietario</label>
+              <input
+                id="cedula"
+                name="cedula"
+                type="text"
+                placeholder="Ej: 41234567"
+              />
+            </div>
 
-          <hr class="et-sep" />
+            <div class="et-actions" style="gap: 8px">
+              <button type="button" class="et-btn" id="btnBuscar">
+                Buscar propietario
+              </button>
+            </div>
 
-          <div class="et-field">
-            <label for="estado">Estados definidos</label>
-            <div id="estado-container"></div>
-          </div>
+            <hr class="et-sep" />
 
-          <div class="et-actions">
-            <button type="submit" class="et-btn">Cambiar estado</button>
-          </div>
+            <div class="et-field">
+              <label for="estado">Estados definidos</label>
+              <div id="estado-container"></div>
+            </div>
 
-          <!-- <p class="et-help">El estado actual se mostrará preseleccionado.</p> -->
-          <p id="msg-error" class="et-error"></p>
-        </form>
+            <div class="et-actions">
+              <button type="submit" class="et-btn">Cambiar estado</button>
+            </div>
 
-        <!-- Columna derecha: info propietario -->
-        <aside class="et-tarifas">
-          <div class="et-card" style="padding: 12px">
-            <h3>Propietario</h3>
-            <div id="propietario-box" class="et-help">Sin seleccionar</div>
-            <div class="et-owner-grid" id="propietario-estado-box" hidden>
-              <div>
-                <label>Estado actual</label>
-                <div id="estado-actual" class="et-badge">—</div>
+            <!-- <p class="et-help">El estado actual se mostrará preseleccionado.</p> -->
+            <p id="msg-error" class="et-error"></p>
+          </form>
+
+          <!-- Columna derecha: info propietario -->
+          <aside class="et-tarifas">
+            <div class="et-card" style="padding: 12px">
+              <h3>Propietario</h3>
+              <div id="propietario-box" class="et-help">Sin seleccionar</div>
+              <div class="et-owner-grid" id="propietario-estado-box" hidden>
+                <div>
+                  <label>Estado actual</label>
+                  <div id="estado-actual" class="et-badge">—</div>
+                </div>
               </div>
             </div>
-          </div>
-        </aside>
-      </div>
+          </aside>
+        </div>
 
-      <!-- Footer -->
-      <footer class="et-footer">© 2025 — Administración</footer>
-    </section>
-  </main>
+        <!-- Footer -->
+        <footer class="et-footer">© 2025 — Administración</footer>
+      </section>
+    </main>
 
-  <script>
-    // ========= Endpoints =========
-    var urlIniciarVista = "/cambiarEstado/vistaConectada";
-    var parametrosInicioVista = "";
+    <script>
+      // ========= Endpoints =========
+      var urlIniciarVista = "/cambiarEstado/vistaConectada";
+      var parametrosInicioVista = "";
 
-    // ========= Referencias =========
-    const formCE = document.getElementById("form-cambiar-estado");
-    const btnBuscar = document.getElementById("btnBuscar");
-    const divEstado = document.getElementById("estado-container");
-    const boxProp = document.getElementById("propietario-box");
-    const estadoBox = document.getElementById("propietario-estado-box");
-    const lblEstado = document.getElementById("estado-actual");
-    const msgError = document.getElementById("msg-error");
+      // ========= Referencias =========
+      const formCE = document.getElementById("form-cambiar-estado");
+      const btnBuscar = document.getElementById("btnBuscar");
+      const divEstado = document.getElementById("estado-container");
+      const boxProp = document.getElementById("propietario-box");
+      const estadoBox = document.getElementById("propietario-estado-box");
+      const lblEstado = document.getElementById("estado-actual");
+      const msgError = document.getElementById("msg-error");
 
-    // ========= INICIALIZAR VISTA =========
-    document.addEventListener("DOMContentLoaded", function () {
-      submit(urlIniciarVista, parametrosInicioVista, "GET");
-    });
-
-    // ========= BUSCAR PROPIETARIO =========
-    btnBuscar.addEventListener("click", function () {
-      const ced = (document.getElementById("cedula").value || "").trim();
-      if (!ced) {
-        mostrar_mensaje("Ingresá una cédula");
-        return;
-      }
-      submit(
-        "/cambiarEstado/buscar",
-        "cedula=" + encodeURIComponent(ced),
-        "POST"
-      );
-    });
-
-    // ========= CAMBIAR ESTADO =========
-    formCE.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const fd = serializarFormulario("form-cambiar-estado");
-      submit("/cambiarEstado/cambiar", fd, "POST");
-    });
-
-    // ========= HANDLERS =========
-
-    function mostrar_usuarioNoAutenticado(urlDestino) {
-      window.location.href = urlDestino;
-    }
-
-    function mostrar_estadosAsignar(estados) {
-      msgError.textContent = "";
-      divEstado.innerHTML = crearListaDesdeJson({
-        data: estados,
-        campoMostrar: "nombre",
-        campoValor: "nombre",
-        multiple: false,
-        mostrarOpcionInicial: true,
-        id: "estado",
+      // ========= INICIALIZAR VISTA =========
+      document.addEventListener("DOMContentLoaded", function () {
+        submit(urlIniciarVista, parametrosInicioVista, "GET");
+        submit("/cambiarEstado/estadoActual", "", "GET");
       });
 
-      const sel = document.getElementById("estado");
-      if (sel) sel.name = "nuevoEstado";
-    }
+      // <<< CAMBIO: reconstruir estado del CU después del refresh
+      function mostrar_estadoCU(estado) {
+        if (!estado || estado === "vacio") return;
 
-    function mostrar_propietario(dto) {
-      msgError.textContent = "";
-      if (!dto) {
-        boxProp.textContent = "Sin seleccionar";
-        estadoBox.hidden = true;
-        return;
+        mostrar_propietario(estado);
       }
 
-      boxProp.innerHTML = `
-      <div><strong>${dto.nombreCompleto}</strong> — 
-      <span class="et-help">CI: ${dto.cedula}</span></div>
-    `;
+      // ========= BUSCAR PROPIETARIO =========
+      btnBuscar.addEventListener("click", function () {
+        const ced = (document.getElementById("cedula").value || "").trim();
+        if (!ced) {
+          mostrar_mensaje("Ingresá una cédula");
+          return;
+        }
+        submit(
+          "/cambiarEstado/buscar",
+          "cedula=" + encodeURIComponent(ced),
+          "POST"
+        );
+      });
 
-      lblEstado.textContent = dto.estadoActual || "—";
-      estadoBox.hidden = false;
+      // ========= CAMBIAR ESTADO =========
+      formCE.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const fd = serializarFormulario("form-cambiar-estado");
+        submit("/cambiarEstado/cambiar", fd, "POST");
+      });
 
-      // Preseleccionar estado actual
-      seleccionarPorTexto?.("estado", dto.estadoActual);
-    }
+      // ========= HANDLERS =========
 
-    // ========= MENSAJES =========
-    // Mensaje normal (éxitos o advertencias)
-    async function mostrar_mensaje(m) {
-      msgError.textContent = m;
-      msgError.classList.remove("et-msg-error");
-      msgError.classList.add("et-msg-ok");
-      // console.log("MENSAJE:", m);
-    }
-
-    // Error del backend o frontend
-    async function mostrar_error(m) {
-      msgError.textContent = m;
-      msgError.classList.remove("et-msg-ok");
-      msgError.classList.add("et-msg-error");
-      // console.error("ERROR:", m);
-    }
-
-    // VistaWeb: Error 299 (PeajeException)
-    async function excepcionDeAplicacion(t) {
-      msgError.textContent = t;
-      msgError.classList.remove("et-msg-ok");
-      msgError.classList.add("et-msg-error");
-      // console.error("EXCEPCIÓN:", t);
-    }
-
-    // VistaWeb: Error HTTP (400, 404, 500)
-    function procesarErrorSubmit(status, text) {
-      msgError.textContent = text;
-      msgError.classList.remove("et-msg-ok");
-      msgError.classList.add("et-msg-error");
-      // console.error("ERROR SUBMIT:", status, text);
-    }
-
-    // Fallback para algunos casos de error no controlados
-    function mostrar_errorSubmit(text) {
-      msgError.textContent = text;
-      msgError.classList.remove("et-msg-ok");
-      msgError.classList.add("et-msg-error");
-      // console.error("ERROR SUBMIT (fallback):", text);
-    }
-
-    function mostrar_limpiarFormulario() {
-      formCE.reset();
-      msgError.textContent = "";
-      msgError.classList.remove("et-msg-ok", "et-msg-error");
-    }
-
-    function mostrar_estadoActual(estado) {
-      msgError.textContent = "";
-      msgError.classList.remove("et-msg-ok", "et-msg-error");
-      if (estado) {
-        lblEstado.textContent = estado;
-        seleccionarPorTexto?.("estado", estado);
+      function mostrar_usuarioNoAutenticado(urlDestino) {
+        window.location.href = urlDestino;
       }
-    }
-  </script>
-</body>
 
+      function mostrar_estadosAsignar(estados) {
+        divEstado.innerHTML = crearListaDesdeJson({
+          data: estados,
+          campoMostrar: "nombre",
+          campoValor: "nombre",
+          multiple: false,
+          mostrarOpcionInicial: true,
+          id: "estado",
+        });
+
+        const sel = document.getElementById("estado");
+        if (sel) {
+          sel.name = "nuevoEstado";
+
+          // 🔧 MISMA CORRECCIÓN QUE LA OTRA VISTA:
+          if (
+            sel.options.length > 0 &&
+            (sel.options[0].value === "" || sel.options[0].value == null)
+          ) {
+            sel.options[0].textContent = "Seleccione una opción...";
+            sel.options[0].value = "-1";
+          }
+
+          sel.value = "-1"; // ← Selecciona la opción inicial
+        }
+      }
+
+      function mostrar_propietario(dto) {
+        msgError.textContent = "";
+        if (!dto) {
+          boxProp.textContent = "Sin seleccionar";
+          estadoBox.hidden = true;
+          return;
+        }
+
+        boxProp.innerHTML = `
+    <div><strong>${dto.nombreCompleto}</strong> —
+    <span class="et-help">CI: ${dto.cedula}</span></div>
+  `;
+
+        lblEstado.textContent = dto.estadoActual || "—";
+        estadoBox.hidden = false;
+      }
+
+      // ========= MENSAJES =========
+      // Mensaje normal (éxitos o advertencias)
+      async function mostrar_mensaje(m) {
+        msgError.textContent = m;
+        msgError.classList.remove("et-msg-error");
+        msgError.classList.add("et-msg-ok");
+        // console.log("MENSAJE:", m);
+      }
+
+      // Error del backend o frontend
+      async function mostrar_error(m) {
+        msgError.textContent = m;
+        msgError.classList.remove("et-msg-ok");
+        msgError.classList.add("et-msg-error");
+        // console.error("ERROR:", m);
+      }
+
+      // VistaWeb: Error 299 (PeajeException)
+      async function excepcionDeAplicacion(t) {
+        msgError.textContent = t;
+        msgError.classList.remove("et-msg-ok");
+        msgError.classList.add("et-msg-error");
+        // console.error("EXCEPCIÓN:", t);
+      }
+
+      // VistaWeb: Error HTTP (400, 404, 500)
+      function procesarErrorSubmit(status, text) {
+        msgError.textContent = text;
+        msgError.classList.remove("et-msg-ok");
+        msgError.classList.add("et-msg-error");
+        // console.error("ERROR SUBMIT:", status, text);
+      }
+
+      // Fallback para algunos casos de error no controlados
+      function mostrar_errorSubmit(text) {
+        msgError.textContent = text;
+        msgError.classList.remove("et-msg-ok");
+        msgError.classList.add("et-msg-error");
+        // console.error("ERROR SUBMIT (fallback):", text);
+      }
+
+      function mostrar_limpiarFormulario() {
+        formCE.reset();
+        msgError.textContent = "";
+        msgError.classList.remove("et-msg-ok", "et-msg-error");
+      }
+
+      function mostrar_estadoActual(estado) {
+        msgError.textContent = "";
+        msgError.classList.remove("et-msg-ok", "et-msg-error");
+        if (estado) {
+          lblEstado.textContent = estado;
+        }
+      }
+    </script>
+  </body>
 </html>

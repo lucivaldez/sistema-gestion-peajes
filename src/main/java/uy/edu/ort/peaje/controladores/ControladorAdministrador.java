@@ -22,9 +22,8 @@ public class ControladorAdministrador {
     public List<Respuesta> inicializarVista(@SessionAttribute(name = "usuarioAdmin") Administrador admin){
 
          if (admin == null) {
-             // Manejar el caso en que el usuario no está en la sesión pide redireccionar a la página de login
-             return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "index.html"));
-         }
+            return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "index.html"));
+        }
         return Respuesta.lista(
             new Respuesta("sesiones", SesionDto.listaSesionesDto(Fachada.getInstancia().getSesiones()))
         );

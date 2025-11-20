@@ -1,9 +1,6 @@
 package uy.edu.ort.peaje.observador;
 
 import java.util.ArrayList;
-//que hace? Esta clase representa un objeto observable en el patrón de diseño Observador.
-//Permite agregar, quitar y notificar a los observadores registrados sobre eventos que ocurren 
-//en el objeto observable.
 
 public class Observable {
     private ArrayList<Observador> observadores = new ArrayList<>();

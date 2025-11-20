@@ -32,15 +32,36 @@ public class ControladorEmularTransito {
     private List<Puesto> puestos;
     private List<Tarifa> tarifas;
 
+    private Puesto puestoSeleccionado;
+    private Vehiculo vehiculoSeleccionado;
+    private ResultadoDto ultimoResultado;
+
+
     @GetMapping("/vistaConectada")
     public List<Respuesta> inicializarVista(
             @SessionAttribute(name = "usuarioAdmin", required = false) Administrador admin) {
         if (admin == null) {
-
             return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "index.html"));
         }
-        return Respuesta.lista(listarPuestos());
+        return Respuesta.lista(
+            listarPuestos());
     }
+
+
+    @GetMapping("/estadoActual")
+    public List<Respuesta> estadoActual() {
+
+        if (puestoSeleccionado == null && vehiculoSeleccionado == null && ultimoResultado == null) {
+            return Respuesta.lista(new Respuesta("estadoCU", "vacio"));
+        }
+
+        if (ultimoResultado != null) {
+            return Respuesta.lista(new Respuesta("estadoCU", ultimoResultado));
+        }
+
+        return Respuesta.lista(new Respuesta("estadoCU", "vacio"));
+    }
+
 
     @GetMapping("/tarifasPuesto")
     public List<Respuesta> tarifasPorPuesto(
@@ -49,6 +70,11 @@ public class ControladorEmularTransito {
         if (admin == null) {
             return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "index.html"));
         }
+
+        puestoSeleccionado = Fachada.getInstancia().buscarPuestoPorNombre(puesto);
+        vehiculoSeleccionado = null;
+        ultimoResultado = null;
+
         return Respuesta.lista(listarTarifasPorPuesto(puesto));
     }
 
@@ -64,7 +90,6 @@ public class ControladorEmularTransito {
         }
 
         try {
-            // Buscar puesto por fachada
             Puesto p = Fachada.getInstancia().buscarPuestoPorNombre(puesto);
             if (p == null) {
                 return Respuesta.lista(new Respuesta("error", "El puesto no existe."));
@@ -93,6 +118,8 @@ public class ControladorEmularTransito {
             Transito nuevo = Fachada.getInstancia().emularTransito(v, p, fechaHora);
 
             ResultadoDto resultadoDto = Fachada.getInstancia().construirResultadoTransito(nuevo);
+
+            ultimoResultado = resultadoDto; 
 
             return Respuesta.lista(
                     new Respuesta("resultado", resultadoDto),
