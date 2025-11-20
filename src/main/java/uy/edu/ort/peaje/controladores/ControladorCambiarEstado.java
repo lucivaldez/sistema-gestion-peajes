@@ -77,11 +77,10 @@ public class ControladorCambiarEstado{
             throw new PeajeException("El estado seleccionado no es válido");
             
         }
-
-        // esta bien esto?
         this.propietario.setEstadoPropietario(estadoNuevo);
 
         Fachada.getInstancia().notificarCambioEstado(this.propietario);
+
         // Respuesta a la vista
         return Respuesta.lista(
             new Respuesta("estadoActual", estadoNuevo.getNombre()),

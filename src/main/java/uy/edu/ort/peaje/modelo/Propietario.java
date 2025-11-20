@@ -4,8 +4,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uy.edu.ort.peaje.excepciones.PeajeException;
+import uy.edu.ort.peaje.observador.ManejadorObservable;
+import uy.edu.ort.peaje.observador.Observador;
+
 
 public class Propietario extends Usuario {
+
+    private ManejadorObservable manejador = new ManejadorObservable();
+
+    public enum Eventos {
+        NUEVO_TRANSITO,
+        CAMBIO_ESTADO,
+        SALDO_BAJO,
+        NUEVA_BONIFICACION
+    }
+
+    public void agregarObservador(Observador obs) {
+        manejador.agregarObservador(obs);
+    }
+
+    public void quitarObservador(Observador obs) {
+        manejador.quitarObservador(obs);
+    }
+
+    public void avisar(Object evento) {
+        manejador.avisar(evento);
+    }
+
+
     private int saldoActual;
     private int saldoMinimo;
     private EstadoPropietario estadoPropietario;

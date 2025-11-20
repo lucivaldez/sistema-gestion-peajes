@@ -21,6 +21,7 @@ import uy.edu.ort.peaje.modelo.TipoBonificacion;
 import uy.edu.ort.peaje.modelo.TipoNotificacion;
 import uy.edu.ort.peaje.modelo.Transito;
 import uy.edu.ort.peaje.modelo.Vehiculo;
+import uy.edu.ort.peaje.modelo.Propietario.Eventos;
 import uy.edu.ort.peaje.servicios.fachada.Fachada;
 
 public class ServicioTransito {
@@ -115,8 +116,7 @@ public class ServicioTransito {
                 );
 
         propietario.asignarBonificacion(ab);
-
-        Fachada.getInstancia().avisar(Fachada.Eventos.nuevaBonificacion);
+        propietario.avisar(Eventos.NUEVA_BONIFICACION);
 
     }
 
@@ -127,7 +127,6 @@ public class ServicioTransito {
         Propietario propietario = transito.getVehiculo().getPropietario();
         Puesto puesto = transito.getPuesto();
 
-        // Trae solo las bonificaciones asignadas a ese puesto
         List<AsignacionBonificacion> asignaciones = propietario.bonificacionesPara(puesto);
 
         String bonificacionElegida = null;
@@ -150,57 +149,57 @@ public class ServicioTransito {
 
     public Transito emularTransito(Vehiculo vehiculo, Puesto puesto, Date fechaHora) throws PeajeException {
 
-    if (vehiculo == null)
-        throw new PeajeException("Vehículo nulo");
-    if (puesto == null)
-        throw new PeajeException("Puesto nulo");
-    if (fechaHora == null)
-        fechaHora = new Date();
+        if (vehiculo == null)
+            throw new PeajeException("Vehículo nulo");
+        if (puesto == null)
+            throw new PeajeException("Puesto nulo");
+        if (fechaHora == null)
+            fechaHora = new Date();
 
-    // Tarifa por categoría
-    Tarifa tarifa = puesto.getTarifaPorCategoria(vehiculo.getCategoriaVehiculo());
-    if (tarifa == null)
-        throw new PeajeException("No hay tarifa para la categoría del vehículo en este puesto");
+        // Tarifa por categoría
+        Tarifa tarifa = puesto.getTarifaPorCategoria(vehiculo.getCategoriaVehiculo());
+        if (tarifa == null)
+            throw new PeajeException("No hay tarifa para la categoría del vehículo en este puesto");
 
-    // Propietario
-    Propietario propietario = vehiculo.getPropietario();
-    if (propietario == null)
-        throw new PeajeException("El vehículo no tiene propietario");
+        // Propietario
+        Propietario propietario = vehiculo.getPropietario();
+        if (propietario == null)
+            throw new PeajeException("El vehículo no tiene propietario");
 
-    // Estado
-    EstadoPropietario estado = propietario.getEstadoPropietario();
-    if (!estado.puedeRealizarTransito())
-        throw new PeajeException("El propietario no puede realizar tránsitos");
+        // Estado
+        EstadoPropietario estado = propietario.getEstadoPropietario();
+        if (!estado.puedeRealizarTransito())
+            throw new PeajeException("El propietario no puede realizar tránsitos");
 
-    // Crear tránsito base
-    Transito transito = new Transito(fechaHora, vehiculo, null, puesto, tarifa, 0.0);
+        // Crear tránsito base
+        Transito transito = new Transito(fechaHora, vehiculo, null, puesto, tarifa, 0.0);
 
-    // Calcular monto
-    double montoFinal = estado.puedeRecibirBonificaciones()
+        // Calcular monto
+        double montoFinal = estado.puedeRecibirBonificaciones()
             ? calcularMontoFinal(transito)
             : tarifa.getMonto();
 
-    if (!estado.puedeRecibirBonificaciones())
+        if (!estado.puedeRecibirBonificaciones())
         transito.setBonificacionAplicada(null);
 
-    // Validar y descontar saldo
-    propietario.validarSaldoSuficiente(montoFinal);
-    propietario.descontarSaldo(montoFinal);
-    transito.setMontoCobrado(montoFinal);
+        // Validar y descontar saldo
+        propietario.validarSaldoSuficiente(montoFinal);
+        propietario.descontarSaldo(montoFinal);
+        transito.setMontoCobrado(montoFinal);
 
-    // Registrar tránsito
-    vehiculo.registrarTransito(transito);
-    listaTransitos.add(transito);
+        // Registrar tránsito
+        vehiculo.registrarTransito(transito);
+        listaTransitos.add(transito);
 
-    // DISPARAR NOTIFICACIONES desde métodos especializados
-    notificarTransito(propietario, puesto);
+        // DISPARAR NOTIFICACIONES desde métodos especializados
+        notificarTransito(propietario, puesto);
 
-    if (propietario.getSaldoActual() < 100) {
-        notificarSaldoBajo(propietario);
+        if (propietario.getSaldoActual() < 100) {
+            notificarSaldoBajo(propietario);
+        }
+        return transito;
+        
     }
-
-    return transito;
-}
 
 
     public Puesto buscarPuestoPorNombre(String nombre) {
@@ -259,12 +258,13 @@ public class ServicioTransito {
         double saldo = propietario.getSaldoActual();
 
         return new ResultadoDto(
-                nombrePropietario,
-                estado,
-                categoria,
-                bonificacion,
-                costo,
-                saldo);
+            nombrePropietario,
+            estado,
+            categoria,
+            bonificacion,
+            costo,
+            saldo
+        );
     }
 
     public Vehiculo buscarVehiculoPorMatricula(String matricula) {
@@ -358,19 +358,17 @@ public class ServicioTransito {
         return total;
     }
 
-
-
     //NOTIFICACIONES
 
     public void notificarTransito(Propietario p, Puesto puesto) {
-    Notificacion n = new Notificacion(
-        TipoNotificacion.TRANSITO,
-        "Tránsito registrado en " + puesto.getNombre(),
-        p
-    );
-    p.getNotificaciones().add(n);
-
-    Fachada.getInstancia().avisar(Fachada.Eventos.nuevoTransito);
+        Notificacion n = new Notificacion(
+            TipoNotificacion.TRANSITO,
+            "Tránsito registrado en " + puesto.getNombre(),
+            p
+        );
+        p.registrarNotificacion(n);
+        
+        p.avisar(Propietario.Eventos.SALDO_BAJO);
     }
 
     public void notificarSaldoBajo(Propietario p) {
@@ -380,20 +378,12 @@ public class ServicioTransito {
             "Saldo bajo: $" + p.getSaldoActual(),
             p
         );
-        p.getNotificaciones().add(n);
+        p.registrarNotificacion(n);
 
-        Fachada.getInstancia().avisar(Fachada.Eventos.saldoBajo);
+
+        p.avisar(Propietario.Eventos.SALDO_BAJO);
+
     }
 
-    public void notificarCambioEstado(Propietario p) {
-        Notificacion n = new Notificacion(
-            TipoNotificacion.CAMBIO_ESTADO,
-            "Tu estado cambió a: " + p.getEstadoPropietario().getNombre(),
-            p
-        );
-        p.getNotificaciones().add(n);
-
-        Fachada.getInstancia().avisar(Fachada.Eventos.cambioEstadoPropietario);
-    }
 
 }

@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RestController
 @RequestMapping("/ingreso")
 public class ControladorIngreso {
+
+
     @PostMapping("/loginPropietario")
     public List<Respuesta> loginPropietario(HttpSession sessionHttp, @RequestParam String cedula , @RequestParam String password) throws PeajeException {
         Sesion sesion  = Fachada.getInstancia().loginPropietario(cedula, password);
@@ -34,6 +36,8 @@ public class ControladorIngreso {
             sesionHttp.removeAttribute("propietario");
             
         }
+
+
         return Respuesta.lista(new Respuesta("usuarioNoAutenticado", "index.html"));
     }
 

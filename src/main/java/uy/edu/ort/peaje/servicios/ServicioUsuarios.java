@@ -14,6 +14,7 @@ import uy.edu.ort.peaje.modelo.EstadoPropietarioDeshabilitado;
 import uy.edu.ort.peaje.modelo.Notificacion;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Sesion;
+import uy.edu.ort.peaje.modelo.TipoNotificacion;
 import uy.edu.ort.peaje.modelo.Usuario;
 import uy.edu.ort.peaje.servicios.fachada.Fachada;
 
@@ -65,7 +66,6 @@ public class ServicioUsuarios {
         if(usuario!=null){
             sesion = new Sesion(usuario);
             sesiones.add(sesion);
-            Fachada.getInstancia().avisar(Fachada.Eventos.nuevoUsuarioConectado);
             return sesion;
         }        
         throw new PeajeException("Usuario y/o contraseña incorrectos");
@@ -90,9 +90,7 @@ public class ServicioUsuarios {
         return sesiones;
     }
     public void logout(Sesion s){
-        sesiones.remove(s);
-        Fachada.getInstancia().avisar(Fachada.Eventos.usuarioDesconectado);
-       
+        sesiones.remove(s);       
     }
 
     public Propietario buscarPropietarioPorCedula(String cedula) {
@@ -138,6 +136,18 @@ public class ServicioUsuarios {
             res.add(new NotificacionDto(n));
         }
         return res;
+    }
+    
+    public void notificarCambioEstado(Propietario p) {
+        Notificacion n = new Notificacion(
+            TipoNotificacion.CAMBIO_ESTADO,
+            "Tu estado cambió a: " + p.getEstadoPropietario().getNombre(),
+            p
+        );
+        p.registrarNotificacion(n);
+
+
+        p.avisar(Propietario.Eventos.CAMBIO_ESTADO);
     }
 
     

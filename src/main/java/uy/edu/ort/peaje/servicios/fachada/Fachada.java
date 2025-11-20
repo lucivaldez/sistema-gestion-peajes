@@ -20,25 +20,15 @@ import uy.edu.ort.peaje.modelo.Tarifa;
 import uy.edu.ort.peaje.modelo.TipoBonificacion;
 import uy.edu.ort.peaje.modelo.Transito;
 import uy.edu.ort.peaje.modelo.Vehiculo;
-import uy.edu.ort.peaje.observador.Observable;
 
 import uy.edu.ort.peaje.servicios.ServicioUsuarios;
 import uy.edu.ort.peaje.servicios.ServicioTransito;
 
-public class Fachada extends Observable{
+public class Fachada{
 
     private static Fachada instancia;
     private ServicioUsuarios sUsuarios;
     private ServicioTransito sTransito;
-
-    public enum Eventos {
-        nuevoUsuarioConectado,
-        usuarioDesconectado, 
-        nuevoTransito, 
-        saldoBajo, 
-        cambioEstadoPropietario,
-        nuevaBonificacion
-    }
     
     private Fachada(){
         sUsuarios = new ServicioUsuarios();
@@ -168,18 +158,6 @@ public class Fachada extends Observable{
         return sUsuarios.construirNotificacionesDto(propietario);
     }
 
-    public void notificarTransito(Propietario p, Puesto puesto) {
-        sTransito.notificarTransito(p, puesto);
-    }
-
-    public void notificarSaldoBajo(Propietario p) {
-        sTransito.notificarSaldoBajo(p);
-    }
-
-    public void notificarCambioEstado(Propietario p) {
-        sTransito.notificarCambioEstado(p);
-    }
-
     public int cantidadTransitosVehiculo(Vehiculo v, Propietario p) {
         return sTransito.cantidadTransitosVehiculo(v, p);
     }
@@ -187,6 +165,10 @@ public class Fachada extends Observable{
     public double montoTotalVehiculo(Vehiculo v, Propietario p) {
         return sTransito.montoTotalVehiculo(v, p);
     }
+    public void notificarCambioEstado(Propietario p) {
+        sUsuarios.notificarCambioEstado(p);
+    }
+
 
 
 

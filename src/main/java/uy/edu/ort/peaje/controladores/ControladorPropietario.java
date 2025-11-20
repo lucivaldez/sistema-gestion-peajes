@@ -21,6 +21,7 @@ import uy.edu.ort.peaje.modelo.AsignacionBonificacion;
 import uy.edu.ort.peaje.modelo.Notificacion;
 import uy.edu.ort.peaje.modelo.Transito;
 import uy.edu.ort.peaje.modelo.Vehiculo;
+import uy.edu.ort.peaje.modelo.Propietario.Eventos;
 import uy.edu.ort.peaje.utils.Respuesta;
 import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.observador.Observable;
@@ -52,7 +53,8 @@ public class ControladorPropietario implements Observador {
 
          this.propietarioActual = propietario;
          
-         Fachada.getInstancia().agregarObservador(this);
+         //registro al observador
+         propietario.agregarObservador(this);
 
          PropietarioDto propietarioDto = new PropietarioDto(propietario);
         
@@ -66,32 +68,15 @@ public class ControladorPropietario implements Observador {
         
     }
 
-    // @Override
-    // public void actualizar(Object evento, Observable origen) {
-    // if (evento.equals(Fachada.Eventos.nuevoTransito) ||
-    //     evento.equals(Fachada.Eventos.cambioEstadoPropietario) ||
-    //     evento.equals(Fachada.Eventos.saldoBajo) ||
-    //     evento.equals(Fachada.Eventos.nuevaBonificacion)) 
-    // {
-    //     Propietario p = propietarioActual;
-
-    //     conexionNavegador.enviarJSON(
-    //         Respuesta.lista(
-    //             new Respuesta("propietario", new PropietarioDto(p)),
-    //             listarBonificaciones(p),
-    //             listarVehiculos(p),
-    //             listarTransitos(p),
-    //             listarNotificaciones(p)
-    //         )
-    //         );
-    //     }
-    // }
     @Override
     public void actualizar(Object evento, Observable origen) {
         Propietario p = propietarioActual;
 
-    // 1) Notificación real de evento criticico
-        if (evento.equals(Fachada.Eventos.cambioEstadoPropietario)) {
+        if (evento instanceof Eventos) {
+            Eventos e = (Eventos) evento;
+
+        // Evento: CAMBIO DE ESTADO
+        if (e == Eventos.CAMBIO_ESTADO) {
             conexionNavegador.enviarJSON(
                 Respuesta.lista(
                     new Respuesta("evento", "CAMBIO_ESTADO"),
@@ -100,6 +85,34 @@ public class ControladorPropietario implements Observador {
             );
         }
 
+        // Evento: SALDO BAJO
+        if (e == Eventos.SALDO_BAJO) {
+            conexionNavegador.enviarJSON(
+                Respuesta.lista(
+                    new Respuesta("evento", "SALDO_BAJO"),
+                    new Respuesta("saldoActual", p.getSaldoActual())
+                )
+            );
+        }
+
+        // Evento: NUEVO TRANSITO
+        if (e == Eventos.NUEVO_TRANSITO) {
+            conexionNavegador.enviarJSON(
+                Respuesta.lista(
+                    new Respuesta("evento", "NUEVO_TRANSITO")
+                )
+            );
+        }
+
+        // Evento: NUEVA BONIFICACION
+        if (e == Eventos.NUEVA_BONIFICACION) {
+            conexionNavegador.enviarJSON(
+                Respuesta.lista(
+                    new Respuesta("evento", "NUEVA_BONIFICACION")
+                )
+            );
+        }
+    }
     // 2) Vista completa (lo que ya mandabas antes)
         conexionNavegador.enviarJSON(
             Respuesta.lista(
@@ -112,11 +125,6 @@ public class ControladorPropietario implements Observador {
         );
     }
 
-
-
-
-
-    //fusion
     @PostMapping("/borrarNotificaciones")
     public List<Respuesta> borrarNotificaciones(
         @SessionAttribute(name = "propietario", required = false) Propietario propietario) {
