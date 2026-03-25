@@ -15,10 +15,10 @@ public class ConexionNavegador  {
     private SseEmitter conexionSSE;
 
     public void conectarSSE() {
-        if (conexionSSE != null) { //si hay hay una conexion la cierro
+        if (conexionSSE != null) { 
             cerrarConexion();
         }
-        long timeOut = 30 * 60 * 1000; //30 minutos de timeOut (igual al valor por defecto de la sesion)
+        long timeOut = 30 * 60 * 1000; 
         conexionSSE = new SseEmitter(timeOut);
         
     }

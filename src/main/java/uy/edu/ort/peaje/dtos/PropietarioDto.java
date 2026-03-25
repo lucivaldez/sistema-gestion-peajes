@@ -36,7 +36,6 @@ public class PropietarioDto {
     
     public String getestadoActual() { 
         return estadoActual; 
-    }
-    
+    }  
 }
 

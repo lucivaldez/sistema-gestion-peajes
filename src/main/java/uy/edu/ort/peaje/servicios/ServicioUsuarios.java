@@ -16,7 +16,7 @@ import uy.edu.ort.peaje.modelo.Propietario;
 import uy.edu.ort.peaje.modelo.Sesion;
 import uy.edu.ort.peaje.modelo.TipoNotificacion;
 import uy.edu.ort.peaje.modelo.Usuario;
-import uy.edu.ort.peaje.servicios.fachada.Fachada;
+
 
 public class ServicioUsuarios {
     private ArrayList<Propietario> propietarios;
@@ -149,7 +149,4 @@ public class ServicioUsuarios {
 
         p.avisar(Propietario.Eventos.CAMBIO_ESTADO);
     }
-
-    
-
 }

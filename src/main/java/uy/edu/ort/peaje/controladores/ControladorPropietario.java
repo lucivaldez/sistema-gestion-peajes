@@ -29,6 +29,7 @@ import uy.edu.ort.peaje.observador.Observador;
 import uy.edu.ort.peaje.servicios.fachada.Fachada;
 import uy.edu.ort.peaje.utils.ConexionNavegador;
 
+
 @RestController
 @RequestMapping("/propietario")
 @Scope("session")
@@ -63,9 +64,19 @@ public class ControladorPropietario implements Observador {
                 listarVehiculos(propietario),
                 listarTransitos(propietario),
                 listarNotificaciones(propietario)
-        );
-        
+        );  
     }
+
+    @PostMapping("/cerrarVista")
+    public List<Respuesta> cerrarVista(
+        @SessionAttribute(name = "propietario", required = false) Propietario propietario) {
+        if (propietario != null) {
+            propietario.quitarObservador(this);
+        }
+        this.propietarioActual = null;
+        return Respuesta.lista(new Respuesta("vistaCerrada", "loginPropietario.html"));
+    }
+
 
     @Override
     public void actualizar(Object evento, Observable origen) {
@@ -74,7 +85,6 @@ public class ControladorPropietario implements Observador {
         if (evento instanceof Eventos) {
             Eventos e = (Eventos) evento;
 
-        // Evento: CAMBIO DE ESTADO
         if (e == Eventos.CAMBIO_ESTADO) {
             conexionNavegador.enviarJSON(
                 Respuesta.lista(
@@ -84,7 +94,6 @@ public class ControladorPropietario implements Observador {
             );
         }
 
-        // Evento: SALDO BAJO
         if (e == Eventos.SALDO_BAJO) {
             conexionNavegador.enviarJSON(
                 Respuesta.lista(
@@ -94,7 +103,6 @@ public class ControladorPropietario implements Observador {
             );
         }
 
-        // Evento: NUEVO TRANSITO
         if (e == Eventos.NUEVO_TRANSITO) {
             conexionNavegador.enviarJSON(
                 Respuesta.lista(
@@ -103,7 +111,6 @@ public class ControladorPropietario implements Observador {
             );
         }
 
-        // Evento: NUEVA BONIFICACION
         if (e == Eventos.NUEVA_BONIFICACION) {
             conexionNavegador.enviarJSON(
                 Respuesta.lista(
@@ -112,7 +119,7 @@ public class ControladorPropietario implements Observador {
             );
         }
     }
-    // 2) Vista completa (lo que ya mandabas antes)
+
         conexionNavegador.enviarJSON(
             Respuesta.lista(
                 new Respuesta("propietario", new PropietarioDto(p)),
@@ -197,8 +204,7 @@ public class ControladorPropietario implements Observador {
             }
     
         return new Respuesta("notificaciones", notificacionesDto);
-    }
-    
+    }   
 }
 
 

@@ -41,7 +41,4 @@ private final ConexionNavegador conexionNavegador;
         return conexionNavegador.getConexionSSE(); 
        
     }
-
- 
-
 }

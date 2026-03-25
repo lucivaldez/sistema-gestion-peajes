@@ -32,6 +32,7 @@
       }
 
       function logout() {
+        submit("/propietario/cerrarVista", null);
         submit("/ingreso/logoutPropietario", null);
       }
 
@@ -43,7 +44,7 @@
         spnNombreCompleto.innerHTML =
           "USUARIO DE " + nombreCompleto.toUpperCase();
       }
-      
+
       function procesarMensajeSSE(mensaje) {
         const evento = mensaje.find((x) => x.id === "evento");
 

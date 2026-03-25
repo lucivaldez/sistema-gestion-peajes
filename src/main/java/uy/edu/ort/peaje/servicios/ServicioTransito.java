@@ -383,6 +383,4 @@ public class ServicioTransito {
         p.avisar(Propietario.Eventos.SALDO_BAJO);
 
     }
-
-
 }
